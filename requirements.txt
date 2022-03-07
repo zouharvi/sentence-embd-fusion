@@ -1,0 +1,5 @@
+datasets >= 1.18
+torch >= 1.10
+transformers >= 4.16
+nltk >= 3.7
+tqdm >= 4.62
