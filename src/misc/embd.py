@@ -3,13 +3,13 @@
 from datasets import load_dataset
 import torch
 from transformers import BertTokenizer, BertModel
-from misc.utils import get_device, save_pickle
+from utils import get_device, save_pickle
 from nltk import sent_tokenize
 from tqdm import tqdm
 from argparse import ArgumentParser
+from bpe import Encoder
 
 DEVICE = get_device()
-
 
 def mean_pooling(model_output, attention_mask, layer_i=0):
     # Mean Pooling - Take attention mask into account for correct averaging

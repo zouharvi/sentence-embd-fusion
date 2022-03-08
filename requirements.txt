@@ -3,3 +3,5 @@ torch >= 1.10
 transformers >= 4.16
 nltk >= 3.7
 tqdm >= 4.62
+bpe >= 1.0
+numpy >= 1.20
