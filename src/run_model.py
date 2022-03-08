@@ -38,7 +38,7 @@ if __name__ == "__main__":
     ]
     
     model = LSTMModel(args.vocab_size, fusion=args.fusion)
-    model.train_loop(data[:args.train_data], data[-1000:], prefix="bert-10000", epochs=10)
+    model.train_loop(data[:args.train_data], data[-1000:], prefix="bert-10000-single", epochs=10)
     # print(next(data))
     # print(data[0][0].shape)
     # print(len(data[0][0]))
