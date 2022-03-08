@@ -11,7 +11,9 @@ from model import LSTMModel
 if __name__ == "__main__":
     args = ArgumentParser()
     args.add_argument("-d", "--data", default="computed/bert-10000.embd")
+    args.add_argument("-t", "--train-data", type=int, default=5000)
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
+    args.add_argument("-f", "--fusion", type=int, default=0)
     args = args.parse_args()
 
     encoder = Encoder(vocab_size=args.vocab_size)
@@ -35,8 +37,8 @@ if __name__ == "__main__":
         for x in data
     ]
     
-    model = LSTMModel(args.vocab_size)
-    model.train_loop(data, None, epochs=10)
+    model = LSTMModel(args.vocab_size, fusion=args.fusion)
+    model.train_loop(data[:args.train_data], data[-1000:], prefix="bert-10000", epochs=10)
     # print(next(data))
     # print(data[0][0].shape)
     # print(len(data[0][0]))
