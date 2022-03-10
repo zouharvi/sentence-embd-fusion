@@ -1,7 +1,7 @@
 datasets >= 1.18
 torch >= 1.10
 transformers >= 4.16
-nltk >= 3.7
+nltk >= 3.5
 tqdm >= 4.62
 bpe >= 1.0
-numpy >= 1.20
+numpy >= 1.19

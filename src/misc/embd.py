@@ -11,6 +11,7 @@ from bpe import Encoder
 
 DEVICE = get_device()
 
+
 def mean_pooling(model_output, attention_mask, layer_i=0):
     # Mean Pooling - Take attention mask into account for correct averaging
     # first element of model_output contains all token embeddings
@@ -57,8 +58,10 @@ class BertWrap():
 
 if __name__ == "__main__":
     args = ArgumentParser()
-    args.add_argument("-n", help="Number of paragraphs",
-                      type=int, default=None)
+    args.add_argument(
+        "-n", help="Number of paragraphs",
+        type=int, default=None
+    )
     args = args.parse_args()
 
     dataset = load_dataset("wikitext", "wikitext-103-v1")
@@ -77,4 +80,4 @@ if __name__ == "__main__":
     for sent in tqdm(sentences):
         sentences_embd.append((sent, model.embd(sent, type_out="cls")))
 
-    save_pickle(f"computed/bert-{args.n}.embd", sentences_embd)
+    save_pickle(f"computed/bert-{'all' if args.n is None else args.n}.embd", sentences_embd)

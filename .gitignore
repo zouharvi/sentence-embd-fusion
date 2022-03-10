@@ -1,6 +1,7 @@
 # 
 computed/*.embd
 computed/*.json
+nohup.out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

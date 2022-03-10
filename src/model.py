@@ -19,7 +19,7 @@ class LSTMModel(torch.nn.Module):
 
         self.loss = torch.nn.CrossEntropyLoss()
         self.loss_without_reduce = torch.nn.CrossEntropyLoss(reduction="none")
-        self.optimizer = torch.optim.Adam(self.parameters(), lr=10e-3)
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=10e-6)
 
         self.to(DEVICE)
 
@@ -28,7 +28,7 @@ class LSTMModel(torch.nn.Module):
 
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
         last_index = F.one_hot(torch.arange(0, x.shape[0]), num_classes=seq_length) == True
-        # take the (1) all sequence in the batch, (2) the output and (3) the last item in each sequence
+        # take (1) the output and (2) the last item in each sequence
         x = self.model_rnn(x)[0][last_index]
 
         # fuse
@@ -44,9 +44,8 @@ class LSTMModel(torch.nn.Module):
     
     def mask_sample(self, sample):
         seq_length = len(sample)
-        sample = sample.to(DEVICE)
         # duplicate sample sequence
-        # TODO: check the resamping is correct
+        # TODO: check the reshaping is correct
         sample = sample.tile((seq_length-1,1)).reshape(seq_length-1, seq_length, -1)
 
         index_a = torch.arange(0, seq_length-1).reshape(-1, 1).tile((seq_length,))
@@ -56,13 +55,14 @@ class LSTMModel(torch.nn.Module):
 
         return sample
 
-    def train_loop(self, data_train, data_dev, prefix="", epochs=10):
+    def train_loop(self, data_train, data_dev, encode_text, prefix="", epochs=50):
         logdata = []
         for epoch in range(epochs):
             self.train(True)
 
             losses_train = []
-            for sample, sample_num, sent_embd in tqdm(data_train):
+            for sample_num, sent_embd in tqdm(data_train):
+                sample = encode_text(sample_num).to(DEVICE)
                 sample = self.mask_sample(sample)
 
                 # trick to keep this a tensor with (1, 1) shape 
@@ -87,7 +87,8 @@ class LSTMModel(torch.nn.Module):
             self.train(False)
             losses_dev = []
             with torch.no_grad():
-                for sample, sample_num, sent_embd in tqdm(data_dev):
+                for sample_num, sent_embd in tqdm(data_dev):
+                    sample = encode_text(sample_num).to(DEVICE)
                     sample = self.mask_sample(sample)
 
                     # trick to keep this a tensor with (1, 1) shape 
