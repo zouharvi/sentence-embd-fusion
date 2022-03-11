@@ -11,9 +11,9 @@ class LSTMModel(torch.nn.Module):
         super().__init__()
 
         self.fusion = fusion
-        self.model_rnn = torch.nn.LSTM(input_size=vocab_size, hidden_size=hidden_size, bidirectional=True, batch_first=True)
+        self.model_rnn = torch.nn.LSTM(input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
         self.model_dense = torch.nn.Linear(
-            2*hidden_size+(768 if fusion == 1 else 0),
+            hidden_size+(768 if fusion == 1 else 0),
             vocab_size
         )
 
@@ -62,7 +62,8 @@ class LSTMModel(torch.nn.Module):
 
             losses_train = []
             for sample_num, sent_embd in tqdm(data_train):
-                sample = encode_text(sample_num).to(DEVICE)
+                # TODO: this may be an issue with CPU/GPU cross-operations
+                sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
                 # trick to keep this a tensor with (1, 1) shape 

@@ -17,9 +17,10 @@ if __name__ == "__main__":
     args.add_argument("-e", "--epochs", type=int, default=10)
     args = args.parse_args()
     encoder = Encoder(vocab_size=args.vocab_size)
-    
+        
     data = read_pickle(args.data)
-    text = ["BOS " + x[0] + " EOS" for x in data]
+    # crop text
+    text = ["BOS " + x[0][:512] + " EOS" for x in data]
 
     encoder.fit(text)
 
