@@ -55,13 +55,33 @@ class LSTMModel(torch.nn.Module):
 
         return sample
 
+    def eval_dev(self, data_dev, encode_text):
+        self.train(False)
+        losses_dev = []
+        with torch.no_grad():
+            for sample_num, sent_embd in tqdm(data_dev):
+                sample = encode_text(sample_num.to(DEVICE))
+                sample = self.mask_sample(sample)
+
+                # trick to keep this a tensor with (1, 1) shape 
+                sample_next = sample_num[1:].to(DEVICE)
+                out = self.forward(sample, sent_embd)
+                loss = self.loss_without_reduce(out, sample_next)
+                losses_dev += loss.detach().cpu().tolist()
+
+        losses_dev = np.average(losses_dev)
+        self.train(True)
+        # print(f"Dev pp: {2**losses_dev:.2f}")
+        return losses_dev
+
+
     def train_loop(self, data_train, data_dev, encode_text, prefix="", epochs=50):
         logdata = []
         for epoch in range(epochs):
             self.train(True)
 
             losses_train = []
-            for sample_num, sent_embd in tqdm(data_train):
+            for sample_i, (sample_num, sent_embd) in enumerate(tqdm(data_train)):
                 # TODO: this may be an issue with CPU/GPU cross-operations
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
@@ -78,33 +98,20 @@ class LSTMModel(torch.nn.Module):
                 self.optimizer.step()
 
                 losses_train.append(loss.detach().cpu().item())
-                
-                # free up memory
-                del sample_next
 
-            losses_train = np.average(losses_train)
-            print(f"Avg. loss: {losses_train:.2f}")
+                # one log step
+                if sample_i % 100000 == 0:
+                    losses_train = np.average(losses_train)
+                    # print(f"Avg. loss: {losses_train:.2f}")
+                    losses_dev = self.eval_dev(data_dev, encode_text)
 
-            self.train(False)
-            losses_dev = []
-            with torch.no_grad():
-                for sample_num, sent_embd in tqdm(data_dev):
-                    sample = encode_text(sample_num).to(DEVICE)
-                    sample = self.mask_sample(sample)
+                    # warning: train_loss is macroaverage, dev_loss is microaverage
+                    logdata.append({
+                        "epoch": epoch,
+                        "train_loss": losses_train,
+                        "dev_loss": losses_dev,
+                        "dev_pp": 2**losses_dev
+                    })
 
-                    # trick to keep this a tensor with (1, 1) shape 
-                    sample_next = sample_num[1:].to(DEVICE)
-                    
-                    out = self.forward(sample, sent_embd)
-
-                    loss = self.loss_without_reduce(out, sample_next)
-
-                    losses_dev += loss.detach().cpu().tolist()
-
-            losses_dev = np.average(losses_dev)
-            print(f"Dev pp: {2**losses_dev:.2f}")
-
-            # warning: train_loss is macroaverage, dev_loss is microaverage
-            logdata.append({"train_loss": losses_train, "dev_loss": losses_dev, "dev_pp": 2**losses_dev})
-
-            save_json(f"computed/{prefix}-f{self.fusion}.json", logdata)
+                    save_json(f"computed/{prefix}-f{self.fusion}.json", logdata)
+                    losses_train = []
