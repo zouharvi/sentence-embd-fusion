@@ -17,7 +17,7 @@ if __name__ == "__main__":
     args.add_argument("-e", "--epochs", type=int, default=10)
     args = args.parse_args()
     encoder = Encoder(vocab_size=args.vocab_size)
-        
+
     data = read_pickle(args.data)
     # crop text
     text = ["BOS " + x[0][:512] + " EOS" for x in data]
@@ -33,4 +33,9 @@ if __name__ == "__main__":
     ))
 
     model = LSTMModel(args.vocab_size, fusion=args.fusion)
-    model.train_loop(data[:-1000], data[-1000:], encode_text, prefix=f"bert-{args.prefix}", epochs=args.epochs)
+    model.train_loop(
+        data[:-1000], data[-1000:],
+        encode_text,
+        prefix=f"bert-{args.prefix}",
+        epochs=args.epochs
+    )

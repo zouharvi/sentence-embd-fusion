@@ -6,14 +6,16 @@ import torch.nn.functional as F
 
 DEVICE = get_device()
 
+
 class LSTMModel(torch.nn.Module):
     def __init__(self, vocab_size, fusion=0, hidden_size=256):
         super().__init__()
 
         self.fusion = fusion
-        self.model_rnn = torch.nn.LSTM(input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
+        self.model_rnn = torch.nn.LSTM(
+            input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
         self.model_dense = torch.nn.Linear(
-            hidden_size+(768 if fusion == 1 else 0),
+            hidden_size + (768 if fusion == 1 else 0),
             vocab_size
         )
 
@@ -27,7 +29,8 @@ class LSTMModel(torch.nn.Module):
         seq_length = x.shape[1]
 
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
-        last_index = F.one_hot(torch.arange(0, x.shape[0]), num_classes=seq_length) == True
+        last_index = F.one_hot(torch.arange(
+            0, x.shape[0]), num_classes=seq_length) == True
         # take (1) the output and (2) the last item in each sequence
         x = self.model_rnn(x)[0][last_index]
 
@@ -41,17 +44,23 @@ class LSTMModel(torch.nn.Module):
         x = self.model_dense(x)
 
         return x
-    
+
     def mask_sample(self, sample):
         seq_length = len(sample)
         # duplicate sample sequence
         # TODO: check the reshaping is correct
-        sample = sample.tile((seq_length-1,1)).reshape(seq_length-1, seq_length, -1)
+        sample = sample.tile(
+            (seq_length - 1, 1)
+        ).reshape(seq_length - 1, seq_length, -1)
 
-        index_a = torch.arange(0, seq_length-1).reshape(-1, 1).tile((seq_length,))
-        index_b = torch.arange(0, seq_length).reshape(-1, 1).tile((seq_length-1,)).T
+        index_a = torch.arange(
+            0, seq_length - 1
+        ).reshape(-1, 1).tile((seq_length,))
+        index_b = torch.arange(
+            0, seq_length
+        ).reshape(-1, 1).tile((seq_length - 1,)).T
         # zero future indicies
-        sample[index_b>index_a,:] = 0
+        sample[index_b > index_a, :] = 0
 
         return sample
 
@@ -63,17 +72,16 @@ class LSTMModel(torch.nn.Module):
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
-                # trick to keep this a tensor with (1, 1) shape 
+                # future words to predict
                 sample_next = sample_num[1:].to(DEVICE)
+                
                 out = self.forward(sample, sent_embd)
                 loss = self.loss_without_reduce(out, sample_next)
                 losses_dev += loss.detach().cpu().tolist()
 
         losses_dev = np.average(losses_dev)
         self.train(True)
-        # print(f"Dev pp: {2**losses_dev:.2f}")
         return losses_dev
-
 
     def train_loop(self, data_train, data_dev, encode_text, prefix="", epochs=50):
         logdata = []
@@ -82,16 +90,15 @@ class LSTMModel(torch.nn.Module):
 
             losses_train = []
             for sample_i, (sample_num, sent_embd) in enumerate(tqdm(data_train)):
-                # TODO: this may be an issue with CPU/GPU cross-operations
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
-                # trick to keep this a tensor with (1, 1) shape 
+                # trick to keep this a tensor with (1, 1) shape
                 sample_next = sample_num[1:].to(DEVICE)
 
                 out = self.forward(sample, sent_embd)
                 loss = self.loss(out, sample_next)
-                
+
                 # backpropagation
                 self.optimizer.zero_grad()
                 loss.backward()
@@ -102,7 +109,6 @@ class LSTMModel(torch.nn.Module):
                 # one log step
                 if sample_i % 100000 == 0:
                     losses_train = np.average(losses_train)
-                    # print(f"Avg. loss: {losses_train:.2f}")
                     losses_dev = self.eval_dev(data_dev, encode_text)
 
                     # warning: train_loss is macroaverage, dev_loss is microaverage
@@ -113,5 +119,8 @@ class LSTMModel(torch.nn.Module):
                         "dev_pp": 2**losses_dev
                     })
 
-                    save_json(f"computed/{prefix}-f{self.fusion}.json", logdata)
+                    save_json(
+                        f"computed/{prefix}-f{self.fusion}.json",
+                        logdata
+                    )
                     losses_train = []
