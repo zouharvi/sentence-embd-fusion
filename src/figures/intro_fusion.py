@@ -15,7 +15,7 @@ ax3 = ax1.twinx()
 
 XTICKS = [x+1 for x in range(max(len(data_f0),len(data_f1)))]
 epochticks = []
-prev_epoch = 0
+prev_epoch = -1
 for i, x in enumerate(data_f0):
     if x["epoch"] > prev_epoch:
         prev_epoch = x["epoch"]
@@ -37,26 +37,30 @@ ax1.plot(
     XTICKS[:len(data_f0)],
     [x["train_loss"] for x in data_f0],
     label="Train loss",
+    linestyle=":",
 )
 ax1.plot(
     XTICKS[:len(data_f1)],
     [x["train_loss"] for x in data_f1],
     label="Train loss, $\\bf{fusion}$",
+    linestyle=":",
 )
 ax1.set_ylabel("Train loss")
-ax1.set_xlabel("Step (100k)")
+ax1.set_xlabel("Step (100k) | Epoch")
 
 ax2.plot(
     XTICKS[:len(data_f0)],
     [x["dev_pp"] for x in data_f0],
     label="Dev PP",
-    linestyle=":"
+    linestyle="-",
+    marker=".", markersize=5,
 )
 ax2.plot(
     XTICKS[:len(data_f1)],
     [x["dev_pp"] for x in data_f1],
     label="Dev PP, $\\bf{fusion}$",
-    linestyle=":"
+    linestyle="-",
+    marker=".", markersize=5,
 )
 ax2.set_ylabel("Dev Perplexity")
 
