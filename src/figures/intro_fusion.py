@@ -4,9 +4,15 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append("src")
 from misc.utils import read_json
+from argparse import ArgumentParser
 
-data_f0 = read_json("computed/bert-1mil-f0.json")[1:]
-data_f1 = read_json("computed/bert-1mil-f1.json")[1:]
+args = ArgumentParser()
+args.add_argument("-f0")
+args.add_argument("-f1")
+args = args.parse_args()
+
+data_f0 = read_json(args.f0)[1:]
+data_f1 = read_json(args.f1)[1:]
 
 fig = plt.figure(figsize=(6, 4))
 ax1 = fig.gca()
@@ -46,7 +52,7 @@ ax1.plot(
     linestyle=":",
 )
 ax1.set_ylabel("Train loss")
-ax1.set_xlabel("Step (100k) | Epoch")
+ax1.set_xlabel("Step | Epoch")
 
 ax2.plot(
     XTICKS[:len(data_f0)],
