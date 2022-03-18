@@ -2,6 +2,7 @@
 
 from datasets import load_dataset
 import torch
+import numpy as np
 from transformers import BertTokenizer, BertModel
 from utils import get_device, save_pickle
 from nltk import sent_tokenize
@@ -58,26 +59,57 @@ class BertWrap():
 
 if __name__ == "__main__":
     args = ArgumentParser()
+    args.add_argument("-n", help="Number of sentences", type=int, default=None)
     args.add_argument(
-        "-n", help="Number of paragraphs",
-        type=int, default=None
+        "-p", "--prefix", help="Embed prefixes",
+        action="store_true"
     )
+    args.add_argument("-v", "--vocab-size", type=int, default=1024)
     args = args.parse_args()
 
     dataset = load_dataset("wikitext", "wikitext-103-v1")
 
     sentences = []
+    encoder = Encoder(vocab_size=args.vocab_size)
     print(len(dataset["train"]), "total paragraphs")
+    # this assumes that every line has at least one sentence
     for sent in tqdm(dataset["train"][:args.n]["text"]):
         sentences += sent_tokenize(sent)
 
     sentences = sentences[:args.n]
+    sentences = ["BOS " + x + " EOS" for x in sentences]
+    encoder.fit(sentences)
+    sentences_bpe = list(encoder.transform(sentences))
+    sentences = [(x, y[:512]) for x, y in zip(sentences, sentences_bpe)]
     print(len(sentences), "total sentences")
 
     model = BertWrap()
     sentences_embd = []
 
-    for sent in tqdm(sentences):
-        sentences_embd.append((sent, model.embd(sent, type_out="cls")))
+    for sent, sent_bpe in tqdm(sentences):
+        if not args.prefix:
+            output = np.tile(
+                model.embd(sent, type_out="cls"),
+                (len(sent_bpe) - 1, 1)
+            )
+        else:
+            print(list(encoder.inverse_transform([sent_bpe[:5]]))[0])
+            output = [
+                model.embd(
+                    list(encoder.inverse_transform([sent_bpe[:i]]))[0],
+                    type_out="cls"
+                )
+                for i in range(1, len(sent_bpe))
+            ]
+            print(len(output), output[0].shape)
+        sentences_embd.append((sent, sent_bpe, output))
 
-    save_pickle(f"computed/bert-{'all' if args.n is None else args.n}.embd", sentences_embd)
+    save_pickle(
+        f"computed/bert-{'all' if args.n is None else args.n}{'-p' if args.prefix else ''}.embd",
+        sentences_embd
+    )
+
+    save_pickle(
+        f"computed/s{'all' if args.n is None else args.n}-v{args.vocab_size}.enc_pkl",
+        encoder
+    )

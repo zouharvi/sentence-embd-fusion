@@ -36,13 +36,12 @@ class LSTMModel(torch.nn.Module):
 
         # fuse
         if self.fusion == 1:
-            x_embd = torch.FloatTensor(x_embd).to(DEVICE)
-            x_embd = x_embd.tile((x.shape[0],)).reshape((x.shape[0], -1))
+            x_embd = x_embd.to(DEVICE)
+            # x_embd = x_embd.reshape((x.shape[0], -1))
             x = torch.hstack((x, x_embd))
 
         # projection layer
         x = self.model_dense(x)
-
         return x
 
     def mask_sample(self, sample):
@@ -74,7 +73,7 @@ class LSTMModel(torch.nn.Module):
 
                 # future words to predict
                 sample_next = sample_num[1:].to(DEVICE)
-                
+
                 out = self.forward(sample, sent_embd)
                 loss = self.loss_without_reduce(out, sample_next)
                 losses_dev += loss.detach().cpu().tolist()
@@ -93,7 +92,7 @@ class LSTMModel(torch.nn.Module):
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
-                # trick to keep this a tensor with (1, 1) shape
+                # this yields the next word predictions
                 sample_next = sample_num[1:].to(DEVICE)
 
                 out = self.forward(sample, sent_embd)
