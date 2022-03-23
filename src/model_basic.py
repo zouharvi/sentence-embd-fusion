@@ -14,10 +14,22 @@ class LSTMModel(torch.nn.Module):
         self.fusion = fusion
         self.model_rnn = torch.nn.LSTM(
             input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
-        self.model_dense = torch.nn.Linear(
-            hidden_size + (768 if fusion == 1 else 0),
-            vocab_size
-        )
+        if fusion == 0:
+            self.model_dense = torch.nn.Linear(
+                hidden_size + (768 if fusion == 1 else 0),
+                vocab_size
+            )
+        elif fusion == 1:
+            self.model_dense = torch.nn.Linear(
+                hidden_size + 768,
+                vocab_size
+            )
+        elif fusion in {2,3}:
+            assert hidden_size == 768
+            self.model_dense = torch.nn.Linear(
+                768,
+                vocab_size
+            )
 
         self.loss = torch.nn.CrossEntropyLoss()
         self.loss_without_reduce = torch.nn.CrossEntropyLoss(reduction="none")
@@ -39,6 +51,12 @@ class LSTMModel(torch.nn.Module):
             x_embd = x_embd.to(DEVICE)
             # x_embd = x_embd.reshape((x.shape[0], -1))
             x = torch.hstack((x, x_embd))
+        elif self.fusion == 2:
+            x_embd = x_embd.to(DEVICE)
+            x = x + x_embd
+        elif self.fusion == 3:
+            x_embd = x_embd.to(DEVICE)
+            x = x * x_embd
 
         # projection layer
         x = self.model_dense(x)

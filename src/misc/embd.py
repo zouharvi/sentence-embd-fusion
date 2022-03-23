@@ -15,7 +15,7 @@ DEVICE = get_device()
 
 def mean_pooling(model_output, attention_mask, layer_i=0):
     # Mean Pooling - Take attention mask into account for correct averaging
-    # first element of model_output contains all token embeddings
+    # first element of model_output contains all token embedding
     token_embeddings = model_output[layer_i]
     input_mask_expanded = attention_mask.unsqueeze(-1).expand(
         token_embeddings.size()
@@ -59,7 +59,7 @@ class BertWrap():
 
 if __name__ == "__main__":
     args = ArgumentParser()
-    args.add_argument("-n", help="Number of sentences", type=int, default=None)
+    args.add_argument("-n", help="Number of sentences", type=int, default=1000)
     args.add_argument(
         "-p", "--prefix", help="Embed prefixes",
         action="store_true"
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     model = BertWrap()
     sentences_embd = []
 
-    for sent, sent_bpe in tqdm(sentences):
+    for sent, sent_bpe in tqdm(sentences, mininterval=60):
         if not args.prefix:
             output = np.tile(
                 model.embd(sent, type_out="cls"),
@@ -105,11 +105,11 @@ if __name__ == "__main__":
         sentences_embd.append((sent, sent_bpe, output))
 
     save_pickle(
-        f"computed/bert-{'all' if args.n is None else args.n}{'-p' if args.prefix else ''}.embd",
+        f"/data/sef/bert-{args.n//1000}k{'-p' if args.prefix else ''}.embd",
         sentences_embd
     )
 
     save_pickle(
-        f"computed/s{'all' if args.n is None else args.n}-v{args.vocab_size}.enc_pkl",
+        f"/data/sef/s{args.n//1000}k-v{args.vocab_size}.enc_pkl",
         encoder
     )
