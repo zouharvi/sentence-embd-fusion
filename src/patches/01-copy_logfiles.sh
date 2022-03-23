@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-scp lsv_pc:kb-shrink/sentence-embd-fusion/computed/*.json computed/
+# download from server
+scp lsv_pc:sentence-embd-fusion/computed/*.json computed/
+
+# upload to server
+# scp computed/*.json lsv_pc:sentence-embd-fusion/computed/
