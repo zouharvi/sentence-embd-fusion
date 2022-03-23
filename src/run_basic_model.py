@@ -14,7 +14,8 @@ if __name__ == "__main__":
     args.add_argument("-f", "--fusion", type=int, default=0)
     args.add_argument("-p", "--prefix", default="")
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
-    args.add_argument("-e", "--epochs", type=int, default=10)
+    args.add_argument("-e", "--epochs", type=int, default=50)
+    args.add_argument("--hidden-size", type=int, default=256)
     args = args.parse_args()
 
     data = read_pickle(args.data)
@@ -29,7 +30,7 @@ if __name__ == "__main__":
         for x in data
     ]
 
-    model = LSTMModel(args.vocab_size, fusion=args.fusion)
+    model = LSTMModel(args.vocab_size, fusion=args.fusion, hidden_size=args.hidden_size)
     model.train_loop(
         data[:-1000], data[-1000:],
         encode_text,
