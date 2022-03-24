@@ -3,6 +3,10 @@
 ||||running/staged
 ||||
 22 mar|100k sent redbeets|16|running
+22 mar|5k technophile, prefix, `-f 2 --hidden-size 768`|16|bad code, to run
+22 mar|5k vacuum, prefix, `-f 3 --hidden-size 768`|16|bad code, to run
+22 mar|5k bardel, prefix, `-f 1 --hidden-size 768`|16|running
+22 mar|5k grum, prefix, `-f 0 --hidden-size 768`|16|running
 ||||
 ||||finished
 22 mar|5k hardcarrot, prefix, `-f 1 ps=0.9,0.8,0.7,0.6,0.5`|16|ok
