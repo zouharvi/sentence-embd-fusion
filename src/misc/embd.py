@@ -4,6 +4,7 @@ from datasets import load_dataset
 import torch
 import numpy as np
 from transformers import BertTokenizer, BertModel
+from transformers import AutoTokenizer, AutoModel
 from utils import get_device, save_pickle
 from nltk import sent_tokenize
 from tqdm import tqdm
@@ -47,9 +48,9 @@ class BertWrap():
             output = self.model(**encoded_input)
         if type_out == "cls":
             return output[0][0, 0].cpu().numpy()
-        elif type_out == "pooler":
+        elif type_out in {"pooler", "pool"}:
             return output["pooler_output"][0].cpu().numpy()
-        elif type_out == "tokens":
+        elif type_out in {"tokens", "avg"}:
             sentence_embedding = mean_pooling(
                 output, encoded_input['attention_mask'])
             return sentence_embedding.cpu().numpy()
@@ -57,9 +58,38 @@ class BertWrap():
             raise Exception("Unknown type out")
 
 
+class SentenceBertWrap():
+    def __init__(self):
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            "sentence-transformers/bert-base-nli-cls-token")
+        self.model = AutoModel.from_pretrained(
+            "sentence-transformers/bert-base-nli-cls-token")
+        self.model.train(False)
+        self.model.to(DEVICE)
+
+    def embd(self, sentence, type_out):
+        encoded_input = self.tokenizer(
+            sentence, padding=True, truncation=True, max_length=128, return_tensors='pt')
+        encoded_input = encoded_input.to(DEVICE)
+        with torch.no_grad():
+            output = self.model(**encoded_input)
+        if type_out == "cls":
+            return output[0][0, 0].cpu().numpy()
+        elif type_out in {"pooler", "pool"}:
+            return output["pooler_output"][0].cpu().numpy()
+        elif type_out in {"tokens", "avg"}:
+            sentence_embedding = mean_pooling(
+                output, encoded_input['attention_mask']
+            )
+            return sentence_embedding.cpu().numpy()
+        else:
+            raise Exception("Unknown type out")
+
 if __name__ == "__main__":
     args = ArgumentParser()
     args.add_argument("-n", help="Number of sentences", type=int, default=1000)
+    args.add_argument("-m", "--model", default="bert")
+    args.add_argument("--type-out", default="cls")
     args.add_argument(
         "-p", "--prefix", help="Embed prefixes",
         action="store_true"
@@ -83,13 +113,16 @@ if __name__ == "__main__":
     sentences = [(x, y[:512]) for x, y in zip(sentences, sentences_bpe)]
     print(len(sentences), "total sentences")
 
-    model = BertWrap()
+    if args.model == "bert":
+        model = BertWrap()
+    elif args.model in {"sbert", "sentencebert"}:
+        model = SentenceBertWrap()
     sentences_embd = []
 
     for sent, sent_bpe in tqdm(sentences, mininterval=60):
         if not args.prefix:
             output = np.tile(
-                model.embd(sent, type_out="cls"),
+                model.embd(sent, type_out=args.type_out),
                 (len(sent_bpe) - 1, 1)
             )
         else:
@@ -105,7 +138,7 @@ if __name__ == "__main__":
         sentences_embd.append((sent, sent_bpe, output))
 
     save_pickle(
-        f"/data/sef/bert-{args.n//1000}k{'-p' if args.prefix else ''}.embd",
+        f"/data/sef/{args.model}_{args.type_out}-{args.n//1000}k{'-p' if args.prefix else ''}.embd",
         sentences_embd
     )
 
