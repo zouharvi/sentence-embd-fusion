@@ -2,12 +2,16 @@
 -|-|-|-
 ||||running/staged
 ||||
-22 mar|embd 5k bert-avg, sbert-avg, sbert-cls, sbert-cls-p|14|running
-22 mar|100k keystone, prefix, `-f 1`|15|running
-22 mar|100k jalouse, cheat, `-f 1`|15|running
-22 mar|100k fatidical, prefix, `-f 0`|15|running
 ||||
 ||||finished
+25 mar|5k, wankle, cheat, bert-avg, `-f 1`|15|ok
+25 mar|5k, provand, cheat, sbert-avg, `-f 1`|15|ok
+25 mar|5k, raster, cheat, sbert-cls, `-f 1`|15|ok
+25 mar|5k, ferous, cheat, bert-cls, `-f 1`|15|ok
+24 mar|embd 5k bert-avg, sbert-avg, sbert-cls, sbert-cls-p|14|ok
+24 mar|100k keystone, prefix, `-f 1`|15|ok
+24 mar|100k jalouse, cheat, `-f 1`|15|ok
+24 mar|100k fatidical, prefix, `-f 0`|15|ok
 22 mar|embd 100k all|15|ok
 22 mar|100k sent redbeets (??)|16|running
 22 mar|5k technophile, prefix, `-f 2 --hidden-size 768`|16|bad code, ok

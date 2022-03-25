@@ -13,6 +13,7 @@ if __name__ == "__main__":
     args.add_argument("-d", "--data", default="computed/bert-10000.embd")
     args.add_argument("-f", "--fusion", type=int, default=0)
     args.add_argument("-p", "--prefix", default="")
+    args.add_argument("-mp", "--model-prefix", default="bert")
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
     args.add_argument("-e", "--epochs", type=int, default=50)
     args.add_argument("--hidden-size", type=int, default=256)
@@ -34,6 +35,6 @@ if __name__ == "__main__":
     model.train_loop(
         data[:-1000], data[-1000:],
         encode_text,
-        prefix=f"bert-{args.prefix}",
+        prefix=f"{args.model_prefix}-{args.prefix}",
         epochs=args.epochs
     )
