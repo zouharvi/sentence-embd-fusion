@@ -8,17 +8,23 @@ DEVICE = get_device()
 
 
 class LSTMDynamicDropout(torch.nn.Module):
-    def __init__(self, vocab_size, fusion=0, hidden_size=256, ps=[0.0]):
+    def __init__(self, vocab_size, fusion=0, hidden_size=768, embd_size=512, ps=[0.0]):
         super().__init__()
 
         self.fusion = fusion
         self.ps = ps
         self.model_rnn = torch.nn.LSTM(
-            input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
+            input_size=embd_size, hidden_size=hidden_size,
+            bidirectional=False, batch_first=True
+        )
         self.model_dense = torch.nn.Linear(
             hidden_size + (768 if fusion == 1 else 0),
-            vocab_size
+            embd_size
         )
+        
+        # define embedding layers
+        self.model_embd_in = torch.nn.Linear(vocab_size, embd_size)
+        self.model_embd_out = torch.nn.Linear(embd_size, vocab_size)
 
         self.loss = torch.nn.CrossEntropyLoss()
         self.loss_without_reduce = torch.nn.CrossEntropyLoss(reduction="none")
@@ -28,6 +34,7 @@ class LSTMDynamicDropout(torch.nn.Module):
 
     def forward(self, x, x_embd, epoch):
         seq_length = x.shape[1]
+        x = self.model_embd_in(x)
 
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
         last_index = F.one_hot(torch.arange(
@@ -44,6 +51,7 @@ class LSTMDynamicDropout(torch.nn.Module):
 
         # projection layer
         x = self.model_dense(x)
+        x = self.model_embd_out(x)
         return x
 
     def mask_sample(self, sample):

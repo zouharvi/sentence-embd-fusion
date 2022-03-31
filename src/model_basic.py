@@ -8,27 +8,39 @@ DEVICE = get_device()
 
 
 class LSTMModel(torch.nn.Module):
-    def __init__(self, vocab_size, fusion=0, hidden_size=256):
+    def __init__(self, vocab_size, fusion=0, hidden_size=768, embd_size=512):
         super().__init__()
 
         self.fusion = fusion
         self.model_rnn = torch.nn.LSTM(
-            input_size=vocab_size, hidden_size=hidden_size, bidirectional=False, batch_first=True)
+            input_size=embd_size, hidden_size=hidden_size,
+            bidirectional=False, batch_first=True
+        )
+
+        # define embedding layers
+        self.model_embd_in = torch.nn.Linear(vocab_size, embd_size)
+        self.model_embd_out = torch.nn.Linear(embd_size, vocab_size)
+        # tie weights
+        # self.model_embd_out.weight[:] = self.model_embd_in.weight.T[:]
+        # this doesn't work but we can replace the call in forward with:
+        # torch.nn.functional.linear(x, self.model_embd_in.weight.T)
+        # which results in worse performance, therefore it may be the case it's incorrect
+
         if fusion == 0:
             self.model_dense = torch.nn.Linear(
                 hidden_size + (768 if fusion == 1 else 0),
-                vocab_size
+                embd_size
             )
         elif fusion == 1:
             self.model_dense = torch.nn.Linear(
                 hidden_size + 768,
-                vocab_size
+                embd_size
             )
-        elif fusion in {2,3}:
+        elif fusion in {2, 3}:
             assert hidden_size == 768
             self.model_dense = torch.nn.Linear(
                 768,
-                vocab_size
+                embd_size
             )
 
         self.loss = torch.nn.CrossEntropyLoss()
@@ -39,6 +51,7 @@ class LSTMModel(torch.nn.Module):
 
     def forward(self, x, x_embd):
         seq_length = x.shape[1]
+        x = self.model_embd_in(x)
 
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
         last_index = F.one_hot(torch.arange(
@@ -60,6 +73,7 @@ class LSTMModel(torch.nn.Module):
 
         # projection layer
         x = self.model_dense(x)
+        x = self.model_embd_out(x)
         return x
 
     def mask_sample(self, sample):
