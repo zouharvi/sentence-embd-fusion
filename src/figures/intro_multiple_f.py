@@ -15,6 +15,7 @@ args.add_argument("-l0", default="f0")
 args.add_argument("-l1", default="f1")
 args.add_argument("-l2", default="f2")
 args.add_argument("-l3", default="f3")
+args.add_argument("--filename", default=None)
 args = args.parse_args()
 
 LABELS = [args.l0, args.l1, args.l2, args.l3]
@@ -30,7 +31,7 @@ if args.f2 is not None:
 if args.f3 is not None:
     data_all.append(read_json(args.f3)[1:])
 
-fig = plt.figure(figsize=(8, 6))
+fig = plt.figure(figsize=(5, 4.4))
 ax1 = fig.gca()
 ax2 = ax1.twinx()
 ax3 = ax1.twinx()
@@ -59,15 +60,16 @@ for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
     ax1.plot(
         XTICKS[:len(data_fx)],
         [x["train_loss"] for x in data_fx],
-        label=f"Train Loss {label}",
+        label=f"Train Loss{label}",
         linestyle=":",
+        alpha=0.7
     )
     ax2.plot(
         XTICKS[:len(data_fx)],
         [x["dev_pp"] for x in data_fx],
-        label=f"Dev PP {label}",
+        label=f"Dev PP{label}",
         linestyle="-",
-        marker=".", markersize=5,
+        marker=".", markersize=9,
     )
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
@@ -76,13 +78,15 @@ ax1.set_xlabel("Step | Epoch")
 ax2.set_ylabel("Dev Perplexity")
 
 fig.legend(
-    loc="upper left",
-    bbox_to_anchor=(-0.03, 1.18),
+    loc="upper center",
+    bbox_to_anchor=(0.52, 1.4),
     bbox_transform=ax1.transAxes,
-    ncol=4,
+    ncol=2,
+    columnspacing=1.0,
 )
-# l1+l2, lab1+lab2)
 
 # plt.legend()
-plt.tight_layout(rect=(0, 0, 1, 0.88))
+plt.tight_layout(rect=(0, 0, 1, 0.75), pad=0)
+if args.filename:
+    plt.savefig(args.filename)
 plt.show()
