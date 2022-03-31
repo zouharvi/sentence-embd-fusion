@@ -16,6 +16,7 @@ args.add_argument("-l1", default="f1")
 args.add_argument("-l2", default="f2")
 args.add_argument("-l3", default="f3")
 args.add_argument("--filename", default=None)
+args.add_argument("--start-i", type=int, default=1)
 args = args.parse_args()
 
 LABELS = [args.l0, args.l1, args.l2, args.l3]
@@ -23,26 +24,26 @@ LABELS = [args.l0, args.l1, args.l2, args.l3]
 data_all = []
 
 if args.f0 is not None:
-    data_all.append(read_json(args.f0)[1:])
+    data_all.append(read_json(args.f0)[args.start_i:])
 if args.f1 is not None:
-    data_all.append(read_json(args.f1)[1:])
+    data_all.append(read_json(args.f1)[args.start_i:])
 if args.f2 is not None:
-    data_all.append(read_json(args.f2)[1:])
+    data_all.append(read_json(args.f2)[args.start_i:])
 if args.f3 is not None:
-    data_all.append(read_json(args.f3)[1:])
+    data_all.append(read_json(args.f3)[args.start_i:])
 
 fig = plt.figure(figsize=(5, 4.4))
 ax1 = fig.gca()
 ax2 = ax1.twinx()
 ax3 = ax1.twinx()
 
-XTICKS = [x + 1 for x in range(max([len(data_fx) for data_fx in data_all]))]
+XTICKS = [x + args.start_i for x in range(max([len(data_fx) for data_fx in data_all]))]
 epochticks = []
 prev_epoch = -1
-for i, x in enumerate(data_all[0]):
+for i, x in enumerate(data_all[1]):
     if x["epoch"] > prev_epoch:
         prev_epoch = x["epoch"]
-        epochticks.append(i + 1)
+        epochticks.append(i + args.start_i)
 
 print(*[len(data_fx) for data_fx in data_all])
 
