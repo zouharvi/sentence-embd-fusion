@@ -1,7 +1,7 @@
-# 
-computed/*.embd
-computed/*.json
-computed/*.pdf
+# added by zouharvi
+computed/**/*.embd
+computed/**/*.json
+computed/**/*.pdf
 nohup.out
 
 # Byte-compiled / optimized / DLL files
