@@ -36,7 +36,7 @@ class LSTMModel(torch.nn.Module):
                 hidden_size + 768,
                 embd_size
             )
-        elif fusion in {2, 3, 4, 5}:  
+        elif fusion in {2, 3, 4, 5, 6}:  
             assert hidden_size == 768
             self.model_dense = torch.nn.Linear(
                 768,
@@ -59,11 +59,19 @@ class LSTMModel(torch.nn.Module):
 
         # take (1) the output and (2) the last item in each sequence
         if self.fusion == 4:
+            x_embd = x_embd.reshape(1, *x_embd.shape).to(DEVICE)
+            x_embd_2 = torch.zeros(x_embd.shape, device=DEVICE)
             # additionally fuse as the initial state
-            x = self.model_rnn(x, h_n=x_embd.to(DEVICE))[0][last_index]
+            x = self.model_rnn(x, (x_embd, x_embd_2))[0][last_index]
         elif self.fusion == 5:
+            x_embd = x_embd.reshape(1, *x_embd.shape).to(DEVICE)
+            x_embd_2 = torch.zeros(x_embd.shape, device=DEVICE)
             # additionally fuse as the initial state
-            x = self.model_rnn(x, c_n=x_embd.to(DEVICE))[0][last_index]
+            x = self.model_rnn(x, (x_embd_2, x_embd))[0][last_index]
+        elif self.fusion == 6:
+            x_embd = x_embd.reshape(1, *x_embd.shape).to(DEVICE)
+            # additionally fuse as the initial state
+            x = self.model_rnn(x, (x_embd, x_embd))[0][last_index]
         else:
             # take (1) the output and (2) the last item in each sequence
             x = self.model_rnn(x)[0][last_index]

@@ -2,6 +2,9 @@
 -|-|-|-
 ||||running/staged
 ||||
+7 apr|5k, outjet, prefix, bert-cls, `-f 4`|15|running
+7 apr|5k, guffle, prefix, bert-cls, `-f 5`|15|running
+7 apr|5k, thamin, prefix, bert-cls, `-f 6`|15|to run
 ||||
 ||||finished
 25 mar, 1 apr|5k, wankle, cheat, bert-avg, `-f 1`|15|ok, ok
