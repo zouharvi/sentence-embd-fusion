@@ -45,17 +45,19 @@ if args.f6 is not None:
     data_all.append(read_json(args.f6)[args.start_i:])
 
 if len(data_all) <= 4:
-    fig = plt.figure(figsize=(5, 4.4))
-    legend_anchor = (0.5, 1.4)
+    fig = plt.figure(figsize=(5, 4.7))
+    legend_anchor = (0.5, 1.3)
+# TODO not adapted
 elif len(data_all) == 5:
     fig = plt.figure(figsize=(5, 4.9))
     legend_anchor = (0.5, 1.42)
+# TODO not adapted
 elif len(data_all) == 6:
     fig = plt.figure(figsize=(5, 5.4))
     legend_anchor = (0.5, 1.45)
 elif len(data_all) == 7:
-    fig = plt.figure(figsize=(5, 5.6))
-    legend_anchor = (0.5, 1.53)
+    fig = plt.figure(figsize=(5, 5.0))
+    legend_anchor = (0.5, 1.35)
     
 ax1 = fig.gca()
 ax2 = ax1.twinx()
@@ -81,11 +83,22 @@ print(*[len(data_fx) for data_fx in data_all])
 ax3.set_ylim(0, 1)
 ax3.get_yaxis().set_visible(False)
 
+# fake call for the legend
+ax1.plot(
+    XTICKS[0],
+    data_all[0][0]["train_loss"],
+    label=f"Train Loss",
+    linestyle=":",
+    alpha=1,
+    color="tab:grey"
+)
+
+
 for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
     ax1.plot(
         XTICKS[:len(data_fx)],
         [x["train_loss"] for x in data_fx],
-        label=f"Train Loss{label}",
+        # label=f"Train Loss{label}",
         linestyle=":",
         alpha=0.7
     )
@@ -108,17 +121,20 @@ fig.legend(
     bbox_transform=ax1.transAxes,
     ncol=2,
     columnspacing=1.0,
+    handleheight=1.5
 )
 
 # plt.legend()
 if len(data_all) == 4:
-    plt.tight_layout(rect=(0, 0, 1, 0.75), pad=0)
+    plt.tight_layout(rect=(0, 0, 1, 0.8), pad=0)
+# TODO not adapted
 elif len(data_all) == 5:
     plt.tight_layout(rect=(0, 0, 1, 0.72), pad=0)
+# TODO not adapted
 elif len(data_all) == 6:
     plt.tight_layout(rect=(0, 0, 1, 0.7), pad=0)
 elif len(data_all) == 7:
-    plt.tight_layout(rect=(0, 0, 1, 0.68), pad=0)
+    plt.tight_layout(rect=(0, 0, 1, 0.77), pad=0)
 
 if args.filename:
     plt.savefig(args.filename)
