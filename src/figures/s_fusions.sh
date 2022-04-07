@@ -5,8 +5,9 @@
     -f1 ./computed/bert-bardel-f1.json -l1 ": Concat final" \
     -f2 ./computed/bert-technophile-f2.json -l2 ": Add final" \
     -f3 ./computed/bert-vacuum-f3.json -l3 ": Multiply final" \
-    --filename computed/fusions.pdf --start-i 5
+    -f4 ./computed/bert-outjet-f4.json -l4 ": \$h_0\$" \
+    -f5 ./computed/bert-guffle-f5.json -l5 ": \$c_0\$" \
+    -f6 ./computed/bert-thamin-f6.json -l6 ": \$h_0, c_0\$" \
+    --filename computed/fusions.pdf --start-i 1
+
     # -f1 ./computed/bert-wettissue-f1.json -l2 "No fusion"
-    
-    # 0.0, 0.25, 0.5, 0.75, 1.0
-    # 1.0, 0.75, 0.5, 0.25, 0.0

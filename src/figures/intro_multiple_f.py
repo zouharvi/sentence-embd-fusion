@@ -11,15 +11,21 @@ args.add_argument("-f0")
 args.add_argument("-f1")
 args.add_argument("-f2")
 args.add_argument("-f3")
+args.add_argument("-f4")
+args.add_argument("-f5")
+args.add_argument("-f6")
 args.add_argument("-l0", default="f0")
 args.add_argument("-l1", default="f1")
 args.add_argument("-l2", default="f2")
 args.add_argument("-l3", default="f3")
+args.add_argument("-l4", default="f4")
+args.add_argument("-l5", default="f5")
+args.add_argument("-l6", default="f6")
 args.add_argument("--filename", default=None)
 args.add_argument("--start-i", type=int, default=1)
 args = args.parse_args()
 
-LABELS = [args.l0, args.l1, args.l2, args.l3]
+LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
 
 data_all = []
 
@@ -31,8 +37,26 @@ if args.f2 is not None:
     data_all.append(read_json(args.f2)[args.start_i:])
 if args.f3 is not None:
     data_all.append(read_json(args.f3)[args.start_i:])
+if args.f4 is not None:
+    data_all.append(read_json(args.f4)[args.start_i:])
+if args.f5 is not None:
+    data_all.append(read_json(args.f5)[args.start_i:])
+if args.f6 is not None:
+    data_all.append(read_json(args.f6)[args.start_i:])
 
-fig = plt.figure(figsize=(5, 4.4))
+if len(data_all) <= 4:
+    fig = plt.figure(figsize=(5, 4.4))
+    legend_anchor = (0.5, 1.4)
+elif len(data_all) == 5:
+    fig = plt.figure(figsize=(5, 4.9))
+    legend_anchor = (0.5, 1.42)
+elif len(data_all) == 6:
+    fig = plt.figure(figsize=(5, 5.4))
+    legend_anchor = (0.5, 1.45)
+elif len(data_all) == 7:
+    fig = plt.figure(figsize=(5, 5.6))
+    legend_anchor = (0.5, 1.53)
+    
 ax1 = fig.gca()
 ax2 = ax1.twinx()
 ax3 = ax1.twinx()
@@ -80,14 +104,22 @@ ax2.set_ylabel("Dev Perplexity")
 
 fig.legend(
     loc="upper center",
-    bbox_to_anchor=(0.52, 1.4),
+    bbox_to_anchor=legend_anchor,
     bbox_transform=ax1.transAxes,
     ncol=2,
     columnspacing=1.0,
 )
 
 # plt.legend()
-plt.tight_layout(rect=(0, 0, 1, 0.75), pad=0)
+if len(data_all) == 4:
+    plt.tight_layout(rect=(0, 0, 1, 0.75), pad=0)
+elif len(data_all) == 5:
+    plt.tight_layout(rect=(0, 0, 1, 0.72), pad=0)
+elif len(data_all) == 6:
+    plt.tight_layout(rect=(0, 0, 1, 0.7), pad=0)
+elif len(data_all) == 7:
+    plt.tight_layout(rect=(0, 0, 1, 0.68), pad=0)
+
 if args.filename:
     plt.savefig(args.filename)
 plt.show()
