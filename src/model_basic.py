@@ -36,7 +36,7 @@ class LSTMModel(torch.nn.Module):
                 hidden_size + 768,
                 embd_size
             )
-        elif fusion in {2, 3}:
+        elif fusion in {2, 3, 4, 5}:  
             assert hidden_size == 768
             self.model_dense = torch.nn.Linear(
                 768,
@@ -56,8 +56,17 @@ class LSTMModel(torch.nn.Module):
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
         last_index = F.one_hot(torch.arange(
             0, x.shape[0]), num_classes=seq_length) == True
+
         # take (1) the output and (2) the last item in each sequence
-        x = self.model_rnn(x)[0][last_index]
+        if self.fusion == 4:
+            # additionally fuse as the initial state
+            x = self.model_rnn(x, h_n=x_embd.to(DEVICE))[0][last_index]
+        elif self.fusion == 5:
+            # additionally fuse as the initial state
+            x = self.model_rnn(x, c_n=x_embd.to(DEVICE))[0][last_index]
+        else:
+            # take (1) the output and (2) the last item in each sequence
+            x = self.model_rnn(x)[0][last_index]
 
         # fuse
         if self.fusion == 1:

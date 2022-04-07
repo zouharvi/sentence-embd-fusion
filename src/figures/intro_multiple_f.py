@@ -48,12 +48,12 @@ for i, x in enumerate(data_all[1]):
 print(*[len(data_fx) for data_fx in data_all])
 
 # fake epoch ticks
-ax3.scatter(
-    epochticks,
-    [0 for _ in epochticks],
-    marker="|", color="black",
-    s=1000,
-)
+# ax3.scatter(
+#     epochticks,
+#     [0 for _ in epochticks],
+#     marker="|", color="black",
+#     s=1000,
+# )
 ax3.set_ylim(0, 1)
 ax3.get_yaxis().set_visible(False)
 
@@ -70,7 +70,7 @@ for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
         [x["dev_pp"] for x in data_fx],
         label=f"Dev PP{label}",
         linestyle="-",
-        marker=".", markersize=9,
+        marker=".", markersize=5,
     )
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
