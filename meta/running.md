@@ -2,11 +2,11 @@
 -|-|-|-
 ||||running/staged
 ||||
-8 apr|5k, *fustigate*, prefix, bert-cls, train: shuffle 1 dev: shuffle 1, `-f 1`|16|running
-8 apr|5k, *rubinetto*, prefix, bert-cls, train: shuffle 0 dev: shuffle 1, `-f 1`|15|running
-8 apr|5k, *jersey*, prefix, bert-cls, train: shuffle 0 dev: shuffle 2, `-f 1`|15|running
-8 apr|5k, *sapid*, prefix, bert-cls, train: shuffle 2 dev: shuffle 2, `-f 1`|15|running
-8 apr|5k, *yeowoman*, prefix, bert-cls, basic fusion, `-f 1`|15|running
+8 apr|5k, *fustigate*, prefix, bert-cls, train: shuffle 1 dev: shuffle 1, `-f 1`|16|bad code, running
+8 apr|5k, *rubinetto*, prefix, bert-cls, train: shuffle 0 dev: shuffle 1, `-f 1`|15,16|bad code, running
+8 apr|5k, *jersey*, prefix, bert-cls, train: shuffle 0 dev: shuffle 2, `-f 1`|15|bad code, running
+8 apr|5k, *sapid*, prefix, bert-cls, train: shuffle 2 dev: shuffle 2, `-f 1`|15|bad code, running
+8 apr|5k, *yeowoman*, cheat, bert-cls, basic fusion, `-f 1`|15|running
 ||||
 ||||finished
 7 apr|5k, outjet, prefix, bert-cls, `-f 4`|15|ok

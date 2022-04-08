@@ -30,7 +30,7 @@ if __name__ == "__main__":
         data_train = read_pickle(args.data)
         data_train = data_train[:-1000]
         data_dev = read_pickle(args.data_dev)
-        data_dev = data_dev[:-1000]
+        data_dev = data_dev[-1000:]
     else:
         data = read_pickle(args.data)
         data_train = data[:-1000]
