@@ -2,6 +2,7 @@
 computed/**/*.embd
 computed/**/*.json
 computed/**/*.pdf
+computed/**/*.pkl
 nohup.out
 
 # Byte-compiled / optimized / DLL files

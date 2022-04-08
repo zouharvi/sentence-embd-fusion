@@ -5,6 +5,7 @@ sys.path.append("src")
 from argparse import ArgumentParser
 from misc.utils import read_json
 import matplotlib.pyplot as plt
+import fig_utils
 
 args = ArgumentParser()
 args.add_argument("-f0")
@@ -100,14 +101,21 @@ for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
         [x["train_loss"] for x in data_fx],
         # label=f"Train Loss{label}",
         linestyle=":",
-        alpha=0.7
+        alpha=0.6,
     )
     ax2.plot(
         XTICKS[:len(data_fx)],
         [x["dev_pp"] for x in data_fx],
         label=f"Dev PP{label}",
         linestyle="-",
-        marker=".", markersize=5,
+        # marker=".",
+        alpha=0.8,
+    )
+    ax2.scatter(
+        XTICKS[:len(data_fx)],
+        [x["dev_pp"] for x in data_fx],
+        marker=".",
+        alpha=0.5,
     )
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")

@@ -135,6 +135,7 @@ if __name__ == "__main__":
                 for i in range(1, len(sent_bpe))
             ]
             print(len(output), output[0].shape)
+        # text, BPE (ids), embedding
         sentences_embd.append((sent, sent_bpe, output))
 
     save_pickle(
