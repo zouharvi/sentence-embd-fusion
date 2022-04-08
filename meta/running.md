@@ -2,11 +2,16 @@
 -|-|-|-
 ||||running/staged
 ||||
-7 apr|5k, outjet, prefix, bert-cls, `-f 4`|15|running
-7 apr|5k, guffle, prefix, bert-cls, `-f 5`|15|running
-7 apr|5k, thamin, prefix, bert-cls, `-f 6`|15|to run
+8 apr|5k, *fustigate*, prefix, bert-cls, train: shuffle 1 dev: shuffle 1, `-f 1`|16|running
+8 apr|5k, *rubinetto*, prefix, bert-cls, train: shuffle 0 dev: shuffle 1, `-f 1`|15|running
+8 apr|5k, *jersey*, prefix, bert-cls, train: shuffle 0 dev: shuffle 2, `-f 1`|15|running
+8 apr|5k, *sapid*, prefix, bert-cls, train: shuffle 2 dev: shuffle 2, `-f 1`|15|running
+8 apr|5k, *yeowoman*, prefix, bert-cls, basic fusion, `-f 1`|15|running
 ||||
 ||||finished
+7 apr|5k, outjet, prefix, bert-cls, `-f 4`|15|ok
+7 apr|5k, guffle, prefix, bert-cls, `-f 5`|15|ok
+7 apr|5k, thamin, prefix, bert-cls, `-f 6`|15|ok
 25 mar, 1 apr|5k, wankle, cheat, bert-avg, `-f 1`|15|ok, ok
 25 mar, 1 apr|5k, provand, cheat, sbert-avg, `-f 1`|15|ok, ok
 25 mar, 1 apr|5k, raster, cheat, sbert-cls, `-f 1`|15|ok, ok
