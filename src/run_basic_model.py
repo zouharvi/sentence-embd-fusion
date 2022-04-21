@@ -15,7 +15,7 @@ if __name__ == "__main__":
     args.add_argument("-f", "--fusion", type=int, default=0)
     args.add_argument("-p", "--prefix", default="")
     args.add_argument("-mp", "--model-prefix", default="bert")
-    args.add_argument("-v", "--vocab-size", type=int, default=1024)
+    args.add_argument("-v", "--vocab-size", type=int, default=4096)
     args.add_argument("-e", "--epochs", type=int, default=50)
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
