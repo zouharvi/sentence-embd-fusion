@@ -2,11 +2,16 @@
 -|-|-|-
 ||||running/staged
 ||||
-21 apr|1k, books, embd bert cls prefix|16|running
-21 apr|1m, embd bert cls prefix|16|running
-21 apr|1m, embd bert cls|16|running
+21, 27 apr|1k, {books,news}, embd bert cls prefix|15|fail,running
+27 apr|100k, embd count, tfidf|15|running
+27 apr|100k, embd sbert cls, prefix|15|running
+27 apr|100k, embd bert cls, prefix|15|running
+21, 27 apr|1m, embd bert cls|16|fail,running 
 ||||
 ||||finished
+27 apr|100k, embd sbert cls|15|ok
+27 apr|100k, embd bert cls|15|ok
+21 apr|1m, embd bert cls prefix|16|fail,cancel 
 15 apr|5k, *septenary*, prefix, count, `-f 1`|16|ok
 15 apr|5k, *eurythmics*, prefix, tfidf, `-f 1`|16|ok
 15 apr|5k, *jade*, prefix, bert-cls, `-f 1`|16|ok

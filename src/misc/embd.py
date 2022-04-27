@@ -66,6 +66,9 @@ if __name__ == "__main__":
         name_str = f"{args.model}_{args.type_out}"
     else:
         name_str = args.model
+        
+    if args.dataset != "wikitext":
+        name_str = args.dataset + "_" + name_str
 
     if args.n >= 1000000:
         count_str = f"{args.n//1000000:.0f}m"
@@ -82,8 +85,6 @@ if __name__ == "__main__":
             f"/data/sef/s{count_str}-v{args.vocab_size}.enc_pkl",
             encoder
         )
-
-    exit()
 
     sentences_bpe = list(encoder.transform(sentences))
     print(f"{np.average([len(x) for x in sentences_bpe]):.1f} avg subwords in a sentence")
@@ -107,6 +108,7 @@ if __name__ == "__main__":
         # text, BPE (ids), embedding
         sentences_embd.append((sent, sent_bpe, output))
 
+    print("saving", len(sentences_embd), "data")
     save_pickle(
         f"/data/sef/{name_str}-{count_str}{'-p' if args.prefix else ''}.embd",
         sentences_embd

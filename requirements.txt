@@ -5,4 +5,5 @@ nltk >= 3.5
 tqdm >= 4.62
 bpe >= 1.0
 numpy >= 1.19
-scikit-learn >= 1.0 
+sklearn
+bpe
