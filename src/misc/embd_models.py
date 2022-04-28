@@ -37,7 +37,7 @@ class BertWrap():
     def embd(self, sentence):
         encoded_input = self.tokenizer(
             sentence, padding=True,
-            truncation=True, max_length=128,
+            truncation=True, max_length=512,
             return_tensors='pt'
         )
         encoded_input = encoded_input.to(DEVICE)
@@ -67,7 +67,10 @@ class SentenceBertWrap():
 
     def embd(self, sentence):
         encoded_input = self.tokenizer(
-            sentence, padding=True, truncation=True, max_length=128, return_tensors='pt')
+            sentence, padding=True,
+            truncation=True, max_length=512,
+            return_tensors='pt'
+        )
         encoded_input = encoded_input.to(DEVICE)
         with torch.no_grad():
             output = self.model(**encoded_input)
@@ -90,7 +93,7 @@ class CountVectorizerWrap():
         self.model.fit(text)
 
     def embd(self, sentence):
-        return self.model.transform([sentence]).toarray()[0]
+        return self.model.transform([sentence]).toarray()[0].astype(np.float32)
 
 class TfIdfVectorizerWrap():
     def __init__(self, text):
@@ -98,4 +101,4 @@ class TfIdfVectorizerWrap():
         self.model.fit(text)
 
     def embd(self, sentence):
-        return self.model.transform([sentence]).toarray()[0]
+        return self.model.transform([sentence]).toarray()[0].astype(np.float32)

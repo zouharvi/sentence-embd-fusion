@@ -10,13 +10,13 @@ from model_basic import LSTMModel
 
 if __name__ == "__main__":
     args = ArgumentParser()
-    args.add_argument("-d", "--data", default="/data/sef/bert-5000-p.embd")
+    args.add_argument("-d", "--data", default="/data/sef/missing.embd")
     args.add_argument("-d2", "--data-dev", default=None)
     args.add_argument("-f", "--fusion", type=int, default=0)
-    args.add_argument("-p", "--prefix", default="")
-    args.add_argument("-mp", "--model-prefix", default="bert")
-    args.add_argument("-v", "--vocab-size", type=int, default=4096)
-    args.add_argument("-e", "--epochs", type=int, default=50)
+    args.add_argument("-nn", "--nick-name", default="")
+    args.add_argument("-mn", "--model-name", default="bert")
+    args.add_argument("-v", "--vocab-size", type=int, default=8192)
+    args.add_argument("-e", "--epochs", type=int, default=100)
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
 
@@ -50,6 +50,6 @@ if __name__ == "__main__":
     model.train_loop(
         data_train, data_dev,
         encode_text,
-        prefix=f"{args.model_prefix}-{args.prefix}",
+        prefix=f"{args.model_name}-{args.nick_name}",
         epochs=args.epochs
     )

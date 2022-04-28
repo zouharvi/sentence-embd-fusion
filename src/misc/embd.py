@@ -47,8 +47,6 @@ if __name__ == "__main__":
 
     sentences = get_dataset_data(args.dataset, args)
     print(len(sentences), "total sentences available (inaccurate)")
-    sentences = sentences[:args.n]
-    print(len(sentences), "total sentences used")
 
     if args.model in {"bert"}:
         model = BertWrap(type_out=args.type_out)
@@ -62,6 +60,7 @@ if __name__ == "__main__":
     sentences = ["BOS " + x + " EOS" for x in sentences]
     print(f"{np.average([len(x.split()) for x in sentences]):.1f} avg words in a sentence")
 
+    # generate name strings
     if args.model in {"bert", "sbert", "sentencebert"}:
         name_str = f"{args.model}_{args.type_out}"
     else:
@@ -77,7 +76,7 @@ if __name__ == "__main__":
     else:
         count_str = args.n
 
-
+    # load BPE encoder if not defined
     if args.bpe_encoder is None:
         encoder.fit(sentences)
 
@@ -86,9 +85,12 @@ if __name__ == "__main__":
             encoder
         )
 
+    # transform with BPE
     sentences_bpe = list(encoder.transform(sentences))
     print(f"{np.average([len(x) for x in sentences_bpe]):.1f} avg subwords in a sentence")
-    sentences = [(x, y[:512]) for x, y in zip(sentences, sentences_bpe)]
+    # select only sentences with <= 256 subwords
+    sentences = [(x, y) for x, y in zip(sentences, sentences_bpe) if len(y) <= 256][:args.n]
+    print(len(sentences), "total sentences used")
 
     sentences_embd = []
 
