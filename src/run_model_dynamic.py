@@ -12,8 +12,10 @@ if __name__ == "__main__":
     args = ArgumentParser()
     args.add_argument("-d", "--data", default="computed/bert-10000.embd")
     args.add_argument("-f", "--fusion", type=int, default=0)
-    args.add_argument("-p", "--prefix", default="")
+    args.add_argument("-nn", "--nick-name", default="")
+    args.add_argument("-mn", "--model-name", default="bert")
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
+    args.add_argument("--hidden-size", type=int, default=768)
     args.add_argument("-e", "--epochs", type=int, default=50)
     args.add_argument("--ps")
     args = args.parse_args()
@@ -37,13 +39,11 @@ if __name__ == "__main__":
     else:
         raise Exception("Unknown ps dropout configuration")
 
-    model = LSTMDynamicDropout(
-        args.vocab_size, fusion=args.fusion,
-        ps=ps
-    )
+    model = LSTMDynamicDropout(args.vocab_size, fusion=args.fusion, hidden_size=args.hidden_size, ps=ps)
+
     model.train_loop(
         data[:-1000], data[-1000:],
         encode_text,
-        prefix=f"bert-{args.prefix}",
+        prefix=f"{args.model_name}-{args.nick_name}",
         epochs=args.epochs,
     )

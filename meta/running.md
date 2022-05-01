@@ -2,10 +2,15 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-1 may|100k|sadmate_5|baseline|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 5 --ps 0to1 -nn sadmate_5 -mn bert_cls -v 8192`|15|to run
-1 may|100k|skewedapple_5|baseline|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 5 --ps 1to0 -nn skewedapple_5 -mn bert_cls -v 8192`|15|to run
-1 may|100k|sadmate_1|baseline|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_5 -mn bert_cls -v 8192`|15|to run
-1 may|100k|skewedapple_1|baseline|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_5 -mn bert_cls -v 8192`|15|to run
+1 may|100k|sadmate_5|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 5 --ps 0to1 -nn sadmate_5 -mn bert_cls -v 8192`|16|running
+1 may|100k|skewedapple_5|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 5 --ps 1to0 -nn skewedapple_5 -mn bert_cls -v 8192`|16|running
+1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_5 -mn bert_cls -v 8192`|16|running
+1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_5 -mn bert_cls -v 8192`|16|running
+1 may|100k|wankle|baseline|`./src/run_model_basic.py -d /data/sef/bert_avg-100k-p.embd -f 1 -nn wankle -mn bert_avg -v 8192`|15|running
+1 may|100k|provand|baseline|`./src/run_model_basic.py -d /data/sef/sbert_avg-100k-p.embd -f 1 -nn provand -mn sbert_avg -v 8192`|15|running
+1 may|100k|raster|baseline|`./src/run_model_basic.py -d /data/sef/sbert_cls-100k-p.embd -f 1 -nn raster -mn sbert_cls -v 8192`|15|running
+1 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 0 -nn iterum -mn bert_cls -v 8192`|15|running
+1 may|100k|toison|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 1 -nn toison -mn bert_cls -v 8192`|15|running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status

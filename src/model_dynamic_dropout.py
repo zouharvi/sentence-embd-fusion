@@ -12,6 +12,7 @@ class LSTMDynamicDropout(torch.nn.Module):
         super().__init__()
 
         self.fusion = fusion
+        self.ps = ps
         self.model_rnn = torch.nn.LSTM(
             input_size=embd_size, hidden_size=hidden_size,
             bidirectional=False, batch_first=True
@@ -58,7 +59,6 @@ class LSTMDynamicDropout(torch.nn.Module):
         last_index = F.one_hot(torch.arange(
             0, x.shape[0]), num_classes=seq_length) == True
         # take (1) the output and (2) the last item in each sequence
-        x = self.model_rnn(x)[0][last_index]
 
         # dropout
         p = self.get_ps(epoch)
