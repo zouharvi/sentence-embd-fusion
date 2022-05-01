@@ -20,7 +20,7 @@ def ip(a, b):
 
 
 args = ArgumentParser()
-args.add_argument("-d", "--data", default="computed/bert-5000-p.embd")
+args.add_argument("-d", "--data", default="/data/sef/bert_cls-100k-p.embd")
 args.add_argument("-l", "--load", action="store_true")
 args = args.parse_args()
 

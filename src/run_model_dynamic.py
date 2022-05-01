@@ -15,6 +15,7 @@ if __name__ == "__main__":
     args.add_argument("-p", "--prefix", default="")
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
     args.add_argument("-e", "--epochs", type=int, default=50)
+    args.add_argument("--ps")
     args = args.parse_args()
 
     data = read_pickle(args.data)
@@ -29,12 +30,16 @@ if __name__ == "__main__":
         for x in data
     ]
 
+    if args.ps == "0to1":
+        ps = [0.0] * 15 + [0.25] * 15 + [0.5] * 15 + [0.75] * 15 + [1.0] * 15
+    elif args.ps == "1to0":
+        ps = [1.0] * 15 + [0.75] * 15 + [0.5] * 15 + [0.25] * 15 + [0.0] * 15
+    else:
+        raise Exception("Unknown ps dropout configuration")
+
     model = LSTMDynamicDropout(
         args.vocab_size, fusion=args.fusion,
-        ps=[0.0] * 10 + [0.25] * 10 + [0.5] * 10 + [0.75] * 10 + [1.0] * 10, # skewedapple
-        # ps=[0.6] * 10 + [0.7] * 10 + [0.8] * 10 + [0.9] * 10 + [1.0] * 10, # wettissue
-        # ps=[1.0] * 10 + [0.75] * 10 + [0.5] * 10 + [0.25] * 10 + [0.0] * 10, # sadmate
-        # ps=[0.9] * 10 + [0.8] * 10 + [0.7] * 10 + [0.6] * 10 + [0.5] * 10, # hardcarrot
+        ps=ps
     )
     model.train_loop(
         data[:-1000], data[-1000:],
