@@ -5,25 +5,42 @@ sys.path.append("src")
 from argparse import ArgumentParser
 from misc.utils import read_json
 import matplotlib.pyplot as plt
+from collections import defaultdict
+import numpy as np
 import fig_utils
 
+def aggregate_epochs(data):
+    # average values across epochs
+
+    data_dict = defaultdict(list)
+    for line in data:
+        data_dict[line["epoch"]].append(line)
+
+    data_dict = {
+        k: {
+            "train_loss": np.average([x["train_loss"] for x in v]),
+            "dev_pp": np.average([x["dev_pp"] for x in v]),
+            "epoch": k
+        }
+        for k, v in data_dict.items()
+    }
+    lowest_epoch = min(data_dict.keys())
+    data_new = [None for _ in data_dict.keys()]
+    for k, v in data_dict.items():
+        data_new[k-lowest_epoch] = v
+    return data_new
+
 args = ArgumentParser()
-args.add_argument("-f0")
-args.add_argument("-f1")
-args.add_argument("-f2")
-args.add_argument("-f3")
-args.add_argument("-f4")
-args.add_argument("-f5")
-args.add_argument("-f6")
-args.add_argument("-l0", default="f0")
-args.add_argument("-l1", default="f1")
-args.add_argument("-l2", default="f2")
-args.add_argument("-l3", default="f3")
-args.add_argument("-l4", default="f4")
-args.add_argument("-l5", default="f5")
-args.add_argument("-l6", default="f6")
+args.add_argument("-f0"); args.add_argument("-l0", default="f0")
+args.add_argument("-f1"); args.add_argument("-l1", default="f1")
+args.add_argument("-f2"); args.add_argument("-l2", default="f2")
+args.add_argument("-f3"); args.add_argument("-l3", default="f3")
+args.add_argument("-f4"); args.add_argument("-l4", default="f4")
+args.add_argument("-f5"); args.add_argument("-l5", default="f5")
+args.add_argument("-f6"); args.add_argument("-l6", default="f6")
 args.add_argument("--filename", default=None)
 args.add_argument("--start-i", type=int, default=1)
+args.add_argument("--end-i", type=int, default=None)
 args = args.parse_args()
 
 LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
@@ -31,40 +48,44 @@ LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
 data_all = []
 
 if args.f0 is not None:
-    data_all.append(read_json(args.f0)[args.start_i:])
+    data_all.append(read_json(args.f0))
 if args.f1 is not None:
-    data_all.append(read_json(args.f1)[args.start_i:])
+    data_all.append(read_json(args.f1))
 if args.f2 is not None:
-    data_all.append(read_json(args.f2)[args.start_i:])
+    data_all.append(read_json(args.f2))
 if args.f3 is not None:
-    data_all.append(read_json(args.f3)[args.start_i:])
+    data_all.append(read_json(args.f3))
 if args.f4 is not None:
-    data_all.append(read_json(args.f4)[args.start_i:])
+    data_all.append(read_json(args.f4))
 if args.f5 is not None:
-    data_all.append(read_json(args.f5)[args.start_i:])
+    data_all.append(read_json(args.f5))
 if args.f6 is not None:
-    data_all.append(read_json(args.f6)[args.start_i:])
+    data_all.append(read_json(args.f6))
+
+data_all = [aggregate_epochs(data_fx[args.start_i:args.end_i]) for data_fx in data_all]
 
 if len(data_all) <= 4:
     fig = plt.figure(figsize=(5, 4.7))
     legend_anchor = (0.5, 1.3)
-# TODO not adapted
 elif len(data_all) == 5:
+    # TODO not adapted
     fig = plt.figure(figsize=(5, 4.9))
     legend_anchor = (0.5, 1.42)
-# TODO not adapted
 elif len(data_all) == 6:
+    # TODO not adapted
     fig = plt.figure(figsize=(5, 5.4))
     legend_anchor = (0.5, 1.45)
 elif len(data_all) == 7:
     fig = plt.figure(figsize=(5, 5.0))
     legend_anchor = (0.5, 1.35)
-    
+
 ax1 = fig.gca()
 ax2 = ax1.twinx()
-ax3 = ax1.twinx()
 
-XTICKS = [x + args.start_i for x in range(max([len(data_fx) for data_fx in data_all]))]
+XTICKS = [
+    x + args.start_i
+    for x in range(max([len(data_fx) for data_fx in data_all]))
+]
 epochticks = []
 prev_epoch = -1
 for i, x in enumerate(data_all[1]):
@@ -73,16 +94,6 @@ for i, x in enumerate(data_all[1]):
         epochticks.append(i + args.start_i)
 
 print(*[len(data_fx) for data_fx in data_all])
-
-# fake epoch ticks
-# ax3.scatter(
-#     epochticks,
-#     [0 for _ in epochticks],
-#     marker="|", color="black",
-#     s=1000,
-# )
-ax3.set_ylim(0, 1)
-ax3.get_yaxis().set_visible(False)
 
 # fake call for the legend
 ax1.plot(
@@ -93,6 +104,7 @@ ax1.plot(
     alpha=1,
     color="tab:grey"
 )
+
 
 
 for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
