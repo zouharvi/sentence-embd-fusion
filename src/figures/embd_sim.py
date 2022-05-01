@@ -42,7 +42,7 @@ else:
     buckets_ip_whole = read_pickle("computed/buckets_ip_whole.pkl")
     buckets_ip = read_pickle("computed/buckets_ip.pkl")
 
-LIMIT_X = 255
+LIMIT_X = 200
 data_ip_whole = [
     (i, np.average(buckets_ip_whole[i]))
     for i in sorted(buckets_ip_whole.keys())
