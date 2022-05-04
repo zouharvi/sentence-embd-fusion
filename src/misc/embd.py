@@ -8,6 +8,7 @@ from tqdm import tqdm
 from argparse import ArgumentParser
 from bpe import Encoder
 from embd_models import BertWrap, SentenceBertWrap, CountVectorizerWrap, TfIdfVectorizerWrap
+from embd_feeder import get_feeder
 
 def get_dataset_data(dataset, args):
     if dataset == "wikitext":
@@ -31,6 +32,8 @@ if __name__ == "__main__":
     args.add_argument("--dataset", default="wikitext")
     args.add_argument("-m", "--model", default="bert")
     args.add_argument("--type-out", default="cls")
+    args.add_argument("--feeder", default=None)
+    args.add_argument("--sub", default=None)
     args.add_argument(
         "-p", "--prefix", help="Embed prefixes",
         action="store_true"
@@ -88,13 +91,11 @@ if __name__ == "__main__":
     # transform with BPE
     sentences_bpe = list(encoder.transform(sentences))
     print(f"{np.average([len(x) for x in sentences_bpe]):.1f} avg subwords in a sentence")
-    # select only sentences with <= 256 subwords
-    sentences = [(x, y) for x, y in zip(sentences, sentences_bpe) if len(y) <= 256][:args.n]
-    print(len(sentences), "total sentences used")
+    sentences = get_feeder(args.feeder)(sentences, sentences_bpe, encoder, args)
 
     sentences_embd = []
 
-    for sent, sent_bpe in tqdm(sentences, miniters=1000):
+    for sent, sents_bpe in tqdm(sentences, miniters=1000):
         if not args.prefix:
             output = np.tile(
                 model.embd(sent),
@@ -102,13 +103,12 @@ if __name__ == "__main__":
             )
         else:
             output = [
-                model.embd(
-                    list(encoder.inverse_transform([sent_bpe[:i]]))[0],
-                )
-                for i in range(1, len(sent_bpe))
+                model.embd(sent_bpe)
+                for sent_bpe in sents_bpe
             ]
+
         # text, BPE (ids), embedding
-        sentences_embd.append((sent, sent_bpe, output))
+        sentences_embd.append((sent, sents_bpe, output))
 
     print("saving", len(sentences_embd), "data")
     save_pickle(
