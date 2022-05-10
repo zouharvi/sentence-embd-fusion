@@ -8,7 +8,7 @@ DEVICE = get_device()
 
 
 class LSTMDynamicDropout(torch.nn.Module):
-    def __init__(self, vocab_size, fusion=0, hidden_size=768, embd_size=512, ps=[0.0]):
+    def __init__(self, vocab_size, ps, fusion=0, hidden_size=768, embd_size=512):
         super().__init__()
 
         self.fusion = fusion
@@ -58,13 +58,11 @@ class LSTMDynamicDropout(torch.nn.Module):
         # create 1, 2, 3, .. |x| index vector and make a mask out of it
         last_index = F.one_hot(torch.arange(
             0, x.shape[0]), num_classes=seq_length) == True
-        # take (1) the output and (2) the last item in each sequence
 
         # dropout
         p = self.get_ps(epoch)
         x_embd = x_embd.to(DEVICE)
         x_embd = torch.nn.functional.dropout(x_embd, p)
-
 
         # take (1) the output and (2) the last item in each sequence
         if self.fusion == 4:
