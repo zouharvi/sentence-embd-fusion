@@ -16,7 +16,7 @@ if __name__ == "__main__":
     args.add_argument("-mn", "--model-name", default="bert")
     args.add_argument("-v", "--vocab-size", type=int, default=1024)
     args.add_argument("--hidden-size", type=int, default=768)
-    args.add_argument("-e", "--epochs", type=int, default=50)
+    args.add_argument("-e", "--epochs", type=int, default=100)
     args.add_argument("--ps")
     args = args.parse_args()
 

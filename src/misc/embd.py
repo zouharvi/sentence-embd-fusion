@@ -99,7 +99,7 @@ if __name__ == "__main__":
         if not args.prefix:
             output = np.tile(
                 model.embd(sent),
-                (len(sent_bpe) - 1, 1)
+                (len(sents_bpe) - 1, 1)
             )
         else:
             output = [

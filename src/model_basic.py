@@ -48,6 +48,7 @@ class LSTMModel(torch.nn.Module):
         self.optimizer = torch.optim.Adam(self.parameters(), lr=10e-6)
 
         self.to(DEVICE)
+        
 
     def forward(self, x, x_embd):
         seq_length = x.shape[1]
