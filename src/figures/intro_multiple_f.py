@@ -63,6 +63,7 @@ if args.f6 is not None:
     data_all.append(read_json(args.f6))
 
 data_all = [aggregate_epochs(data_fx[args.start_i:args.end_i]) for data_fx in data_all]
+print(*[len(data_fx) for data_fx in data_all])
 
 if len(data_all) <= 4:
     fig = plt.figure(figsize=(5, 4.7))
@@ -86,12 +87,6 @@ XTICKS = [
     x + args.start_i
     for x in range(max([len(data_fx) for data_fx in data_all]))
 ]
-epochticks = []
-prev_epoch = -1
-for i, x in enumerate(data_all[1]):
-    if x["epoch"] > prev_epoch:
-        prev_epoch = x["epoch"]
-        epochticks.append(i + args.start_i)
 
 print(*[len(data_fx) for data_fx in data_all])
 
