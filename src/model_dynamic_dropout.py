@@ -169,7 +169,7 @@ class LSTMDynamicDropout(torch.nn.Module):
                 losses_train.append(loss.detach().cpu().item())
 
                 # one log step
-                if sample_i % 100000 == 0:
+                if sample_i % 33000 == 0:
                     losses_train = np.average(losses_train)
                     losses_dev = self.eval_dev(data_dev, encode_text, epoch)
 

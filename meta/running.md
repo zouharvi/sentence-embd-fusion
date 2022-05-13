@@ -1,15 +1,19 @@
+## TODO
+- check that books produce reasonable results
+
 ## Running/staged
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
 1 may|100k|toison|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 1 -nn toison -mn bert_cls -v 8192`|15|to run
-1 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 0 -nn iterum -mn bert_cls -v 8192`|15|bad
-1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192`|16, 15|running
-1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192`|16, 15|running
+1, 13 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 0 -nn iterum -mn bert_cls -v 8192`|15,12|fail, fail, to run
+1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, running
+1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+21, 27, 29 apr, 13 may|1k||{books,news}, embd bert cls|`./src/misc/embd.py -n 1000 -m bert --type-out cls --dataset books -p --bpe-encoder /data/sef/s100k-v8192.enc_pkl`|13, wx|fail,fail,fail,ok
 1 may|100k|eurythmics|vectorizer|`./src/run_model_basic.py -d /data/sef/tfidf-100k-p.embd -f 1 -nn eurythmics -mn tfidf -v 8192`|15|ok
 1 may|100k|septenary|vectorizer|`./src/run_model_basic.py -d /data/sef/count-100k-p.embd -f 1 -nn septenary -mn count -v 8192`|15|ok
 1 may|100k|sadmate_5|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 5 --ps 0to1 -nn sadmate_5 -mn bert_cls -v 8192`|16|bad
@@ -24,7 +28,6 @@
 29 apr|100k|technophile||`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -f 2 -nn technophile -mn bert_cls -v 8192`|13|ok
 29 apr|100k|outjet||`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -f 4 -nn outjet -mn bert_cls -v 8192`|13|ok
 29 apr|100k|guffle||`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -f 5 -nn guffle -mn bert_cls -v 8192`|13|ok
-21, 27, 29 apr|1k||{books,news}, embd bert cls|`./src/misc/embd.py -n 1000 -m bert --type-out cls --dataset books -p --bpe-encoder /data/sef/s100k-v8192.enc_pkl`|13|fail,ok,ok
 27,28 apr|100k||embd sbert {cls,avg}, prefix|`./src/misc/embd.py -n 100000 -m sbert --type-out cls -p`|15|ok, ok
 27,28 apr|100k||embd bert {cls,avg}, prefix|`./src/misc/embd.py -n 100000 -m bert --type-out cls -p`|15|ok, ok
 27,28 apr|100k||embd count, tfidf||15|ok, ok

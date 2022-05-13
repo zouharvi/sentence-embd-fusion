@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     sentences_embd = []
 
-    for sent, sents_bpe in tqdm(sentences, miniters=1000):
+    for sent, sent_bpe_num, sents_bpe in tqdm(sentences, miniters=1000, total=args.n):
         if not args.prefix:
             output = np.tile(
                 model.embd(sent),
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             ]
 
         # text, BPE (ids), embedding
-        sentences_embd.append((sent, sents_bpe, output))
+        sentences_embd.append((sent, sent_bpe_num, output))
 
     print("saving", len(sentences_embd), "data")
     save_pickle(
