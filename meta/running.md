@@ -1,18 +1,32 @@
 ## TODO
-- check that books produce reasonable results
+- debug cross-domain
+- add "empty feeder"
+- cross-domain "self"
+- joint vocab with out of domain 
 
 ## Running/staged
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-1 may|100k|toison|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 1 -nn toison -mn bert_cls -v 8192`|15|to run
-1, 13 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 0 -nn iterum -mn bert_cls -v 8192`|15,12|fail, fail, to run
-1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, running
-1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, running
+19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls > runs/embd_110k_bert_cls.log`|16|running
+19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls -p > runs/embd_110k_bert_cls_p.log`|16|running
+19 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d books --bpe-encoder /data/sef/s110k-v8192.enc_pkl > runs/embd_10k_books_bert_cls.log`|16|running
+1, 13 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/news_bert_cls-1k-p.embd -f 1 -nn hector_1 -mn bert_cls -v 8192`|12|stopped
+13 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/news_bert_cls-1k-p.embd -f 0 -nn hector_0 -mn bert_cls -v 8192`|12|stopped
+1, 13 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 1 -nn iterum_1 -mn bert_cls -v 8192`|15, 12|stopped
+1, 13 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-1k-p.embd -f 0 -nn iterum_0 -mn bert_cls -v 8192`|15,12|fail, fail, stopped
+1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, stopped
+1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, stopped
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+19 may|10k+1k|viparous|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-10k-p.embd -d2 /data/sef/bert_cls-10k-p.embd -f 0 -nn viparous -mn bert_cls -v 8192`|16|ok
+19 may|1k|viparous|embd|`./src/misc/embd.py -n 1000 -m bert --dataset books --type-out cls`|16|ok
+19 may|10k+1k|jeremiad|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-10k.embd -d2 /data/sef/bert_cls-1k.embd -f 0 -nn jeremiad_cross -,n bert_cls`|16|ok
+19 may|10k|jeremiad|basic|`./src/run_model_basic.py -d /data/sef/bert_cls-10k.embd -f 0 -nn jeremiad -mn bert_cls -v 8192`|16|ok
+19 may|10k|jeremiad|embd bert cls, cross, prefix|`./src/misc/embd.py -n 2000 -m bert --type-out cls -p`|16|ok, ok
+16 may|100k|geoponic|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/bert_cls-1k-p.embd -f 1 -nn geoponic -mn bert_cls -v 8192`|16|stopped (fail)
 21, 27, 29 apr, 13 may|1k||{books,news}, embd bert cls|`./src/misc/embd.py -n 1000 -m bert --type-out cls --dataset books -p --bpe-encoder /data/sef/s100k-v8192.enc_pkl`|13, wx|fail,fail,fail,ok
 1 may|100k|eurythmics|vectorizer|`./src/run_model_basic.py -d /data/sef/tfidf-100k-p.embd -f 1 -nn eurythmics -mn tfidf -v 8192`|15|ok
 1 may|100k|septenary|vectorizer|`./src/run_model_basic.py -d /data/sef/count-100k-p.embd -f 1 -nn septenary -mn count -v 8192`|15|ok

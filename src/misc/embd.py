@@ -9,8 +9,9 @@ from argparse import ArgumentParser
 from bpe import Encoder
 from embd_models import BertWrap, SentenceBertWrap, CountVectorizerWrap, TfIdfVectorizerWrap
 from embd_feeder import get_feeder
+from pathlib import Path
 
-def get_dataset_data(dataset, args):
+def get_dataset_data(dataset, n, args=None):
     if dataset == "wikitext":
         dataset = load_dataset("wikitext", "wikitext-103-v1")
     elif dataset in {"bookcorpus", "books"}:
@@ -20,16 +21,19 @@ def get_dataset_data(dataset, args):
 
     print(len(dataset["train"]), "total paragraphs")
     sentences = []
+
     # this assumes that every line has at least one sentence
-    for sent in tqdm(dataset["train"][:args.n]["text"]):
+    for sent in tqdm(dataset["train"][:n]["text"]):
         sentences += sent_tokenize(sent)
+
     return sentences
+
 
 if __name__ == "__main__":
     args = ArgumentParser()
     args.add_argument("-n", help="Number of sentences", type=int, default=1000)
     args.add_argument("--bpe-encoder", default=None)
-    args.add_argument("--dataset", default="wikitext")
+    args.add_argument("-d", "--dataset", default="wikitext")
     args.add_argument("-m", "--model", default="bert")
     args.add_argument("--type-out", default="cls")
     args.add_argument("--feeder", default=None)
@@ -41,14 +45,38 @@ if __name__ == "__main__":
     args.add_argument("-v", "--vocab-size", type=int, default=8192)
     args = args.parse_args()
 
-    if args.bpe_encoder is not None:
-        print("Loading BPE encoder")
-        encoder = read_pickle(args.bpe_encoder)
+    # generate name strings
+    if args.model in {"bert", "sbert", "sentencebert"}:
+        name_str = f"{args.model}_{args.type_out}"
     else:
-        print("Creating a new BPE encoder")
-        encoder = Encoder(vocab_size=args.vocab_size)
+        name_str = args.model
 
-    sentences = get_dataset_data(args.dataset, args)
+    if args.dataset != "wikitext":
+        name_str = args.dataset + "_" + name_str
+
+    if args.n >= 1000000:
+        count_str = f"{args.n//1000000:.0f}m"
+    elif args.n >= 1000:
+        count_str = f"{args.n//1000:.0f}k"
+    else:
+        count_str = args.n
+
+    encoder_path = f"/data/sef/s{count_str}-v{args.vocab_size}.enc_pkl"
+    if args.bpe_encoder is not None:
+        print("Loading BPE encoder (argument)")
+        encoder = read_pickle(args.bpe_encoder)
+        encoder_fit = False
+    else:
+        if Path(encoder_path).is_file():
+            print(f"Loading BPE encoder (found {encoder_path})")
+            encoder = read_pickle(encoder_path)
+            encoder_fit = False
+        else:
+            print("Creating a new BPE encoder")
+            encoder = Encoder(vocab_size=args.vocab_size)
+            encoder_fit = True
+
+    sentences = get_dataset_data(args.dataset, args.n, args)
     print(len(sentences), "total sentences available (inaccurate)")
 
     if args.model in {"bert"}:
@@ -61,50 +89,34 @@ if __name__ == "__main__":
         model = TfIdfVectorizerWrap(text=sentences)
 
     sentences = ["BOS " + x + " EOS" for x in sentences]
-    print(f"{np.average([len(x.split()) for x in sentences]):.1f} avg words in a sentence")
+    print(
+        f"{np.average([len(x.split()) for x in sentences]):.1f} avg words in a sentence"
+    )
 
-    # generate name strings
-    if args.model in {"bert", "sbert", "sentencebert"}:
-        name_str = f"{args.model}_{args.type_out}"
-    else:
-        name_str = args.model
-        
-    if args.dataset != "wikitext":
-        name_str = args.dataset + "_" + name_str
-
-    if args.n >= 1000000:
-        count_str = f"{args.n//1000000:.0f}m"
-    elif args.n >= 1000:
-        count_str = f"{args.n//1000:.0f}k"
-    else:
-        count_str = args.n
-
-    # load BPE encoder if not defined
-    if args.bpe_encoder is None:
+    # only in cases when we don't load the encoder
+    if encoder_fit:
         encoder.fit(sentences)
-
-        save_pickle(
-            f"/data/sef/s{count_str}-v{args.vocab_size}.enc_pkl",
-            encoder
-        )
+        save_pickle(encoder_path, encoder)
 
     # transform with BPE
     sentences_bpe = list(encoder.transform(sentences))
-    print(f"{np.average([len(x) for x in sentences_bpe]):.1f} avg subwords in a sentence")
-    sentences = get_feeder(args.feeder)(sentences, sentences_bpe, encoder, args)
+    print(
+        f"{np.average([len(x) for x in sentences_bpe]):.1f} avg subwords in a sentence")
+    sentences = get_feeder(args.feeder)(
+        sentences, sentences_bpe, encoder, args)
 
     sentences_embd = []
 
-    for sent, sent_bpe_num, sents_bpe in tqdm(sentences, miniters=1000, total=args.n):
+    for sent, sent_bpe_num, sent_subs in tqdm(sentences, miniters=1000, total=args.n):
         if not args.prefix:
             output = np.tile(
                 model.embd(sent),
-                (len(sents_bpe) - 1, 1)
+                (len(sent_subs) - 1, 1)
             )
         else:
             output = [
-                model.embd(sent_bpe)
-                for sent_bpe in sents_bpe
+                model.embd(sent_sub)
+                for sent_sub in sent_subs
             ]
 
         # text, BPE (ids), embedding
