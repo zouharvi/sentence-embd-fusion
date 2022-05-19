@@ -28,13 +28,13 @@ if __name__ == "__main__":
 
     if args.data_dev is not None:
         data_train = read_pickle(args.data)
-        data_train = data_train[:-1000]
+        data_train = data_train[:-10000]
         data_dev = read_pickle(args.data_dev)
         data_dev = data_dev
     else:
         data = read_pickle(args.data)
-        data_train = data[:-1000]
-        data_dev = data[-1000:]
+        data_train = data[:-10000]
+        data_dev = data[-10000:]
 
     data_dev = [
         (torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
