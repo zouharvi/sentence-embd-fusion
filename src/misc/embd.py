@@ -37,7 +37,7 @@ if __name__ == "__main__":
     args.add_argument("-m", "--model", default="bert")
     args.add_argument("--type-out", default="cls")
     args.add_argument("--feeder", default=None)
-    args.add_argument("--sub", default=None)
+    args.add_argument("--feeder-k", type=float, default=None)
     args.add_argument(
         "-p", "--prefix", help="Embed prefixes",
         action="store_true"
@@ -50,6 +50,10 @@ if __name__ == "__main__":
         name_str = f"{args.model}_{args.type_out}"
     else:
         name_str = args.model
+
+    if args.feeder is not None:
+        assert args.feeder_k is not None
+        name_str = f"{name_str}_({args.feeder}{args.feeder_k}"
 
     if args.dataset != "wikitext":
         name_str = args.dataset + "_" + name_str

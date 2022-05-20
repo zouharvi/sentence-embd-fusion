@@ -8,19 +8,23 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls -p > runs/embd_110k_bert_cls_p.log`|16|running
-19 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d books --bpe-encoder /data/sef/s110k-v8192.enc_pkl -p > runs/embd_10k_books_bert_cls_p.log`|16|running
-1, 13, 19 may|110k+10k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k.embd -d2 /data/sef/books_bert_cls-10k.embd -f 0 -nn iterum_0 -mn bert_cls > runs/cross_iterum_0.log`|15,12|fail, fail, stopped, running
+13, 19 may|100k+10k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k.embd -d2 /data/sef/books_bert_cls-10k.embd -f 0 -nn iterum_0 -mn bert_cls > runs/cross_iterum_0.log`|15,12,16|fail, fail, stopped, running
+20 may|100k+10k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/books_bert_cls-10k-p.embd -f 1 -nn iterum_1 -mn bert_cls > runs/cross_iterum_1.log`|16|running
+1, 13, 20 may|100k+10k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 1 -nn hector_1 -mn bert_cls > runs/cross_hector_1.log`|12,16|stopped, running
+13, 20 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 0 -nn hector_0 -mn bert_cls > runs/cross_hector_0.log`|12|stopped, running (may fail)
+1, 20 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192 > runs/dynamic_sadmate_1.log`|16, 15, 14, 12|ok, ok, stopped, running
+1, 20 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192 > runs/dynamic_skewedapple_1.log`|16, 15, 14, 12|ok, ok, stopped, running
+20 may|110k|nimonic|embd subr|`./src/misc/embd.py -n 110000 -p --feeder subr --feeder-k 0.5 > "runs/embd_nimonic_(subr0.5).log"`|12|running
 -|-|-|-|-|-|-
-1, 13 may|100k|iterum|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/books_bert_cls-10k-p.embd -f 1 -nn iterum_1 -mn bert_cls -v 8192`|15, 12|stopped
-1, 13 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/news_bert_cls-1k-p.embd -f 1 -nn hector_1 -mn bert_cls -v 8192`|12|stopped
-13 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-100k-p.embd -d2 /data/sef/news_bert_cls-1k-p.embd -f 0 -nn hector_0 -mn bert_cls -v 8192`|12|stopped
-1 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, stopped
-1 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-100k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192`|16, 15, 14|ok, ok, stopped
+
+
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+20 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d news --bpe-encoder /data/sef/s110k-v8192.enc_pkl -p > runs/embd_10k_news_bert_cls_p.log`|16|ok
+19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls -p > runs/embd_110k_bert_cls_p.log`|16|ok
+19 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d books --bpe-encoder /data/sef/s110k-v8192.enc_pkl -p > runs/embd_10k_books_bert_cls_p.log`|16|ok
 19 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d books --bpe-encoder /data/sef/s110k-v8192.enc_pkl > runs/embd_10k_books_bert_cls.log`|16|ok
 19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls > runs/embd_110k_bert_cls.log`|16|ok
 19 may|10k+1k|viparous|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-10k-p.embd -d2 /data/sef/bert_cls-10k-p.embd -f 0 -nn viparous -mn bert_cls -v 8192`|16|ok
