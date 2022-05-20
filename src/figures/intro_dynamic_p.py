@@ -5,6 +5,7 @@ import sys
 sys.path.append("src")
 from misc.utils import read_json
 from argparse import ArgumentParser
+import fig_utils
 
 args = ArgumentParser()
 args.add_argument("-f0")

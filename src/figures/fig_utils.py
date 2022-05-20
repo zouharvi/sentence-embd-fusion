@@ -16,3 +16,6 @@ mpl.rcParams['lines.linewidth'] = 2
 mpl.rcParams['lines.markersize'] = 7
 
 # mpl.style.use('classic')
+
+
+FONT_MONOSPACE = {'fontname':'monospace'}
