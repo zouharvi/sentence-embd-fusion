@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+raise Exception("Deprecated in favor of `intro_multiple_f.py`")
+
 import matplotlib.pyplot as plt
 import sys
 sys.path.append("src")
@@ -77,8 +79,6 @@ fig.legend(
     bbox_transform=ax1.transAxes,
     ncol=2,
 )
-# l1+l2, lab1+lab2)
 
-# plt.legend()
 plt.tight_layout(rect=(0, 0, 1, 0.88))
 plt.show()

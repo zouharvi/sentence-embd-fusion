@@ -4,6 +4,7 @@ computed/**/*.json
 computed/**/*.pdf
 computed/**/*.pkl
 nohup.out
+*.drawio.bkp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

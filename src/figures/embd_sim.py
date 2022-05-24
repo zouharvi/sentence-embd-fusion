@@ -61,10 +61,9 @@ data_count = [
 
 print("last data_count", data_count[-1])
 
-fig = plt.figure(figsize=(5, 3))
+fig = plt.figure(figsize=(5.9, 4))
 ax1 = fig.gca()
 ax2 = ax1.twinx()
-# ax3 = ax1.twinx()  # used for counts
 
 ax1.plot()
 
@@ -97,12 +96,12 @@ ax2.scatter(
 )
 
 fig.legend(
-    loc=(0.4, 0.5),
-    # bbox_to_anchor=(0, 1.22),
-    # bbox_transform=ax2.transAxes,
-    # ncol=2,
+    loc="upper center",
+    bbox_to_anchor=(0.52, 1.12),
+    bbox_transform=ax1.transAxes,
+    ncol=3,
 )
 
-plt.tight_layout(pad=0)
+plt.tight_layout(rect=(0, 0, 1, 0.9), pad=0)
 plt.savefig("computed/embd_sim.pdf")
 plt.show()
