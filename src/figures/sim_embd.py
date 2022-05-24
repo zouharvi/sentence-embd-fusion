@@ -84,6 +84,7 @@ if not args.load:
 else:
     buckets_whole, buckets_prev = read_pickle("computed/buckets_all.pkl")
 
+# manual crop by sentence length
 LIMIT_X = 200
 data_ip_whole = [
     (i, np.average(buckets_whole[i]))
@@ -139,7 +140,7 @@ ax2.scatter(
 
 fig.legend(
     loc="upper center",
-    bbox_to_anchor=(0.52, 1.12),
+    bbox_to_anchor=(0.52, 1.14),
     bbox_transform=ax1.transAxes,
     ncol=3,
 )
