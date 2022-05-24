@@ -14,14 +14,22 @@
 13, 20 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 0 -nn hector_0 -mn bert_cls > runs/cross_hector_0.log`|12|stopped, running (may fail)
 1, 20 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192 > runs/dynamic_sadmate_1.log`|16, 15, 14, 12|ok, ok, stopped, running
 1, 20 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192 > runs/dynamic_skewedapple_1.log`|16, 15, 14, 12|ok, ok, stopped, running
-20 may|110k|nimonic|embd subr|`./src/misc/embd.py -n 110000 -p --feeder subr --feeder-k 0.5 > "runs/embd_nimonic_(subr0.5).log"`|12|running
+20 may|100k|truedog|baseline (100k+10k)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 0 -nn truedog -mn bert_cls > runs/basic_truedog.log`|8|running
+20 may|100k|truetit|baseline (100k+10k)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 1 -nn truetit -mn bert_cls > runs/basic_truetit.log`|8|running
 -|-|-|-|-|-|-
-
+24 may|110k|nimonic|embd subr|`./src/run_model_basic.py ???? > "runs/basic_nimonic_(subr0.5).log"`|??|to run
 
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+24 may|110k+sub||embd sim|`./src/figures/embd_sim.py -ck > "runs/sim_embd.log"`|13|ok
+20 may|110k|nimonic|embd subr|`./src/misc/embd.py -n 110000 -p --feeder subr --feeder-k 0.5 > "runs/embd_nimonic_(subr0.5).log"`|12|ok
+20 may|110k|nimonic|embd subr|`./src/misc/embd.py -n 110000 -p --feeder subr --feeder-k 0.75 > "runs/embd_nimonic_(subr0.75).log"`|11|ok
+20 may|110k|nimonic|embd subr|`./src/misc/embd.py -n 110000 -p --feeder subr --feeder-k 0.25 > "runs/embd_nimonic_(subr0.25).log"`|11|ok
+20 may|110k|nimonic|embd subl|`./src/misc/embd.py -n 110000 -p --feeder subl --feeder-k 0.5 > "runs/embd_nimonic_(subl0.5).log"`|11|ok
+20 may|110k|nimonic|embd subl|`./src/misc/embd.py -n 110000 -p --feeder subl --feeder-k 0.75 > "runs/embd_nimonic_(subl0.75).log"`|10|ok
+20 may|110k|nimonic|embd subl|`./src/misc/embd.py -n 110000 -p --feeder subl --feeder-k 0.25 > "runs/embd_nimonic_(subl0.25).log"`|10|ok
 20 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d news --bpe-encoder /data/sef/s110k-v8192.enc_pkl -p > runs/embd_10k_news_bert_cls_p.log`|16|ok
 19 may|110k||embd|`./src/misc/embd.py -n 110000 -m bert --type-out cls -p > runs/embd_110k_bert_cls_p.log`|16|ok
 19 may|10k||embd|`./src/misc/embd.py -n 10000 -m bert --type-out cls -d books --bpe-encoder /data/sef/s110k-v8192.enc_pkl -p > runs/embd_10k_books_bert_cls_p.log`|16|ok

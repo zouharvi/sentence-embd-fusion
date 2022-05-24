@@ -20,51 +20,92 @@ def ip(a, b):
 
 
 args = ArgumentParser()
-args.add_argument("-d", "--data", default="/data/sef/bert_cls-100k-p.embd")
+args.add_argument("-d", "--data", default="/data/sef/bert_cls-110k-p.embd")
+args.add_argument("-dl", "--data-subl", type=list, nargs="+", default=[
+    "/data/sef/bert_cls_(subl0.25)-110k-p.embd",
+    "/data/sef/bert_cls_(subl0.5)-110k-p.embd",
+    "/data/sef/bert_cls_(subl0.75)-110k-p.embd",
+])
+args.add_argument("-dr", "--data-subr", type=list, nargs="+", default=[
+    "/data/sef/bert_cls_(subr0.25)-110k-p.embd",
+    "/data/sef/bert_cls_(subr0.5)-110k-p.embd",
+    "/data/sef/bert_cls_(subr0.75)-110k-p.embd",
+])
 args.add_argument("-l", "--load", action="store_true")
+args.add_argument("-ck", "--compute-ks", action="store_true")
 args = args.parse_args()
 
 if not args.load:
-    # get only the embeddings
-    data = [x[2] for x in read_pickle(args.data)]
+    print("Loading data")
+    # get only the embeddings of training data
+    data = [x[2] for x in read_pickle(args.data)[:100000]]
 
-    buckets_ip_whole = defaultdict(list)
-    buckets_ip = defaultdict(list)
+    buckets_whole = defaultdict(list)
+    buckets_prev = defaultdict(list)
 
+    print("Computing standard pass")
     for embd in tqdm(data):
         for i in range(1, len(embd)):
-            buckets_ip[i].append(ip(embd[i - 1], embd[i]))
-            buckets_ip_whole[i].append(ip(embd[i - 1], embd[-1]))
+            buckets_prev[i].append(ip(embd[i - 1], embd[i]))
+            buckets_whole[i].append(ip(embd[i - 1], embd[-1]))
 
-    save_pickle("computed/buckets_ip_whole.pkl", buckets_ip_whole)
-    save_pickle("computed/buckets_ip.pkl", buckets_ip)
+    if args.compute_ks:
+        KS = [0.25, 0.5, 0.75]
+
+        print("Computing subr")
+        sim_sub = {}
+        for f, k in zip(args.data_subr, KS):
+            print(f"Loading subr{k}")
+            # get only the embeddings of training data
+            data_s = [x[2] for x in read_pickle(f)[:100000]]
+            sim = []
+            for embd, embd_s in tqdm(zip(data, data_s), total=len(data)):
+                for i in range(0, len(embd)):
+                    sim.append(ip(embd[i], embd_s[i]))
+            sim_sub[k] = np.average(sim)
+        print("SIM_SUBR = ", end="")
+        print(sim_sub)
+
+        print("Computing subl")
+        sim_sub = {}
+        for f, k in zip(args.data_subl, KS):
+            print(f"Loading subl{k}")
+            # get only the embeddings of training data
+            data_s = [x[2] for x in read_pickle(f)[:100000]]
+            sim = []
+            for embd, embd_s in tqdm(zip(data, data_s), total=len(data)):
+                for i in range(0, len(embd)):
+                    sim.append(ip(embd[i], embd_s[i]))
+            sim_sub[k] = np.average(sim)
+        print("SIM_SUBL = ", end="")
+        print(sim_sub)
+
+    save_pickle("computed/buckets_all.pkl", (buckets_whole, buckets_prev))
 else:
-    buckets_ip_whole = read_pickle("computed/buckets_ip_whole.pkl")
-    buckets_ip = read_pickle("computed/buckets_ip.pkl")
+    buckets_whole, buckets_prev = read_pickle("computed/buckets_all.pkl")
 
 LIMIT_X = 200
 data_ip_whole = [
-    (i, np.average(buckets_ip_whole[i]))
-    for i in sorted(buckets_ip_whole.keys())
+    (i, np.average(buckets_whole[i]))
+    for i in sorted(buckets_whole.keys())
     if i <= LIMIT_X
 ]
 data_ip = [
-    (i, np.average(buckets_ip[i]))
-    for i in sorted(buckets_ip.keys())
+    (i, np.average(buckets_prev[i]))
+    for i in sorted(buckets_prev.keys())
     if i <= LIMIT_X
 ]
 data_count = [
-    (i, len(buckets_ip[i]))
-    for i in sorted(buckets_ip.keys())
+    (i, len(buckets_prev[i]))
+    for i in sorted(buckets_prev.keys())
     if i <= LIMIT_X
 ][::4]
 
 print("last data_count", data_count[-1])
 
-fig = plt.figure(figsize=(5, 3))
+fig = plt.figure(figsize=(5.9, 4))
 ax1 = fig.gca()
 ax2 = ax1.twinx()
-# ax3 = ax1.twinx()  # used for counts
 
 ax1.plot()
 
@@ -97,12 +138,12 @@ ax2.scatter(
 )
 
 fig.legend(
-    loc=(0.4, 0.5),
-    # bbox_to_anchor=(0, 1.22),
-    # bbox_transform=ax2.transAxes,
-    # ncol=2,
+    loc="upper center",
+    bbox_to_anchor=(0.52, 1.12),
+    bbox_transform=ax1.transAxes,
+    ncol=3,
 )
 
-plt.tight_layout(pad=0)
+plt.tight_layout(rect=(0, 0, 1, 0.9), pad=0)
 plt.savefig("computed/embd_sim.pdf")
 plt.show()

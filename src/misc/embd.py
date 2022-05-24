@@ -11,6 +11,7 @@ from embd_models import BertWrap, SentenceBertWrap, CountVectorizerWrap, TfIdfVe
 from embd_feeder import get_feeder
 from pathlib import Path
 
+
 def get_dataset_data(dataset, n, args=None):
     if dataset == "wikitext":
         dataset = load_dataset("wikitext", "wikitext-103-v1")
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     if args.feeder is not None:
         assert args.feeder_k is not None
-        name_str = f"{name_str}_({args.feeder}{args.feeder_k}"
+        name_str = f"{name_str}_({args.feeder}{args.feeder_k})"
 
     if args.dataset != "wikitext":
         name_str = args.dataset + "_" + name_str
@@ -64,6 +65,9 @@ if __name__ == "__main__":
         count_str = f"{args.n//1000:.0f}k"
     else:
         count_str = args.n
+
+    data_path = f"/data/sef/{name_str}-{count_str}{'-p' if args.prefix else ''}.embd"
+    print("Will eventually store to", data_path)
 
     encoder_path = f"/data/sef/s{count_str}-v{args.vocab_size}.enc_pkl"
     if args.bpe_encoder is not None:
@@ -127,7 +131,4 @@ if __name__ == "__main__":
         sentences_embd.append((sent, sent_bpe_num, output))
 
     print("saving", len(sentences_embd), "data")
-    save_pickle(
-        f"/data/sef/{name_str}-{count_str}{'-p' if args.prefix else ''}.embd",
-        sentences_embd
-    )
+    save_pickle(data_path, sentences_embd)
