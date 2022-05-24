@@ -43,42 +43,18 @@ args.add_argument("--start-i", type=int, default=1)
 args.add_argument("--end-i", type=int, default=None)
 args = args.parse_args()
 
-LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
-
+ARGS_LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
+ARGS_FILES = [args.f0, args.f1, args.f2, args.f3, args.f4, args.f5, args.f6]
 data_all = []
-
-if args.f0 is not None:
-    data_all.append(read_json(args.f0))
-if args.f1 is not None:
-    data_all.append(read_json(args.f1))
-if args.f2 is not None:
-    data_all.append(read_json(args.f2))
-if args.f3 is not None:
-    data_all.append(read_json(args.f3))
-if args.f4 is not None:
-    data_all.append(read_json(args.f4))
-if args.f5 is not None:
-    data_all.append(read_json(args.f5))
-if args.f6 is not None:
-    data_all.append(read_json(args.f6))
+for f in ARGS_FILES:
+    if f is not None:
+        data_all.append(read_json(f))
 
 data_all = [aggregate_epochs(data_fx[args.start_i:args.end_i]) for data_fx in data_all]
 print(*[len(data_fx) for data_fx in data_all])
 
-if len(data_all) <= 4:
-    fig = plt.figure(figsize=(5, 4.7))
-    legend_anchor = (0.5, 1.3)
-elif len(data_all) == 5:
-    # TODO not adapted
-    fig = plt.figure(figsize=(5, 4.9))
-    legend_anchor = (0.5, 1.42)
-elif len(data_all) == 6:
-    # TODO not adapted
-    fig = plt.figure(figsize=(5, 5.4))
-    legend_anchor = (0.5, 1.45)
-elif len(data_all) == 7:
-    fig = plt.figure(figsize=(5, 5.0))
-    legend_anchor = (0.5, 1.35)
+fig = plt.figure(figsize=(7, 5.0))
+
 
 ax1 = fig.gca()
 ax2 = ax1.twinx()
@@ -101,8 +77,8 @@ ax1.plot(
 )
 
 
-
-for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
+for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
+    # train loss
     ax1.plot(
         XTICKS[:len(data_fx)],
         [x["train_loss"] for x in data_fx],
@@ -115,14 +91,14 @@ for i, (data_fx, label) in enumerate(zip(data_all, LABELS)):
         [x["dev_pp"] for x in data_fx],
         label=f"Dev PP{label}",
         linestyle="-",
-        # marker=".",
-        alpha=0.8,
+        alpha=0.7,
     )
+    # only every 10th marker to clean up the graph
     ax2.scatter(
-        XTICKS[:len(data_fx)],
-        [x["dev_pp"] for x in data_fx],
+        XTICKS[:len(data_fx):10],
+        [x["dev_pp"] for x in data_fx][::10],
         marker=".",
-        alpha=0.5,
+        alpha=0.8,
     )
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
@@ -132,24 +108,12 @@ ax2.set_ylabel("Dev Perplexity")
 
 fig.legend(
     loc="upper center",
-    bbox_to_anchor=legend_anchor,
+    bbox_to_anchor=(0.5, 1.25),
     bbox_transform=ax1.transAxes,
     ncol=2,
-    columnspacing=1.0,
-    handleheight=1.5
 )
 
-# plt.legend()
-if len(data_all) == 4:
-    plt.tight_layout(rect=(0, 0, 1, 0.8), pad=0)
-# TODO not adapted
-elif len(data_all) == 5:
-    plt.tight_layout(rect=(0, 0, 1, 0.72), pad=0)
-# TODO not adapted
-elif len(data_all) == 6:
-    plt.tight_layout(rect=(0, 0, 1, 0.7), pad=0)
-elif len(data_all) == 7:
-    plt.tight_layout(rect=(0, 0, 1, 0.77), pad=0)
+plt.tight_layout(rect=(0, 0, 1, 0.82), pad=0)
 
 if args.filename:
     plt.savefig(args.filename)

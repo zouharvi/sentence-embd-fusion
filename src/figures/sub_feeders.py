@@ -66,4 +66,5 @@ plt.legend(
     ncol=2,
 )
 plt.tight_layout(rect=(0, 0, 1, 1.02), pad=0.3)
+plt.savefig("computed/sub_feeders.pdf")
 plt.show()
