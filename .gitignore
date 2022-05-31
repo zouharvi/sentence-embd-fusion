@@ -1,8 +1,8 @@
 # added by zouharvi
 computed/**/*.embd
 computed/**/*.json
-computed/**/*.pdf
 computed/**/*.pkl
+figures
 nohup.out
 *.drawio.bkp
 

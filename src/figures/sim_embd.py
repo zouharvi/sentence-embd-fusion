@@ -146,5 +146,5 @@ fig.legend(
 )
 
 plt.tight_layout(rect=(0, 0, 1, 0.9), pad=0)
-plt.savefig("computed/embd_sim.pdf")
+plt.savefig("figures/embd_sim.pdf")
 plt.show()

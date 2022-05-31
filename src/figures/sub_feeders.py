@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-import matplotlib.pyplot as plt
 import sys
 sys.path.append("src")
 from misc.utils import read_json
 from argparse import ArgumentParser
 import fig_utils
+import matplotlib.pyplot as plt
 
 args = ArgumentParser()
 args.add_argument("--subl", nargs="+")
-args.add_argument("--subl-k", type=float, nargs="+")
+args.add_argument("--sub-k", type=float, nargs="+")
 args.add_argument("--subr", nargs="+")
-args.add_argument("--subr-k", type=float, nargs="+")
 args.add_argument("--pp-f0", type=float)
 args.add_argument("--pp-f1", type=float)
 args = args.parse_args()
@@ -27,18 +26,21 @@ data_subr = []
 for f in args.subr:
     data_subr.append(min([x["dev_pp"] for x in read_json(f)]))
 
-fig = plt.figure(figsize=(6, 4))
+pp_f0 = data_subl[-1]
+pp_f1 = data_subl[0]
+
+fig = plt.figure(figsize=(6.5, 4))
 ax1 = plt.gca()
 ax2 = ax1.twinx()
 
 ax1.plot(
-    args.subl_k,
+    args.sub_k,
     data_subl,
     label="Left crop ($\min(i, k\cdot |S|) \\rightarrow i$)",
     color="cornflowerblue",
 )
 ax1.plot(
-    args.subr_k,
+    args.sub_k,
     data_subr,
     label="Right crop ($0 \\rightarrow \min(i, k\cdot |S|)$)",
     color="salmon",
@@ -47,22 +49,22 @@ ax1.set_ylabel("Dev Perplexity")
 ax2.set_ylabel("Similarity to Whole Prefix")
 ax1.set_xlabel("$k$")
 
-if args.pp_f0 is not None:
+if pp_f0 is not None:
     ax1.hlines(
-        y=args.pp_f0,
-        xmin=min(args.subl_k+ args.subr_k),
-        xmax=max(args.subl_k+ args.subr_k),
+        y=pp_f0,
+        xmin=min(args.sub_k),
+        xmax=max(args.sub_k),
         linestyles="-.",
         label="No fusion",
         color="dimgray",
     )
 # this should be the same as subl with k=0 or subr with k=1
-if args.pp_f1 is not None:
+if pp_f1 is not None:
     ax1.hlines(
-        y=args.pp_f1,
-        xmin=min(args.subl_k+ args.subr_k),
-        xmax=max(args.subl_k+ args.subr_k),
-        linestyles="-.",
+        y=pp_f1,
+        xmin=min(args.sub_k),
+        xmax=max(args.sub_k),
+        linestyles=":",
         label="Full prefix",
         color="seagreen",
     )
@@ -83,17 +85,18 @@ ax2.plot(
     marker=".", ms=10,
 )
 
+plt.xticks(args.sub_k)
 h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
 LEGEND_PERM = [0, 1, 2, 4, 5, 3]
 
 plt.tight_layout(rect=(0, 0, 1, 0.78), pad=0.1)
 plt.legend(
-    [(h1+h2)[i] for i in LEGEND_PERM],
-    [(l1+l2)[i] for i in LEGEND_PERM],
+    [(h1 + h2)[i] for i in LEGEND_PERM],
+    [(l1 + l2)[i] for i in LEGEND_PERM],
     loc="upper left",
-    bbox_to_anchor=(0.0, 1.36),
+    bbox_to_anchor=(0.07, 1.36),
     ncol=2,
 )
-plt.savefig("computed/sub_feeders.pdf")
+plt.savefig("figures/sub_feeders.pdf")
 plt.show()
