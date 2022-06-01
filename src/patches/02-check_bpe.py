@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import sys; sys.path.append("src/")
+import sys
+sys.path.append("src/")
 from misc.utils import read_pickle
 from argparse import ArgumentParser
 

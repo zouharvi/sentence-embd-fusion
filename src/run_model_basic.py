@@ -21,9 +21,6 @@ if __name__ == "__main__":
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
 
-    # crop text
-    # text = ["BOS " + x[0] + " EOS" for x in data]
-
     def encode_text(text):
         return (F.one_hot(text, num_classes=args.vocab_size)).float()
 
@@ -51,7 +48,10 @@ if __name__ == "__main__":
         for x in data_train
     ]
 
-    model = LSTMModel(args.vocab_size, fusion=args.fusion, hidden_size=args.hidden_size)
+    model = LSTMModel(
+        args.vocab_size, fusion=args.fusion,
+        hidden_size=args.hidden_size
+    )
     model.train_loop(
         data_train, data_dev,
         encode_text,
