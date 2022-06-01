@@ -20,4 +20,4 @@ for f in args.logfile:
             min_i = line_i
             min_v = line["dev_pp"]
 
-    print(f"{min_i}/{len(data)}", data[min_i])
+    print("!" if min_i+1 == len(data) else " ", f"{min_i+1}/{len(data)}", data[min_i], "\n")

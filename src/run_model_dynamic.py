@@ -21,8 +21,6 @@ if __name__ == "__main__":
     args = args.parse_args()
 
     data = read_pickle(args.data)
-    # crop text
-    # text = ["BOS " + x[0] + " EOS" for x in data]
 
     def encode_text(text):
         return (F.one_hot(text, num_classes=args.vocab_size)).float()
@@ -39,7 +37,10 @@ if __name__ == "__main__":
     else:
         raise Exception("Unknown ps dropout configuration")
 
-    model = LSTMDynamicDropout(args.vocab_size, fusion=args.fusion, hidden_size=args.hidden_size, ps=ps)
+    model = LSTMDynamicDropout(
+        args.vocab_size, fusion=args.fusion,
+        hidden_size=args.hidden_size, ps=ps
+    )
 
     model.train_loop(
         data[:-10000], data[-10000:],

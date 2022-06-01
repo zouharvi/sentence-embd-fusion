@@ -33,6 +33,26 @@ fig = plt.figure(figsize=(6.5, 4))
 ax1 = plt.gca()
 ax2 = ax1.twinx()
 
+# plot first so that they're behind more complex lines
+# this should be the same as subl with k=0 or subr with k=1
+ax1.hlines(
+    y=pp_f0,
+    xmin=min(args.sub_k),
+    xmax=max(args.sub_k),
+    linestyles="--",
+    label="Perplexity no fusion",
+    color="dimgray",
+)
+ax1.hlines(
+    y=pp_f1,
+    xmin=min(args.sub_k),
+    xmax=max(args.sub_k),
+    linestyles="-.",
+    # add fake $$ to normalize line height
+    label="Perplexity full prefix $\,$",
+    color="dimgray",
+)
+
 ax1.plot(
     args.sub_k,
     data_subl,
@@ -51,26 +71,7 @@ ax1.set_ylabel("Dev Perplexity")
 ax2.set_ylabel("Similarity to whole prefix")
 ax1.set_xlabel("$k$")
 
-# this should be the same as subl with k=0 or subr with k=1
-ax1.hlines(
-    y=pp_f0,
-    xmin=min(args.sub_k),
-    xmax=max(args.sub_k),
-    linestyles=":",
-    label="Perplexity no fusion",
-    color="dimgray",
-)
-ax1.hlines(
-    y=pp_f1,
-    xmin=min(args.sub_k),
-    xmax=max(args.sub_k),
-    linestyles="-.",
-    # add fake $$ to normalize line height
-    label="Perplexity full prefix $\,$",
-    color="dimgray",
-)
-# offset pp plots
-ax1.set_ylim(None, max(data_subl+data_subr)+0.5)
+
 
 # plot similarities
 ax2.plot(
@@ -90,17 +91,21 @@ ax2.plot(
     marker="^", ms=7,
 )
 
-plt.xticks(args.sub_k)
+# offset plots
+ax1.set_ylim(None, max(data_subl+data_subr)+0.5)
+ax2.set_ylim(min(min(SIM_SUBL.values()), min(SIM_SUBR.values()))-0.02)
+
+plt.xticks(args.sub_k, [f"{x:.0%}" for x in args.sub_k])
 h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
-LEGEND_PERM = [0, 1, 3, 4, 5, 2]
+LEGEND_PERM = [2, 3, 0, 4, 5, 1]
 
 plt.tight_layout(rect=(0, 0, 1, 0.78), pad=0.1)
 plt.legend(
     [(h1 + h2)[i] for i in LEGEND_PERM],
     [(l1 + l2)[i] for i in LEGEND_PERM],
     loc="upper left",
-    bbox_to_anchor=(0, 1.36),
+    bbox_to_anchor=(-0.015, 1.36),
     ncol=2,
 )
 plt.savefig("figures/sub_feeders.pdf")
