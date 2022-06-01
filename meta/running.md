@@ -8,16 +8,30 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-1, 13, 20 may|100k+10k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 1 -nn hector_1 -mn bert_cls > runs/cross_hector_1.log`|12,16|stopped, running
-1, 20 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192 > runs/dynamic_sadmate_1.log`|16, 15, 14, 12|ok, ok, stopped, ok (TO PROCESS)
-1, 20 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192 > runs/dynamic_skewedapple_1.log`|16, 15, 14, 12|ok, ok, stopped, ok (TO PROCESS)
+31 may|110k|truemin|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 6 -nn truemin -mn bert_cls > runs/basic_truemin.log`|16|running
+31 may|110k|truephile|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 2 -nn truephile -mn bert_cls > runs/basic_truephile.log`|13|running
+31 may|110k|truecuum|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls > runs/basic_truecuum.log`|12|running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.25)-110k-p.embd" -f 1 -nn nimonic_l25 -mn bert_cls > "runs/basic_nimonic_(subl0.25).log"`|13|killed, running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.5)-110k-p.embd"  -f 1 -nn nimonic_l5  -mn bert_cls > "runs/basic_nimonic_(subl0.5).log"` |13|killed, running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.75)-110k-p.embd" -f 1 -nn nimonic_l75 -mn bert_cls > "runs/basic_nimonic_(subl0.75).log"`|12|killed, running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.25)-110k-p.embd" -f 1 -nn nimonic_r25 -mn bert_cls > "runs/basic_nimonic_(subr0.25).log"`|12|killed, running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.5)-110k-p.embd"  -f 1 -nn nimonic_r5  -mn bert_cls > "runs/basic_nimonic_(subr0.5).log"` |11|killed, running
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.75)-110k-p.embd" -f 1 -nn nimonic_r75 -mn bert_cls > "runs/basic_nimonic_(subr0.75).log"`|10|killed, running
+1 jun|110k|clover_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_5k -mn bert_cls -tn 5000 > runs/basic_clover_5k.log`|13|running
 -|-|-|-|-|-|-
-24 may|110k|nimonic|embd subr|`./src/run_model_basic.py ???? > "runs/basic_nimonic_(subr0.5).log"`|??|to run
-
+1 jun|110k|clover_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_8k -mn bert_cls -tn 8000 > runs/basic_clover_8k.log`|??|to run
+1 jun|110k|clover_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_13k -mn bert_cls -tn 13000 > runs/basic_clover_13k.log`|??|to run
+1 jun|110k|clover_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_20k -mn bert_cls -tn 20000 > runs/basic_clover_20k.log`|??|to run
+1 jun|110k|clover_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_31k -mn bert_cls -tn 31000 > runs/basic_clover_31k.log`|??|to run
+1 jun|110k|clover_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_46k -mn bert_cls -tn 46000 > runs/basic_clover_46k.log`|??|to run
+1 jun|110k|clover_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_68k -mn bert_cls -tn 68000 > runs/basic_clover_68k.log`|??|to run
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+1, 20 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192 > runs/dynamic_sadmate_1.log`|16, 15, 14, 12|ok, ok, stopped, ok
+1, 20 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192 > runs/dynamic_skewedapple_1.log`|16, 15, 14, 12|ok, ok, stopped, ok
+1, 13, 20 may|100k+10k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 1 -nn hector_1 -mn bert_cls > runs/cross_hector_1.log`|12,16|stopped, ok
 20 may|100k|truedog|baseline (100k+10k)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 0 -nn truedog -mn bert_cls > runs/basic_truedog.log`|8|ok
 20 may|100k|truetit|baseline (100k+10k)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 1 -nn truetit -mn bert_cls > runs/basic_truetit.log`|8|ok
 13, 20 may|100k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 0 -nn hector_0 -mn bert_cls > runs/cross_hector_0.log`|12|stopped, running (may fail)
