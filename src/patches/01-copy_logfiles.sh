@@ -7,7 +7,7 @@ else
 fi
 
 # download from server
-scp lsv_pc:sentence-embd-fusion/computed/*.$EXTENSION computed/
+rsync -avh lsv_pc:sentence-embd-fusion/computed/*.$EXTENSION computed/
 
 # upload to server
 # scp computed/*.json lsv_pc:sentence-embd-fusion/computed/

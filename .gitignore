@@ -2,7 +2,7 @@
 computed/**/*.embd
 computed/**/*.json
 computed/**/*.pkl
-figures
+/figures
 nohup.out
 *.drawio.bkp
 

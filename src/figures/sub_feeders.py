@@ -49,25 +49,23 @@ ax1.set_ylabel("Dev Perplexity")
 ax2.set_ylabel("Similarity to Whole Prefix")
 ax1.set_xlabel("$k$")
 
-if pp_f0 is not None:
-    ax1.hlines(
-        y=pp_f0,
-        xmin=min(args.sub_k),
-        xmax=max(args.sub_k),
-        linestyles="-.",
-        label="No fusion",
-        color="dimgray",
-    )
 # this should be the same as subl with k=0 or subr with k=1
-if pp_f1 is not None:
-    ax1.hlines(
-        y=pp_f1,
-        xmin=min(args.sub_k),
-        xmax=max(args.sub_k),
-        linestyles=":",
-        label="Full prefix",
-        color="seagreen",
-    )
+ax1.hlines(
+    y=pp_f0,
+    xmin=min(args.sub_k),
+    xmax=max(args.sub_k),
+    linestyles="-.",
+    label="No fusion",
+    color="dimgray",
+)
+ax1.hlines(
+    y=pp_f1,
+    xmin=min(args.sub_k),
+    xmax=max(args.sub_k),
+    linestyles=":",
+    label="Full prefix",
+    color="seagreen",
+)
 
 # plot similarities
 ax2.plot(
