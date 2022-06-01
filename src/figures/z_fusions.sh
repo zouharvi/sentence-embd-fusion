@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./src/figures/intro_multiple_f.py \
+./src/figures/multiple_f.py \
     -f0 ./computed/v1/bert_cls-bluedog-f0.json -l0 ": No fusion" \
     -f1 ./computed/v1/bert_cls-petit-f1.json -l1 ": Concat final" \
     -f2 ./computed/v1/bert_cls-technophile-f2.json -l2 ": Add final" \

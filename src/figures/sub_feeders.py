@@ -36,17 +36,19 @@ ax2 = ax1.twinx()
 ax1.plot(
     args.sub_k,
     data_subl,
-    label="Left crop ($\min(i, k\cdot |S|) \\rightarrow i$)",
+    label="Perplexity left crop ($\min(i, k\cdot |S|) \\rightarrow i$)",
     color="cornflowerblue",
+    marker="o", ms=7,
 )
 ax1.plot(
     args.sub_k,
     data_subr,
-    label="Right crop ($0 \\rightarrow \min(i, k\cdot |S|)$)",
+    label="Perplexity right crop ($0 \\rightarrow \min(i, k\cdot |S|)$)",
     color="salmon",
+    marker="^", ms=7,
 )
 ax1.set_ylabel("Dev Perplexity")
-ax2.set_ylabel("Similarity to Whole Prefix")
+ax2.set_ylabel("Similarity to whole prefix")
 ax1.set_xlabel("$k$")
 
 # this should be the same as subl with k=0 or subr with k=1
@@ -54,46 +56,51 @@ ax1.hlines(
     y=pp_f0,
     xmin=min(args.sub_k),
     xmax=max(args.sub_k),
-    linestyles="-.",
-    label="No fusion",
+    linestyles=":",
+    label="Perplexity no fusion",
     color="dimgray",
 )
 ax1.hlines(
     y=pp_f1,
     xmin=min(args.sub_k),
     xmax=max(args.sub_k),
-    linestyles=":",
-    label="Full prefix",
-    color="seagreen",
+    linestyles="-.",
+    # add fake $$ to normalize line height
+    label="Perplexity full prefix $\,$",
+    color="dimgray",
 )
+# offset pp plots
+ax1.set_ylim(None, max(data_subl+data_subr)+0.5)
 
 # plot similarities
 ax2.plot(
     SIM_KEYS,
     [SIM_SUBL[k] for k in SIM_KEYS],
-    label="Similarity left crop",
+    # add fake $$ to normalize line height
+    label="Similarity left crop $\,$",
     linestyle=":",
-    marker=".", ms=10,
+    marker="o", ms=7,
 )
 ax2.plot(
     SIM_KEYS,
     [SIM_SUBR[k] for k in SIM_KEYS],
-    label="Similarity right crop",
+    # add fake $$ to normalize line height
+    label="Similarity right crop $\,$",
     linestyle=":",
-    marker=".", ms=10,
+    marker="^", ms=7,
 )
 
 plt.xticks(args.sub_k)
 h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
-LEGEND_PERM = [0, 1, 2, 4, 5, 3]
+LEGEND_PERM = [0, 1, 3, 4, 5, 2]
 
 plt.tight_layout(rect=(0, 0, 1, 0.78), pad=0.1)
 plt.legend(
     [(h1 + h2)[i] for i in LEGEND_PERM],
     [(l1 + l2)[i] for i in LEGEND_PERM],
     loc="upper left",
-    bbox_to_anchor=(0.07, 1.36),
+    bbox_to_anchor=(0, 1.36),
     ncol=2,
 )
 plt.savefig("figures/sub_feeders.pdf")

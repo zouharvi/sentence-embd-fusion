@@ -4,17 +4,20 @@ from misc.utils import read_json
 from argparse import ArgumentParser
 
 args = ArgumentParser()
-args.add_argument("logfile")
+args.add_argument("logfile", nargs="+")
 args = args.parse_args()
 
-data = read_json(args.logfile)
 
-min_i = None
-min_v = float('inf')
+for f in args.logfile:
+    print(f)
+    data = read_json(f)
 
-for line_i, line in enumerate(data):
-    if line["dev_pp"] < min_v:
-        min_i = line_i
-        min_v = line["dev_pp"]
+    min_i = None
+    min_v = float('inf')
 
-print(data[min_i])
+    for line_i, line in enumerate(data):
+        if line["dev_pp"] < min_v:
+            min_i = line_i
+            min_v = line["dev_pp"]
+
+    print(f"{min_i}/{len(data)}", data[min_i])

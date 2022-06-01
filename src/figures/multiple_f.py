@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import numpy as np
 import fig_utils
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 
 def aggregate_epochs(data):
     # average values across epochs
@@ -77,6 +79,7 @@ ax1.plot(
 )
 
 
+legend_handles = []
 for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     # train loss
     ax1.plot(
@@ -89,7 +92,6 @@ for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     ax2.plot(
         XTICKS[:len(data_fx)],
         [x["dev_pp"] for x in data_fx],
-        label=f"Dev PP{label}",
         linestyle="-",
         alpha=0.7,
     )
@@ -97,23 +99,34 @@ for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     ax2.scatter(
         XTICKS[:len(data_fx):10],
         [x["dev_pp"] for x in data_fx][::10],
-        marker=".",
-        alpha=0.8,
+        marker=fig_utils.MARKERS[i], s=50,
+        alpha=1,
     )
+
+    legend_handles.append(Line2D(
+        [0], [0],
+        marker=fig_utils.MARKERS[i], color=fig_utils.COLORS[i],
+        label=f"Dev PP{label}",
+        markersize=8
+    ))
+
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
 
 
 ax2.set_ylabel("Dev Perplexity")
 
+
+
 fig.legend(
+    handles=legend_handles,
     loc="upper center",
-    bbox_to_anchor=(0.5, 1.25),
+    bbox_to_anchor=(0.5, 1.2),
     bbox_transform=ax1.transAxes,
     ncol=2,
 )
 
-plt.tight_layout(rect=(0, 0, 1, 0.82), pad=0)
+plt.tight_layout(rect=(0, 0, 1, 0.84), pad=0)
 
 if args.filename:
     plt.savefig(args.filename)
