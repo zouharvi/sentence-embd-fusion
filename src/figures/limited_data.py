@@ -11,7 +11,7 @@ args = ArgumentParser()
 args.add_argument("--f0", nargs="+")
 args.add_argument("--f1", nargs="+")
 args.add_argument("--f3", nargs="+")
-args.add_argument("--f5", nargs="+")
+args.add_argument("--f6", nargs="+")
 args = args.parse_args()
 
 data_f0 = []
@@ -23,13 +23,13 @@ for f in args.f1:
 data_f3 = []
 for f in args.f3:
     data_f3.append(min([x["dev_pp"] for x in read_json(f)]))
-data_f5 = []
-for f in args.f5:
-    data_f5.append(min([x["dev_pp"] for x in read_json(f)]))
+data_f6 = []
+for f in args.f6:
+    data_f6.append(min([x["dev_pp"] for x in read_json(f)]))
 
 fig = plt.figure(figsize=(6.5, 4))
 
-XTICKS_Y = [1000, 2200, 4700, 9363, 17900, 32800, 58181, 100000]
+XTICKS_Y = [5000, 8000, 13000, 20000, 31000, 46000, 68000, 100000]
 XTICKS_LABELS = [f"{y/1000:.1f}k" for y in XTICKS_Y]
 XTICKS_X = list(range(len(XTICKS_Y)))
 PLOTARGS = {"ms": 8}
@@ -42,7 +42,7 @@ plt.plot(
     **PLOTARGS,
 )
 plt.plot(
-    XTICKS_Y, data_f1+[17]*3,
+    XTICKS_Y, data_f1,
     label="Concatenate final",
     marker=MARKERS[1],
     **PLOTARGS,
@@ -54,7 +54,7 @@ plt.plot(
     **PLOTARGS,
 )
 plt.plot(
-    XTICKS_Y, data_f5+[17]*3,
+    XTICKS_Y, data_f6,
     label="Hidden state",
     marker=MARKERS[3],
     **PLOTARGS,
