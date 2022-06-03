@@ -10,6 +10,7 @@ from fig_utils import *
 args = ArgumentParser()
 args.add_argument("--f0", nargs="+")
 args.add_argument("--f1", nargs="+")
+args.add_argument("--f2", nargs="+")
 args.add_argument("--f3", nargs="+")
 args.add_argument("--f6", nargs="+")
 args = args.parse_args()
@@ -20,6 +21,9 @@ for f in args.f0:
 data_f1 = []
 for f in args.f1:
     data_f1.append(min([x["dev_pp"] for x in read_json(f)]))
+data_f2 = []
+for f in args.f2:
+    data_f2.append(min([x["dev_pp"] for x in read_json(f)]))
 data_f3 = []
 for f in args.f3:
     data_f3.append(min([x["dev_pp"] for x in read_json(f)]))
@@ -36,7 +40,7 @@ PLOTARGS = {"ms": 8}
 
 plt.xscale('log')
 plt.plot(
-    XTICKS_Y, data_f0+[17]*3,
+    XTICKS_Y, data_f0,
     label="No fusion",
     marker=MARKERS[0],
     **PLOTARGS,
@@ -48,15 +52,21 @@ plt.plot(
     **PLOTARGS,
 )
 plt.plot(
-    XTICKS_Y, data_f3+[17]*3,
-    label="Multiply final",
+    XTICKS_Y, data_f2,
+    label="Add final",
     marker=MARKERS[2],
+    **PLOTARGS,
+)
+plt.plot(
+    XTICKS_Y, data_f3,
+    label="Multiply final",
+    marker=MARKERS[3],
     **PLOTARGS,
 )
 plt.plot(
     XTICKS_Y, data_f6,
     label="Hidden state",
-    marker=MARKERS[3],
+    marker=MARKERS[4],
     **PLOTARGS,
 )
 plt.minorticks_off()
@@ -65,16 +75,14 @@ plt.xticks(XTICKS_Y, XTICKS_LABELS)
 plt.ylabel("Dev Perplexity")
 plt.xlabel("Training data")
 
+plt.tight_layout(rect=(0, 0, 1, 0.80), pad=0)
 plt.legend(
     loc="upper left",
-    bbox_to_anchor=(0.17, 1.23),
+    bbox_to_anchor=(0.17, 1.3),
     ncol=2,
 )
-plt.tight_layout(rect=(0, 0, 1, 1.01), pad=0.3)
 plt.savefig("figures/limited_data.pdf")
 plt.show()
-
-
 
 # def powspace(start, stop, power, num):
 #     start = np.power(start, 1/float(power))

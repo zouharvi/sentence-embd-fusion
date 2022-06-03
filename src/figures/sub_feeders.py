@@ -72,7 +72,6 @@ ax2.set_ylabel("Similarity to whole prefix")
 ax1.set_xlabel("$k$")
 
 
-
 # plot similarities
 ax2.plot(
     SIM_KEYS,
@@ -92,8 +91,11 @@ ax2.plot(
 )
 
 # offset plots
-ax1.set_ylim(None, max(data_subl+data_subr)+0.5)
-ax2.set_ylim(min(min(SIM_SUBL.values()), min(SIM_SUBR.values()))-0.02)
+# ax1.set_ylim(None, max(data_subl+data_subr)+0.02)
+ax2.set_ylim(
+    min(min(SIM_SUBL.values()), min(SIM_SUBR.values())) - 0.02,
+    max(max(SIM_SUBL.values()), max(SIM_SUBR.values())) + 0.02,
+)
 
 plt.xticks(args.sub_k, [f"{x:.0%}" for x in args.sub_k])
 h1, l1 = ax1.get_legend_handles_labels()
