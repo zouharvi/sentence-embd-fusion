@@ -21,14 +21,14 @@
         computed/bert_cls-clover_68k-f1.json \
         computed/bert_cls-truetit-f1.json \
     --f2 \
-        computed/bert_cls-clover_5k-f1.json \
-        computed/bert_cls-clover_8k-f1.json \
-        computed/bert_cls-clover_13k-f1.json \
-        computed/bert_cls-clover_20k-f1.json \
-        computed/bert_cls-clover_31k-f1.json \
-        computed/bert_cls-clover_46k-f1.json \
-        computed/bert_cls-clover_68k-f1.json \
-        computed/bert_cls-truetit-f1.json \
+        computed/bert_cls-xbox_5k-f2.json \
+        computed/bert_cls-xbox_8k-f2.json \
+        computed/bert_cls-xbox_13k-f2.json \
+        computed/bert_cls-xbox_20k-f2.json \
+        computed/bert_cls-xbox_31k-f2.json \
+        computed/bert_cls-xbox_46k-f2.json \
+        computed/bert_cls-xbox_68k-f2.json \
+        computed/bert_cls-truephile-f2.json \
     --f3 \
         computed/bert_cls-voluble_5k-f3.json \
         computed/bert_cls-voluble_8k-f3.json \
