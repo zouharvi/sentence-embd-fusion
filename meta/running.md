@@ -1,34 +1,63 @@
 ## TODO
-- debug cross-domain
-- add "empty feeder"
-- cross-domain "self"
-- joint vocab with out of domain 
+- 
 
 ## Running/staged
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-31 may|110k|truemin|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 6 -nn truemin -mn bert_cls > runs/basic_truemin.log`|16|running
-31 may|110k|truephile|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 2 -nn truephile -mn bert_cls > runs/basic_truephile.log`|13|running
-31 may|110k|truecuum|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls > runs/basic_truecuum.log`|12|running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.25)-110k-p.embd" -f 1 -nn nimonic_l25 -mn bert_cls > "runs/basic_nimonic_(subl0.25).log"`|13|killed, running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.5)-110k-p.embd"  -f 1 -nn nimonic_l5  -mn bert_cls > "runs/basic_nimonic_(subl0.5).log"` |13|killed, running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.75)-110k-p.embd" -f 1 -nn nimonic_l75 -mn bert_cls > "runs/basic_nimonic_(subl0.75).log"`|12|killed, running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.25)-110k-p.embd" -f 1 -nn nimonic_r25 -mn bert_cls > "runs/basic_nimonic_(subr0.25).log"`|12|killed, running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.5)-110k-p.embd"  -f 1 -nn nimonic_r5  -mn bert_cls > "runs/basic_nimonic_(subr0.5).log"` |11|killed, running
-31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.75)-110k-p.embd" -f 1 -nn nimonic_r75 -mn bert_cls > "runs/basic_nimonic_(subr0.75).log"`|10|killed, running
-1 jun|110k|clover_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_5k -mn bert_cls -tn 5000 > runs/basic_clover_5k.log`|13|running
+31 may|110k|truecuum|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls > runs/basic_truecuum.log`|16|killed, running, todo z_fusions
 -|-|-|-|-|-|-
-1 jun|110k|clover_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_8k -mn bert_cls -tn 8000 > runs/basic_clover_8k.log`|??|to run
-1 jun|110k|clover_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_13k -mn bert_cls -tn 13000 > runs/basic_clover_13k.log`|??|to run
-1 jun|110k|clover_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_20k -mn bert_cls -tn 20000 > runs/basic_clover_20k.log`|??|to run
-1 jun|110k|clover_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_31k -mn bert_cls -tn 31000 > runs/basic_clover_31k.log`|??|to run
-1 jun|110k|clover_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_46k -mn bert_cls -tn 46000 > runs/basic_clover_46k.log`|??|to run
-1 jun|110k|clover_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_68k -mn bert_cls -tn 68000 > runs/basic_clover_68k.log`|??|to run
+3 jun|31+10k|haemal_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_31k -mn bert_cls -tn 31000 > runs/basic_haemal_31k.log`|16|killed, running
+3 jun|46+10k|haemal_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_46k -mn bert_cls -tn 46000 > runs/basic_haemal_46k.log`|15|killed, running
+3 jun|68+10k|haemal_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_68k -mn bert_cls -tn 68000 > runs/basic_haemal_68k.log`|15|killed, running
+-|-|-|-|-|-|-
+3 jun|31+10k|voluble_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_31k -mn bert_cls -tn 31000 > runs/basic_voluble_31k.log`|15|killed, running
+3 jun|46+10k|voluble_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_46k -mn bert_cls -tn 46000 > runs/basic_voluble_46k.log`|14|killed, running
+3 jun|68+10k|voluble_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_68k -mn bert_cls -tn 68000 > runs/basic_voluble_68k.log`|14|killed, running
+-|-|-|-|-|-|-
+3 jun|8+10k|xbox_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_8k -mn bert_cls -tn 8000 > runs/basic_xbox_8k.log`|13|killed, running
+3 jun|13+10k|xbox_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_13k -mn bert_cls -tn 13000 > runs/basic_xbox_13k.log`|13|killed, running
+3 jun|20+10k|xbox_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_20k -mn bert_cls -tn 20000 > runs/basic_xbox_20k.log`|13|killed, running
+3 jun|31+10k|xbox_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_31k -mn bert_cls -tn 31000 > runs/basic_xbox_31k.log`|12|killed, running
+3 jun|46+10k|xbox_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_46k -mn bert_cls -tn 46000 > runs/basic_xbox_46k.log`|11|killed, running
+3 jun|68+10k|xbox_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_68k -mn bert_cls -tn 68000 > runs/basic_xbox_68k.log`|10|killed, running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+3 jun|5+10k|xbox_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_5k -mn bert_cls -tn 5000 > runs/basic_xbox_5k.log`|8|ok (stopped)
+3 jun|20+10k|haemal_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_20k -mn bert_cls -tn 20000 > runs/basic_haemal_20k.log`|10|ok (stopped)
+3 jun|13+10k|haemal_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_13k -mn bert_cls -tn 13000 > runs/basic_haemal_13k.log`|10|ok (stopped)
+3 jun|8+10k|haemal_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_8k -mn bert_cls -tn 8000 > runs/basic_haemal_8k.log`|8|ok
+3 jun|20+10k|voluble_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_20k -mn bert_cls -tn 20000 > runs/basic_voluble_20k.log`|15|ok
+1 jun|68+10k|clover_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_68k -mn bert_cls -tn 68000 > runs/basic_clover_68k.log`|8|ok (Stopped)
+2 jun|68+10k|kora_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_68k -mn bert_cls -tn 68000 > runs/basic_kora_68k.log`|13|ok (stopped)
+3 jun|5+10k|haemal_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_5k -mn bert_cls -tn 5000 > runs/basic_haemal_5k.log`|8|ok
+3 jun|5+10k|voluble_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_5k -mn bert_cls -tn 5000 > runs/basic_voluble_5k.log`|13|ok
+3 jun|8+10k|voluble_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_8k -mn bert_cls -tn 8000 > runs/basic_voluble_8k.log`|13|ok
+3 jun|13+10k|voluble_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_13k -mn bert_cls -tn 13000 > runs/basic_voluble_13k.log`|15|ok
+31 may|110k|truemin|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 6 -nn truemin -mn bert_cls > runs/basic_truemin.log`|16|ok
+31 may|110k|truephile|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 2 -nn truephile -mn bert_cls > runs/basic_truephile.log`|13|ok
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.75)-110k-p.embd" -f 1 -nn nimonic_l75 -mn bert_cls > "runs/basic_nimonic_(subl0.75).log"`|12|killed, ok (stopped)
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.25)-110k-p.embd" -f 1 -nn nimonic_r25 -mn bert_cls > "runs/basic_nimonic_(subr0.25).log"`|12|killed, ok (stopped)
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.5)-110k-p.embd"  -f 1 -nn nimonic_r5  -mn bert_cls > "runs/basic_nimonic_(subr0.5).log"` |11|killed, ok (stopped)
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subr0.75)-110k-p.embd" -f 1 -nn nimonic_r75 -mn bert_cls > "runs/basic_nimonic_(subr0.75).log"`|10|killed, ok (stopped)
+1 jun|46+10k|clover_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_46k -mn bert_cls -tn 46000 > runs/basic_clover_46k.log`|8|ok (stopped)
+2 jun|5+10k|kora_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_5k -mn bert_cls -tn 5000 > runs/basic_kora_5k.log`|13|ok
+2 jun|8+10k|kora_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_8k -mn bert_cls -tn 8000 > runs/basic_kora_8k.log`|12|ok
+2 jun|13+10k|kora_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_13k -mn bert_cls -tn 13000 > runs/basic_kora_13k.log`|11|ok
+2 jun|20+10k|kora_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_20k -mn bert_cls -tn 20000 > runs/basic_kora_20k.log`|10|ok (stopped)
+2 jun|31+10k|kora_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_31k -mn bert_cls -tn 31000 > runs/basic_kora_31k.log`|8|ok (stopped)
+2 jun|46+10k|kora_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 6 -nn kora_46k -mn bert_cls -tn 46000 > runs/basic_kora_46k.log`|16|ok (stopped)
+2 jun|5+10k|tesera_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 5 -nn tesera_5k -mn bert_cls -tn 5000 > runs/basic_tesera_5k.log`|13|ok
+2 jun|5+10k|transom_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 5 -nn transom_5k -mn bert_cls -tn 5000 > runs/basic_transom_5k.log`|13|ok
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.5)-110k-p.embd"  -f 1 -nn nimonic_l5  -mn bert_cls > "runs/basic_nimonic_(subl0.5).log"` |13|killed, ok (stopped)
+31 may|110k|nimonic|sub feeder|`./src/run_model_basic.py -d "/data/sef/bert_cls_(subl0.25)-110k-p.embd" -f 1 -nn nimonic_l25 -mn bert_cls > "runs/basic_nimonic_(subl0.25).log"`|13|killed, ok (stopped)
+1 jun|31+10k|clover_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_31k -mn bert_cls -tn 31000 > runs/basic_clover_31k.log`|8|ok (stopped)
+1 jun|20+10k|clover_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_20k -mn bert_cls -tn 20000 > runs/basic_clover_20k.log`|10|ok (stopped)
+1 jun|13+10k|clover_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_13k -mn bert_cls -tn 13000 > runs/basic_clover_13k.log`|11|ok
+1 jun|8+10k|clover_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_8k -mn bert_cls -tn 8000 > runs/basic_clover_8k.log`|12|ok
+1 jun|5+10k|clover_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 1 -nn clover_5k -mn bert_cls -tn 5000 > runs/basic_clover_5k.log`|13|ok
 1, 20 may|100k|sadmate_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 0to1 -nn sadmate_1 -mn bert_cls -v 8192 > runs/dynamic_sadmate_1.log`|16, 15, 14, 12|ok, ok, stopped, ok
 1, 20 may|100k|skewedapple_1|dynamic|`./src/run_model_dynamic.py -d /data/sef/bert_cls-110k-p.embd -f 1 --ps 1to0 -nn skewedapple_1 -mn bert_cls -v 8192 > runs/dynamic_skewedapple_1.log`|16, 15, 14, 12|ok, ok, stopped, ok
 1, 13, 20 may|100k+10k|hector|cross|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/news_bert_cls-10k-p.embd -f 1 -nn hector_1 -mn bert_cls > runs/cross_hector_1.log`|12,16|stopped, ok
