@@ -5,7 +5,7 @@ from misc.utils import read_pickle
 import torch
 import torch.nn.functional as F
 import numpy as np
-from model_basic import LSTMModel
+from model_artefact import ArtefactModel
 
 torch.set_num_threads(10)
 
@@ -14,16 +14,13 @@ if __name__ == "__main__":
     args.add_argument("-d", "--data", default="/data/sef/missing.embd")
     args.add_argument("-d2", "--data-dev", default=None)
     args.add_argument("-f", "--fusion", type=int, default=0)
-    args.add_argument("-nn", "--nick-name", default="")
+    args.add_argument("-nn", "--nick-name", default="tmp")
     args.add_argument("-mn", "--model-name", default="bert")
     args.add_argument("-v", "--vocab-size", type=int, default=8192)
     args.add_argument("-e", "--epochs", type=int, default=100)
     args.add_argument("-tn", "--train-n", type=int, default=100000)
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
-
-    def encode_text(text):
-        return (F.one_hot(text, num_classes=args.vocab_size)).float()
 
     if args.data_dev is not None:
         data_train = read_pickle(args.data)
@@ -49,13 +46,11 @@ if __name__ == "__main__":
         for x in data_train
     ]
 
-    model = LSTMModel(
+    model = ArtefactModel(
         args.vocab_size, fusion=args.fusion,
-        hidden_size=args.hidden_size
     )
     model.train_loop(
         data_train, data_dev,
-        encode_text,
-        prefix=f"{args.model_name}-{args.nick_name}",
+        prefix=f"art_{args.model_name}-{args.nick_name}",
         epochs=args.epochs
     )

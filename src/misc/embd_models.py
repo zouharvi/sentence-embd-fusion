@@ -87,6 +87,14 @@ class SentenceBertWrap():
             raise Exception("Unknown type out")
 
 
+class NoneWrap():
+    def __init__(self):
+        pass
+
+    def embd(self, sentence):
+        return torch.zeros((768,)).numpy()
+
+
 class CountVectorizerWrap():
     def __init__(self, text):
         self.model = CountVectorizer(max_features=768)

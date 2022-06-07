@@ -5,26 +5,40 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-31 may|110k|truecuum|baseline|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls > runs/basic_truecuum.log`|16|killed, running, todo z_fusions
+31 may - 5 jun|110k|truecuum|baseline check convergence|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls -e 400 > runs/basic_truecuum.log`|16|killed, running, todo z_fusions
+5 jun|110k|truecuum|baseline clone (10 epochs behind)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum_2 -mn bert_cls -e 400 > runs/basic_truecuum_2.log`|13|running
 -|-|-|-|-|-|-
-3 jun|31+10k|haemal_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_31k -mn bert_cls -tn 31000 > runs/basic_haemal_31k.log`|16|killed, running
-3 jun|46+10k|haemal_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_46k -mn bert_cls -tn 46000 > runs/basic_haemal_46k.log`|15|killed, running
-3 jun|68+10k|haemal_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_68k -mn bert_cls -tn 68000 > runs/basic_haemal_68k.log`|15|killed, running
+3-5 jun|46+10k|xbox_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_46k -mn bert_cls -tn 46000 > runs/basic_xbox_46k.log`|11|killed, running
+3-5 jun|68+10k|xbox_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_68k -mn bert_cls -tn 68000 > runs/basic_xbox_68k.log`|10|killed, running
 -|-|-|-|-|-|-
-3 jun|31+10k|voluble_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_31k -mn bert_cls -tn 31000 > runs/basic_voluble_31k.log`|15|killed, running
-3 jun|46+10k|voluble_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_46k -mn bert_cls -tn 46000 > runs/basic_voluble_46k.log`|14|killed, running
-3 jun|68+10k|voluble_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_68k -mn bert_cls -tn 68000 > runs/basic_voluble_68k.log`|14|killed, running
+7 jun|110k|surety_bert_cls|artefact only|`./src/run_model_artefact.py -d "/data/sef/bert_cls-110k-p.embd" -nn surety -mn bert_cls > runs/art_surety_bert_cls.log`|15|running
+7 jun|110k|surety_none|artefact only|`./src/run_model_artefact.py -d "/data/sef/none-110k-p.embd" -nn surety -mn none > runs/art_surety_none.log`|14|running
+7 jun|110k|surety_count|artefact only|`./src/run_model_artefact.py -d "/data/sef/none-110k-p.embd" -nn surety -mn count > runs/art_surety_count.log`|14|running
+7 jun|110k|surety_bert_cls_f|artefact only|`./src/run_model_artefact.py -d "/data/sef/bert_cls-110k.embd" -nn surety -mn bert_cls_f > runs/art_surety_bert_cls_f.log`|?|to run
+7 jun|110k|surety_tfidf|artefact only|`./src/run_model_artefact.py -d "/data/sef/none-110k-p.embd" -nn surety -mn tfidf > runs/art_surety_tfidf.log`|?|to run
 -|-|-|-|-|-|-
-3 jun|8+10k|xbox_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_8k -mn bert_cls -tn 8000 > runs/basic_xbox_8k.log`|13|killed, running
-3 jun|13+10k|xbox_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_13k -mn bert_cls -tn 13000 > runs/basic_xbox_13k.log`|13|killed, running
-3 jun|20+10k|xbox_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_20k -mn bert_cls -tn 20000 > runs/basic_xbox_20k.log`|13|killed, running
-3 jun|31+10k|xbox_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_31k -mn bert_cls -tn 31000 > runs/basic_xbox_31k.log`|12|killed, running
-3 jun|46+10k|xbox_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_46k -mn bert_cls -tn 46000 > runs/basic_xbox_46k.log`|11|killed, running
-3 jun|68+10k|xbox_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_68k -mn bert_cls -tn 68000 > runs/basic_xbox_68k.log`|10|killed, running
+7 jun|110k|wilder|baseline cheat|`./src/run_model_basic.py -d /data/sef/bert_cls-110k.embd -f 1 -nn wilder -mn bert_cls > runs/basic_wilder.log`|14|running
+-|-|-|-|-|-|-
+7 jun|110k|tfidf|embd|`./src/misc/embd.py -n 110000 -m tfidf -p > runs/embd_tfidf.log`|15|running
+7 jun|110k|bert_avg|embd|`./src/misc/embd.py -n 110000 -m bert --type-out avg -p > runs/embd_bert_avg.log`|15|running
+7 jun|110k|sbert_cls|embd|`./src/misc/embd.py -n 110000 -m sbert --type-out cls -p > runs/embd_sbert_cls.log`|15|running
+7 jun|110k|sbert_avg|embd|`./src/misc/embd.py -n 110000 -m sbert --type-out avg -p > runs/embd_sbert_avg.log`|15|running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+7 jun|110k|none|embd|`./src/misc/embd.py -n 110000 -m none -p > runs/embd_none.log`|15|ok
+7 jun|110k|count|embd|`./src/misc/embd.py -n 110000 -m count -p > runs/embd_count.log`|15|ok
+3-5 jun|68+10k|voluble_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_68k -mn bert_cls -tn 68000 > runs/basic_voluble_68k.log`|14|killed, ok
+3-5 jun|68+10k|haemal_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_68k -mn bert_cls -tn 68000 > runs/basic_haemal_68k.log`|15|killed, ok
+3-5 jun|31+10k|xbox_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_31k -mn bert_cls -tn 31000 > runs/basic_xbox_31k.log`|12|killed, ok
+3-5 jun|46+10k|voluble_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_46k -mn bert_cls -tn 46000 > runs/basic_voluble_46k.log`|14|killed, ok
+3-5 jun|46+10k|haemal_46k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_46k -mn bert_cls -tn 46000 > runs/basic_haemal_46k.log`|15|killed, ok
+3-5 jun|31+10k|voluble_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 3 -nn voluble_31k -mn bert_cls -tn 31000 > runs/basic_voluble_31k.log`|15|killed, ok
+3-5 jun|20+10k|xbox_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_20k -mn bert_cls -tn 20000 > runs/basic_xbox_20k.log`|13|killed, ok
+3-5 jun|31+10k|haemal_31k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_31k -mn bert_cls -tn 31000 > runs/basic_haemal_31k.log`|16|killed, ok
+3-5 jun|13+10k|xbox_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_13k -mn bert_cls -tn 13000 > runs/basic_xbox_13k.log`|13|killed, ok
+3-5 jun|8+10k|xbox_8k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_8k -mn bert_cls -tn 8000 > runs/basic_xbox_8k.log`|13|killed, ok
 3 jun|5+10k|xbox_5k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_5k -mn bert_cls -tn 5000 > runs/basic_xbox_5k.log`|8|ok (stopped)
 3 jun|20+10k|haemal_20k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_20k -mn bert_cls -tn 20000 > runs/basic_haemal_20k.log`|10|ok (stopped)
 3 jun|13+10k|haemal_13k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 0 -nn haemal_13k -mn bert_cls -tn 13000 > runs/basic_haemal_13k.log`|10|ok (stopped)

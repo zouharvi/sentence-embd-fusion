@@ -7,7 +7,7 @@ from nltk import sent_tokenize
 from tqdm import tqdm
 from argparse import ArgumentParser
 from bpe import Encoder
-from embd_models import BertWrap, SentenceBertWrap, CountVectorizerWrap, TfIdfVectorizerWrap
+from embd_models import BertWrap, SentenceBertWrap, CountVectorizerWrap, TfIdfVectorizerWrap, NoneWrap
 from embd_feeder import get_feeder
 from pathlib import Path
 
@@ -95,6 +95,8 @@ if __name__ == "__main__":
         model = CountVectorizerWrap(text=sentences)
     elif args.model in {"tfidf"}:
         model = TfIdfVectorizerWrap(text=sentences)
+    elif args.model in {"none"}:
+        model = NoneWrap()
 
     sentences = ["BOS " + x + " EOS" for x in sentences]
     print(
