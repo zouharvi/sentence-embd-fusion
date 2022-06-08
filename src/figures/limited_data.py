@@ -31,7 +31,7 @@ data_f6 = []
 for f in args.f6:
     data_f6.append(min([x["dev_pp"] for x in read_json(f)]))
 
-fig = plt.figure(figsize=(6.5, 4))
+fig = plt.figure(figsize=(6.5, 4.5))
 ax1 = fig.gca()
 
 XTICKS_Y = [5000, 8000, 13000, 20000, 31000, 46000, 68000, 100000]
@@ -86,9 +86,10 @@ ax2.set_xscale('log')
 plot_to_axis(ax2, slice(-1, None))
 ax2.get_xaxis().set_visible(False)
 # fake limits for inset zoom
-ax2.set_xlim(XTICKS_Y[-1] - 7000, XTICKS_Y[-1] + 8000)
+ax2.set_xlim(XTICKS_Y[-1] - 7100, XTICKS_Y[-1] + 8100)
 ax2.set_ylim(14.6, 18)
-ax1.indicate_inset_zoom(ax2, edgecolor="black")
+_patch, lines = ax1.indicate_inset_zoom(ax2, edgecolor="black", linestyle="--")
+[l.set(visible=False) for l in lines]
 # true limits
 ax2.set_ylim(15.6, 17)
 ax2.set_yticks([16, 17])
@@ -98,23 +99,39 @@ ax3.set_xscale('log')
 plot_to_axis(ax3, slice(-2, -1))
 ax3.get_xaxis().set_visible(False)
 # fake limits for inset zoom
-ax3.set_xlim(XTICKS_Y[-2] - 5000, XTICKS_Y[-2] + 6000)
-ax3.set_ylim(16.5, 20.5)
-ax1.indicate_inset_zoom(ax3, edgecolor="black")
+ax3.set_xlim(XTICKS_Y[-2] - 5500, XTICKS_Y[-2] + 6000)
+ax3.set_ylim(16.5, 19.5)
+_patch, lines = ax1.indicate_inset_zoom(ax3, edgecolor="black", linestyle="--")
+[l.set(visible=False) for l in lines]
 # true limits
-ax3.set_ylim(17, 20)
+ax3.set_ylim(17, 19)
+ax3.set_yticks([17, 18, 19])
 
 ax4 = ax1.inset_axes([0.694, 0.35, 0.05, 0.6])
 ax4.set_xscale('log')
 plot_to_axis(ax4, slice(-3, -2))
 ax4.get_xaxis().set_visible(False)
 # fake limits for inset zoom
-ax4.set_xlim(XTICKS_Y[-3] - 3700, XTICKS_Y[-3] + 4000)
+ax4.set_xlim(XTICKS_Y[-3] - 3650, XTICKS_Y[-3] + 4000)
 ax4.set_ylim(18, 22)
-ax1.indicate_inset_zoom(ax4, edgecolor="black")
+_patch, lines = ax1.indicate_inset_zoom(ax4, edgecolor="black", linestyle="--")
+[l.set(visible=False) for l in lines]
 # true limits
-ax4.set_ylim(19, 22)
+ax4.set_ylim(18.5, 22)
 ax4.set_yticks([19, 20, 21])
+
+ax5 = ax1.inset_axes([0.574, 0.35, 0.05, 0.6])
+ax5.set_xscale('log')
+plot_to_axis(ax5, slice(-4, -3))
+ax5.get_xaxis().set_visible(False)
+# fake limits for inset zoom
+ax5.set_xlim(XTICKS_Y[-4] - 2500, XTICKS_Y[-4] + 2600)
+ax5.set_ylim(19, 24)
+_patch, lines = ax1.indicate_inset_zoom(ax5, edgecolor="black", linestyle="--")
+[l.set(visible=False) for l in lines]
+# true limits
+ax5.set_ylim(19, 24)
+ax5.set_yticks([20, 21, 22, 23])
 
 
 plt.tight_layout(rect=(0, 0, 1, 0.80), pad=0)

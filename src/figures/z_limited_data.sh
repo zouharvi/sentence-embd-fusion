@@ -37,7 +37,7 @@
         computed/bert_cls-voluble_31k-f3.json \
         computed/bert_cls-voluble_46k-f3.json \
         computed/bert_cls-voluble_68k-f3.json \
-        computed/bert_cls-truecuum-f3.json \
+        computed/bert_cls-truecuum_2-f3.json \
     --f6 \
         computed/bert_cls-kora_5k-f6.json \
         computed/bert_cls-kora_8k-f6.json \
