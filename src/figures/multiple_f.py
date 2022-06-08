@@ -82,6 +82,7 @@ ax1.plot(
 
 
 legend_handles = []
+legend_handle_loss = None
 for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     # train loss
     ax1.plot(
@@ -108,19 +109,22 @@ for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     legend_handles.append(Line2D(
         [0], [0],
         marker=fig_utils.MARKERS[i], color=fig_utils.COLORS[i],
-        label=f"Dev PP{label}",
+        label=label,
         markersize=8
     ))
+    legend_handle_loss = Line2D(
+        [0], [0],
+        color=fig_utils.COLORS[i],
+        label="Train loss", linestyle=":",
+    )
 
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
-
-
 ax2.set_ylabel("Dev Perplexity")
 
 
 fig.legend(
-    handles=legend_handles,
+    handles=legend_handles+[legend_handle_loss],
     loc="upper center",
     bbox_to_anchor=(0.5, 1.2 + args.legend_y),
     bbox_transform=ax1.transAxes,

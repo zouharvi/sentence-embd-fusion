@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
+
+import numpy as np
 sys.path.append("src")
 from misc.utils import read_json
 from argparse import ArgumentParser
@@ -72,7 +74,6 @@ ax2.set_ylabel("Similarity to whole prefix")
 ax1.set_xlabel("$k$")
 
 
-
 # plot similarities
 ax2.plot(
     SIM_KEYS,
@@ -92,10 +93,14 @@ ax2.plot(
 )
 
 # offset plots
-ax1.set_ylim(None, max(data_subl+data_subr)+0.5)
-ax2.set_ylim(min(min(SIM_SUBL.values()), min(SIM_SUBR.values()))-0.02)
+# ax1.set_ylim(None, max(data_subl+data_subr)+0.02)
+ax2.set_ylim(
+    min(min(SIM_SUBL.values()), min(SIM_SUBR.values())) - 0.02,
+    max(max(SIM_SUBL.values()), max(SIM_SUBR.values())) + 0.04,
+)
+ax2.set_yticks(list(np.linspace(0.88, 1.0, 5)))
 
-plt.xticks(args.sub_k, [f"{x:.0%}" for x in args.sub_k])
+ax1.set_xticks(args.sub_k, [f"{x:.0%}" for x in args.sub_k])
 h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
 LEGEND_PERM = [2, 3, 0, 4, 5, 1]
