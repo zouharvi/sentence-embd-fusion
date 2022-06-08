@@ -91,7 +91,7 @@ class ArtefactModel(torch.nn.Module):
                     })
 
                     save_json(
-                        f"computed/art_{prefix}-f{self.fusion}.json",
+                        f"computed/{prefix}-f{self.fusion}.json",
                         logdata
                     )
                     losses_train = []

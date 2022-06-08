@@ -53,7 +53,7 @@ if __name__ == "__main__":
         name_str = args.model
 
     if args.feeder is not None:
-        assert args.feeder_k is not None
+        assert args.feeder_k is not None or (args.feeder not in {"subl", "subr"})
         name_str = f"{name_str}_({args.feeder}{args.feeder_k})"
 
     if args.dataset != "wikitext":
@@ -118,10 +118,13 @@ if __name__ == "__main__":
     sentences_embd = []
 
     for sent, sent_bpe_num, sent_subs in tqdm(sentences, miniters=1000, total=args.n):
+        # for clarity, this could be done via a feeder function and not here via tiling
+        # this would however either make non-prefix runs much slower (via duplication)
+        # or the feeders more complex
         if not args.prefix:
             output = np.tile(
                 model.embd(sent),
-                (len(sent_subs) - 1, 1)
+                (len(sent_subs), 1)
             )
         else:
             output = [
