@@ -5,16 +5,17 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
-31 may - 5 jun|110k|truecuum|baseline check convergence|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls -e 400 > runs/basic_truecuum.log`|16|killed, running, todo z_fusions
-5 jun|110k|truecuum|baseline clone (10 epochs behind)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum_2 -mn bert_cls -e 400 > runs/basic_truecuum_2.log`|13|running
--|-|-|-|-|-|-
-7 jun|110k|vastness_sbert_cls|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_cls-110k-p.embd" -f 1 -nn vastness -mn sbert_cls > runs/vastness_sbert_cls.log`|15,13|died, running
-7 jun|110k|vastness_sbert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness -mn sbert_avg > runs/vastness_sbert_avg.log`|12|running
-7 jun|110k|vastness_sbert_avg|spec artefact clone (4 epochs behind)|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness_2 -mn sbert_avg > runs/vastness_sbert_avg_1.log`|8|running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+14 jun|100k+2|fountain|vocab shift|`./src/run_model_artefact.py -d /data/sef/bert_cls-110k.embd -d2 /data/sef/moctezuma_bert_cls-2.embd -nn fountain -mn bert_cls --encoder /data/sef/s110k-v8192.enc_pkl --prob-file computed/moctezuma_full_probs.json`|8|ok (stopped)
+14 jun|100k+2|fountain|vocab shift|`./src/run_model_artefact.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/moctezuma_bert_cls-2-p.embd -nn fountain -mn bert_cls --encoder /data/sef/s110k-v8192.enc_pkl --prob-file computed/moctezuma_prefix_probs.json`|8|ok (stopped)
+31 may - 5 jun|110k|truecuum|baseline check convergence|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls -e 400 > runs/basic_truecuum.log`|16|killed, running, ok
+5 jun|110k|truecuum|baseline clone (10 epochs behind)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum_2 -mn bert_cls -e 400 > runs/basic_truecuum_2.log`|13|ok
+7 jun|110k|vastness_sbert_cls|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_cls-110k-p.embd" -f 1 -nn vastness -mn sbert_cls > runs/vastness_sbert_cls.log`|15,13|died, ok
+7 jun|110k|vastness_sbert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness -mn sbert_avg > runs/vastness_sbert_avg.log`|12|ok
+7 jun|110k|vastness_sbert_avg|spec artefact clone (4 epochs behind)|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness_2 -mn sbert_avg > runs/vastness_sbert_avg_1.log`|8|ok (deleted)
 7 jun|110k|vastness_count|spec artefact|`./src/run_model_basic.py -d "/data/sef/count-110k-p.embd" -f 1 -nn vastness -mn count > runs/vastness_count.log`|11|ok (stopped)
 7 jun|110k|vastness_sbert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_cls_lr-110k-p.embd" -f 1 -nn vastness -mn bert_cls_lr > runs/vastness_bert_cls_lr.log`|13|ok (stopped)
 7 jun|110k|vastness_tfidf|spec artefact|`./src/run_model_basic.py -d "/data/sef/tfidf-110k-p.embd" -f 1 -nn vastness -mn tfidf > runs/vastness_tfidf.log`|12|ok (stopped)

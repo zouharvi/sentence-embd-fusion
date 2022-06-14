@@ -14,17 +14,22 @@ from pathlib import Path
 
 def get_dataset_data(dataset, n, args=None):
     if dataset == "wikitext":
-        dataset = load_dataset("wikitext", "wikitext-103-v1")
+        dataset = load_dataset("wikitext", "wikitext-103-v1")["train"][:n]["text"]
     elif dataset in {"bookcorpus", "books"}:
-        dataset = load_dataset("bookcorpus")
+        dataset = load_dataset("bookcorpus")["train"][:n]["text"]
     elif dataset in {"cc_news", "news"}:
-        dataset = load_dataset("cc_news")
+        dataset = load_dataset("cc_news")["train"][:n]["text"]
+    elif dataset in {"moctezuma", "custom"}:
+        dataset = [
+            "Moctezuma finally faced the conquistadors.",
+            "The actor finally faced the camera.",
+        ]
 
-    print(len(dataset["train"]), "total paragraphs")
+    print(len(dataset), "total paragraphs")
     sentences = []
 
     # this assumes that every line has at least one sentence
-    for sent in tqdm(dataset["train"][:n]["text"]):
+    for sent in tqdm(dataset):
         sentences += sent_tokenize(sent)
 
     return sentences
@@ -53,7 +58,8 @@ if __name__ == "__main__":
         name_str = args.model
 
     if args.feeder is not None:
-        assert args.feeder_k is not None or (args.feeder not in {"subl", "subr"})
+        assert args.feeder_k is not None or (
+            args.feeder not in {"subl", "subr"})
         name_str = f"{name_str}_({args.feeder}{args.feeder_k})"
 
     if args.dataset != "wikitext":

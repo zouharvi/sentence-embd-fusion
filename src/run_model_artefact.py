@@ -13,12 +13,14 @@ if __name__ == "__main__":
     args = ArgumentParser()
     args.add_argument("-d", "--data", default="/data/sef/missing.embd")
     args.add_argument("-d2", "--data-dev", default=None)
-    args.add_argument("-f", "--fusion", type=int, default=0)
+    args.add_argument("-m", "--model", type=int, default=0)
     args.add_argument("-nn", "--nick-name", default="tmp")
     args.add_argument("-mn", "--model-name", default="bert")
     args.add_argument("-v", "--vocab-size", type=int, default=8192)
     args.add_argument("-e", "--epochs", type=int, default=100)
     args.add_argument("-tn", "--train-n", type=int, default=100000)
+    args.add_argument("--encoder", default=None)
+    args.add_argument("--prob-file", default=None)
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
 
@@ -32,25 +34,31 @@ if __name__ == "__main__":
         data_train = data[:args.train_n]
         data_dev = data[-10000:]
 
-    print(f"Loaded {len(data)}")
     print(f"Using {len(data_train)} for training")
     print(f"Using {len(data_dev)} for dev")
 
     data_dev = [
-        (torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
+        (x[0], torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
         for x in data_dev
     ]
 
     data_train = [
-        (torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
+        (x[0], torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
         for x in data_train
     ]
 
+    if args.encoder is not None:
+        encoder = read_pickle(args.encoder)
+    else:
+        encoder = None
+
     model = ArtefactModel(
-        args.vocab_size, fusion=args.fusion,
+        args.vocab_size, model_arch=args.model,
+        encoder=encoder,
     )
     model.train_loop(
         data_train, data_dev,
         prefix=f"art_{args.model_name}-{args.nick_name}",
-        epochs=args.epochs
+        epochs=args.epochs,
+        prob_file=args.prob_file,
     )
