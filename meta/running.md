@@ -8,22 +8,23 @@
 31 may - 5 jun|110k|truecuum|baseline check convergence|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls -e 400 > runs/basic_truecuum.log`|16|killed, running, todo z_fusions
 5 jun|110k|truecuum|baseline clone (10 epochs behind)|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum_2 -mn bert_cls -e 400 > runs/basic_truecuum_2.log`|13|running
 -|-|-|-|-|-|-
-8 jun|110k|surety_bert_avg|artefact only|`./src/run_model_artefact.py -d "/data/sef/bert_avg-110k-p.embd" -nn surety -mn bert_avg > runs/art_surety_bert_avg.log`|10|running
-8 jun|110k|surety_sbert_cls|artefact only|`./src/run_model_artefact.py -d "/data/sef/sbert_cls-110k-p.embd" -nn surety -mn sbert_cls > runs/art_surety_sbert_cls.log`|10|running
-8 jun|110k|surety_sbert_avg|artefact only|`./src/run_model_artefact.py -d "/data/sef/sbert_avg-110k-p.embd" -nn surety -mn sbert_avg > runs/art_surety_sbert_avg.log`|13|running
--|-|-|-|-|-|-
-7 jun|110k|vastness_tfidf|spec artefact|`./src/run_model_basic.py -d "/data/sef/tfidf-110k-p.embd" -f 1 -nn vastness -mn tfidf > runs/vastness_tfidf.log`|12|running
-7 jun|110k|vastness_count|spec artefact|`./src/run_model_basic.py -d "/data/sef/count-110k-p.embd" -f 1 -nn vastness -mn count > runs/vastness_count.log`|11|running
-7 jun|110k|vastness_bert_cls_f|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k.embd" -f 1 -nn vastness -mn bert_cls_f > runs/vastness_bert_cls_f.log`|14|running
-7 jun|110k|vastness_bert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_avg-110k-p.embd" -f 1 -nn vastness -mn bert_avg > runs/vastness_bert_avg.log`|15|running
-7 jun|110k|vastness_sbert_cls|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_cls-110k-p.embd" -f 1 -nn vastness -mn sbert_cls > runs/vastness_sbert_cls.log`|15|running
+7 jun|110k|vastness_sbert_cls|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_cls-110k-p.embd" -f 1 -nn vastness -mn sbert_cls > runs/vastness_sbert_cls.log`|15,13|died, running
 7 jun|110k|vastness_sbert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness -mn sbert_avg > runs/vastness_sbert_avg.log`|12|running
 7 jun|110k|vastness_sbert_avg|spec artefact clone (4 epochs behind)|`./src/run_model_basic.py -d "/data/sef/sbert_avg-110k-p.embd" -f 1 -nn vastness_2 -mn sbert_avg > runs/vastness_sbert_avg_1.log`|8|running
-7 jun|110k|bert_avg|embd|`./src/misc/embd.py -n 110000 -m bert --feeder lrcontext -p > runs/embd_bert_lrcontext.log`|10|running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+7 jun|110k|vastness_count|spec artefact|`./src/run_model_basic.py -d "/data/sef/count-110k-p.embd" -f 1 -nn vastness -mn count > runs/vastness_count.log`|11|ok (stopped)
+7 jun|110k|vastness_sbert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_cls_lr-110k-p.embd" -f 1 -nn vastness -mn bert_cls_lr > runs/vastness_bert_cls_lr.log`|13|ok (stopped)
+7 jun|110k|vastness_tfidf|spec artefact|`./src/run_model_basic.py -d "/data/sef/tfidf-110k-p.embd" -f 1 -nn vastness -mn tfidf > runs/vastness_tfidf.log`|12|ok (stopped)
+8 jun|110k|surety_bert_cls_lrcontext|artefact only|`./src/run_model_artefact.py -d "/data/sef/bert_cls_lr-110k-p.embd" -nn surety -mn bert_cls_lr > runs/art_surety_bert_cls_lr.log`|13|ok
+7 jun|110k|vastness_bert_avg|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_avg-110k-p.embd" -f 1 -nn vastness -mn bert_avg > runs/vastness_bert_avg.log`|15|ok
+7 jun|110k|vastness_bert_cls_f|spec artefact|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k.embd" -f 1 -nn vastness -mn bert_cls_f > runs/vastness_bert_cls_f.log`|14|ok
+7 jun|110k|bert_avg|embd|`./src/misc/embd.py -n 110000 -m bert --feeder lrcontext -p > runs/embd_bert_lrcontext.log`|10|ok
+8 jun|110k|surety_bert_avg|artefact only|`./src/run_model_artefact.py -d "/data/sef/bert_avg-110k-p.embd" -nn surety -mn bert_avg > runs/art_surety_bert_avg.log`|10|ok (stopped)
+8 jun|110k|surety_sbert_cls|artefact only|`./src/run_model_artefact.py -d "/data/sef/sbert_cls-110k-p.embd" -nn surety -mn sbert_cls > runs/art_surety_sbert_cls.log`|10|ok (stopped)
+8 jun|110k|surety_sbert_avg|artefact only|`./src/run_model_artefact.py -d "/data/sef/sbert_avg-110k-p.embd" -nn surety -mn sbert_avg > runs/art_surety_sbert_avg.log`|13|ok (stopped)
 3-5 jun|68+10k|xbox_68k|limited data|`./src/run_model_basic.py -d "/data/sef/bert_cls-110k-p.embd" -f 2 -nn xbox_68k -mn bert_cls -tn 68000 > runs/basic_xbox_68k.log`|10|killed, ok (stopped)
 7 jun|110k|bert_avg|embd|`./src/misc/embd.py -n 110000 -m bert --type-out avg -p > runs/embd_bert_avg.log`|15|ok
 7 jun|110k|sbert_cls|embd|`./src/misc/embd.py -n 110000 -m sbert --type-out cls -p > runs/embd_sbert_cls.log`|15|ok

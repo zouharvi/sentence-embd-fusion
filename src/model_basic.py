@@ -48,6 +48,13 @@ class LSTMModel(torch.nn.Module):
         self.optimizer = torch.optim.Adam(self.parameters(), lr=10e-6)
 
         self.to(DEVICE)
+
+        par_count_0 = sum(p.numel() for p in self.model_dense.parameters())
+        par_count_1 = sum(p.numel() for p in self.model_rnn.parameters())
+        par_count_2 = sum(p.numel() for p in self.model_embd_in.parameters())
+        par_count_3 = sum(p.numel() for p in self.model_embd_out.parameters())
+        print("Trainable parameters:", par_count_0, par_count_1, par_count_2, par_count_3)
+        print("Trainable parameters total:", par_count_0 + par_count_1 + par_count_2 + par_count_3)
         
 
     def forward(self, x, x_embd):
