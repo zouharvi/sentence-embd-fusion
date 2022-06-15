@@ -19,7 +19,7 @@ for l in tqdm(data):
     prev_token = l[0]
     sent_w.append(l[0])
     sent_p.append(float(l[1]))
-    if l[0].endswith("."):
+    if l[0].endswith(".") or l[0].endswith("?"):
         sents.append((sent_w, sent_p))
         sent_w = []
         sent_p = []
