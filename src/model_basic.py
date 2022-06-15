@@ -141,10 +141,10 @@ class LSTMModel(torch.nn.Module):
 
                 # special natural stories experiment
                 if data_ns is not None:
-                    # print()
-                    # print(sample_txt)
                     sent_probs = defaultdict(lambda: list())
                     # BOS is already cropped, crop EOS as well
+                    # this loop is slow and could be sped up with vectorization but it's only ~500 sentences
+                    # so the small speed gain is not worth the time & safety risk investment
                     for word_bpe, word_out, word_align in zip(sample_num[1:-1], out[:-1], data_ns[sent_i][2]):
                         # generate negative log likelihood
                         probs = -torch.log2(torch.softmax(word_out, 0))

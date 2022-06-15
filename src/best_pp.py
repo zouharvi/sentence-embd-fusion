@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 
 args = ArgumentParser()
 args.add_argument("logfile", nargs="+")
+args.add_argument("--corr", action="store_true")
 args = args.parse_args()
 
 
@@ -12,12 +13,20 @@ for f in args.logfile:
     print(f)
     data = read_json(f)
 
-    min_i = None
-    min_v = float('inf')
+    best_i = None
+    if args.corr:
+        best_v = float('-inf')
+    else:
+        best_v = float('inf')
 
     for line_i, line in enumerate(data):
-        if line["dev_pp"] < min_v:
-            min_i = line_i
-            min_v = line["dev_pp"]
+        if args.corr:
+            if line["rt_corr"] > best_v:
+                best_i = line_i
+                best_v = line["rt_corr"]
+        else:
+            if line["dev_pp"] < best_v:
+                best_i = line_i
+                best_v = line["dev_pp"]
 
-    print("!" if min_i+1 == len(data) else " ", f"{min_i+1}/{len(data)}", data[min_i], "\n")
+    print("!" if best_i+1 == len(data) else " ", f"{best_i+1}/{len(data)}", data[best_i], "\n")
