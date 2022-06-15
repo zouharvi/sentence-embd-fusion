@@ -104,7 +104,7 @@ data_count = [
 
 print("last data_count", data_count[-1])
 
-fig = plt.figure(figsize=(5.9, 4))
+fig = plt.figure(figsize=(5.9, 3.2))
 ax1 = fig.gca()
 ax2 = ax1.twinx()
 
@@ -140,11 +140,11 @@ ax2.scatter(
 
 fig.legend(
     loc="upper center",
-    bbox_to_anchor=(0.52, 1.14),
+    bbox_to_anchor=(0.52, 1.2),
     bbox_transform=ax1.transAxes,
     ncol=3,
 )
 
-plt.tight_layout(rect=(0, 0, 1, 0.9), pad=0)
+plt.tight_layout(rect=(0, 0, 1, 0.88), pad=0)
 plt.savefig("figures/embd_sim.pdf")
 plt.show()

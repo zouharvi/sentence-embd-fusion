@@ -31,9 +31,11 @@ for f in args.subr:
 pp_f0 = data_subl[-1]
 pp_f1 = data_subl[0]
 
-fig = plt.figure(figsize=(6.5, 4))
-ax1 = plt.gca()
-ax2 = ax1.twinx()
+_fig, ax = plt.subplots(1, 2, figsize=(9, 4), gridspec_kw={'width_ratios': [2.5, 1]})
+ax1 = ax[0]
+ax2 = ax[1]
+ax2.yaxis.set_label_position("right")
+ax2.yaxis.tick_right()
 
 # plot first so that they're behind more complex lines
 # this should be the same as subl with k=0 or subr with k=1
@@ -72,6 +74,7 @@ ax1.plot(
 ax1.set_ylabel("Dev Perplexity")
 ax2.set_ylabel("Similarity to whole prefix")
 ax1.set_xlabel("$k$")
+ax2.set_xlabel("$k$")
 
 
 # plot similarities
@@ -92,26 +95,28 @@ ax2.plot(
     marker="^", ms=7,
 )
 
-# offset plots
-# ax1.set_ylim(None, max(data_subl+data_subr)+0.02)
-ax2.set_ylim(
-    min(min(SIM_SUBL.values()), min(SIM_SUBR.values())) - 0.02,
-    max(max(SIM_SUBL.values()), max(SIM_SUBR.values())) + 0.04,
-)
 ax2.set_yticks(list(np.linspace(0.88, 1.0, 5)))
-
 ax1.set_xticks(args.sub_k, [f"{x:.0%}" for x in args.sub_k])
+ax2.set_xticks(args.sub_k[1:-1], [f"{x:.0%}" for x in args.sub_k[1:-1]])
+
 h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
 LEGEND_PERM = [2, 3, 0, 4, 5, 1]
 
-plt.tight_layout(rect=(0, 0, 1, 0.78), pad=0.1)
-plt.legend(
-    [(h1 + h2)[i] for i in LEGEND_PERM],
-    [(l1 + l2)[i] for i in LEGEND_PERM],
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.01, hspace=None)
+
+ax1.legend(
+    h1, l1,
     loc="upper left",
-    bbox_to_anchor=(-0.015, 1.36),
+    bbox_to_anchor=(-0.011, 1.26),
     ncol=2,
 )
+ax2.legend(
+    h2, l2,
+    loc="upper left",
+    bbox_to_anchor=(0.016, 1.26),
+    ncol=1,
+)
+plt.tight_layout(rect=(0, 0, 1, 1.01), pad=0)
 plt.savefig("figures/sub_feeders.pdf")
 plt.show()

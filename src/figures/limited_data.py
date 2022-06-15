@@ -31,7 +31,7 @@ data_f6 = []
 for f in args.f6:
     data_f6.append(min([x["dev_pp"] for x in read_json(f)]))
 
-fig = plt.figure(figsize=(6.5, 4.5))
+fig = plt.figure(figsize=(9, 4.5))
 ax1 = fig.gca()
 
 XTICKS_Y = [5000, 8000, 13000, 20000, 31000, 46000, 68000, 100000]
@@ -134,12 +134,13 @@ ax5.set_ylim(19, 24)
 ax5.set_yticks([20, 21, 22, 23])
 
 
-plt.tight_layout(rect=(0, 0, 1, 0.80), pad=0)
 plt.legend(
-    loc="upper left",
-    bbox_to_anchor=(0.17, 1.3),
-    ncol=2,
+    loc="upper center",
+    bbox_to_anchor=(1.2, 1),
+    bbox_transform=ax1.transAxes,
+    ncol=1,
 )
+plt.tight_layout(rect=(0, 0, 1, 1), pad=0)
 plt.savefig("figures/limited_data.pdf")
 plt.show()
 

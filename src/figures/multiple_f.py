@@ -41,7 +41,6 @@ for i in range(6 + 1):
 args.add_argument("--filename", default=None)
 args.add_argument("--start-i", type=int, default=1)
 args.add_argument("--end-i", type=int, default=None)
-args.add_argument("--legend-y", type=float, default=0)
 args = args.parse_args()
 
 ARGS_LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
@@ -57,7 +56,7 @@ data_all = [
             ]
 print(*[len(data_fx) for data_fx in data_all])
 
-fig = plt.figure(figsize=(7, 5.0))
+fig = plt.figure(figsize=(9, 4.5))
 
 
 ax2 = fig.gca()
@@ -126,12 +125,12 @@ ax2.set_ylabel("Dev Perplexity")
 fig.legend(
     handles=legend_handles+[legend_handle_loss],
     loc="upper center",
-    bbox_to_anchor=(0.5, 1.2 + args.legend_y),
+    bbox_to_anchor=(1.2, 1),
     bbox_transform=ax1.transAxes,
-    ncol=2,
+    ncol=1,
 )
 
-plt.tight_layout(rect=(0, 0, 1, 0.84), pad=0)
+plt.tight_layout(rect=(0, 0, 0.8, 1), pad=0)
 
 if args.filename:
     plt.savefig(args.filename)
