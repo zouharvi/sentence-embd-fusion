@@ -24,6 +24,11 @@ def get_dataset_data(dataset, n, args=None):
             "Moctezuma finally faced the conquistadors.",
             "The actor finally faced the camera.",
         ]
+    elif dataset in {"ns", "natural_stories"}:
+        dataset = read_pickle("data/natural_stories.pkl")
+        dataset = [" ".join(sent_w) for sent_w, sent_p in dataset]
+        print(dataset[0])
+
 
     print(len(dataset), "total paragraphs")
     sentences = []
