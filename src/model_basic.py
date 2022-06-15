@@ -3,14 +3,16 @@ import torch
 from tqdm import tqdm
 from misc.utils import get_device, save_json
 import torch.nn.functional as F
+from collections import defaultdict
 
 DEVICE = get_device()
 
 
 class LSTMModel(torch.nn.Module):
-    def __init__(self, vocab_size, fusion=0, hidden_size=768, embd_size=512):
+    def __init__(self, vocab_size, fusion=0, hidden_size=768, embd_size=512, encoder=None):
         super().__init__()
 
+        self.encoder = encoder
         self.fusion = fusion
         self.model_rnn = torch.nn.LSTM(
             input_size=embd_size, hidden_size=hidden_size,
@@ -120,11 +122,13 @@ class LSTMModel(torch.nn.Module):
 
         return sample
 
-    def eval_dev(self, data_dev, encode_text):
+    def eval_dev(self, data_dev, encode_text, data_ns=None):
         self.train(False)
         losses_dev = []
+        ns_rt_all = []
+        ns_prob_all = []
         with torch.no_grad():
-            for sample_num, sent_embd in tqdm(data_dev):
+            for sent_i, (sample_txt, sample_num, sent_embd) in enumerate(tqdm(data_dev)):
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
@@ -135,17 +139,40 @@ class LSTMModel(torch.nn.Module):
                 loss = self.loss_without_reduce(out, sample_next)
                 losses_dev += loss.detach().cpu().tolist()
 
+                # special natural stories experiment
+                if data_ns is not None:
+                    # print()
+                    # print(sample_txt)
+                    sent_probs = defaultdict(lambda: list())
+                    # BOS is already cropped, crop EOS as well
+                    for word_bpe, word_out, word_align in zip(sample_num[1:-1], out[:-1], data_ns[sent_i][2]):
+                        # generate negative log likelihood
+                        probs = -torch.log2(torch.softmax(word_out, 0))
+                        sent_probs[word_align].append(float(probs[word_bpe]))
+
+                    # turn dic into a list
+                    sent_probs = [sent_probs[i] for i in range(len(sent_probs))]
+                    sent_probs = [np.sum(probs) for probs in sent_probs]
+                    ns_rt_all += data_ns[sent_i][1]
+                    ns_prob_all += sent_probs
+
         losses_dev = np.average(losses_dev)
         self.train(True)
-        return losses_dev
 
-    def train_loop(self, data_train, data_dev, encode_text, prefix="", epochs=50):
+        # special natural stories experiment
+        if data_ns is not None:
+            corr = np.corrcoef(ns_rt_all, ns_prob_all)[0,1]
+            return {"dev_loss": losses_dev, "dev_pp": 2**losses_dev, "rt_corr": corr}
+        else:
+            return {"dev_loss": losses_dev, "dev_pp": 2**losses_dev}
+
+    def train_loop(self, data_train, data_dev, encode_text, prefix="", epochs=50, data_ns=None):
         logdata = []
         for epoch in range(epochs):
             self.train(True)
 
             losses_train = []
-            for sample_i, (sample_num, sent_embd) in enumerate(tqdm(data_train)):
+            for sample_i, (sample_txt, sample_num, sent_embd) in enumerate(tqdm(data_train)):
                 sample = encode_text(sample_num.to(DEVICE))
                 sample = self.mask_sample(sample)
 
@@ -165,14 +192,13 @@ class LSTMModel(torch.nn.Module):
                 # one log step
                 if sample_i % 33000 == 0:
                     losses_train = np.average(losses_train)
-                    losses_dev = self.eval_dev(data_dev, encode_text)
+                    logdata_dev = self.eval_dev(data_dev, encode_text, data_ns=data_ns)
 
                     # warning: train_loss is macroaverage, dev_loss is microaverage
                     logdata.append({
                         "epoch": epoch,
                         "train_loss": losses_train,
-                        "dev_loss": losses_dev,
-                        "dev_pp": 2**losses_dev
+                        **logdata_dev,
                     })
 
                     save_json(

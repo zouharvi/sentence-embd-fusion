@@ -19,6 +19,9 @@ if __name__ == "__main__":
     args.add_argument("-v", "--vocab-size", type=int, default=8192)
     args.add_argument("-e", "--epochs", type=int, default=100)
     args.add_argument("-tn", "--train-n", type=int, default=100000)
+    args.add_argument("--encoder", default=None)
+    args.add_argument("--ns-file", default=None)
+    args.add_argument("--ns-file-out", default=None)
     args.add_argument("--hidden-size", type=int, default=768)
     args = args.parse_args()
 
@@ -35,27 +38,87 @@ if __name__ == "__main__":
         data_train = data[:args.train_n]
         data_dev = data[-10000:]
 
-    print(f"Loaded {len(data)}")
     print(f"Using {len(data_train)} for training")
     print(f"Using {len(data_dev)} for dev")
 
     data_dev = [
-        (torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
+        (x[0], torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
         for x in data_dev
     ]
 
     data_train = [
-        (torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
+        (x[0], torch.LongTensor(np.array(x[1])), torch.FloatTensor(np.array(x[2])))
         for x in data_train
     ]
 
+    if args.encoder is not None:
+        encoder = read_pickle(args.encoder)
+    else:
+        encoder = None
+    
+    # natural stories special path
+    if args.ns_file is not None:
+        error_sents = set()
+        data_ns_raw = read_pickle(args.ns_file)
+        data_ns = []
+        for sent_i, (sent, sent_ns) in enumerate(list(zip(data_dev, data_ns_raw))):
+            sent_txt = sent[0]
+            # remove BOS & EOS
+            sent_bpe = encoder.tokenize(sent_txt)[1:-1]
+            sent_tok = [t.lower() for t in sent_ns[0]]
+            sent_alignment = []
+            ptr_i = 0
+            sent_txt = sent_txt.lower()
+            error = False
+
+            try:
+                # perform alignment
+                for i, word_bpe in enumerate(sent_bpe):
+                    if word_bpe == "__sow" and len(sent_tok[ptr_i]) == 0:
+                        ptr_i += 1
+                    if word_bpe == "__sow" and len(sent_tok[ptr_i]) != 0:
+                        # stay on the same word
+                        pass
+                    elif word_bpe == "__eow":
+                        # stay on the same word
+                        pass
+                    elif word_bpe == "__unk":
+                        # stay on the same word
+                        pass
+                    elif sent_tok[ptr_i].startswith(word_bpe):
+                        # still in current word
+                        sent_tok[ptr_i] = sent_tok[ptr_i][len(word_bpe):]
+                    elif sent_tok[ptr_i+1].startswith(word_bpe):
+                        # moving to the next word
+                        sent_tok[ptr_i+1] = sent_tok[ptr_i+1][len(word_bpe):]
+                        ptr_i += 1
+                    else:
+                        error = True
+                        # print("Unable to match BPE", word_bpe, sent_tok[ptr_i], sent_tok[ptr_i+1])
+                    
+                    sent_alignment.append(ptr_i)
+            except Exception as e:
+                error = True
+
+            if error:
+                error_sents.add(sent_i)
+            # txt, reading times, alignment
+            data_ns.append((sent_ns[0], sent_ns[1], sent_alignment))
+
+        # remove unaligned sentences
+        data_dev = [x for i, x in enumerate(data_dev) if i not in error_sents]
+        data_ns = [x for i, x in enumerate(data_ns) if i not in error_sents]
+        print(len(error_sents), "sentences could not be aligned (skipping)")
+
     model = LSTMModel(
         args.vocab_size, fusion=args.fusion,
-        hidden_size=args.hidden_size
+        hidden_size=args.hidden_size,
+        encoder=encoder,
     )
     model.train_loop(
         data_train, data_dev,
         encode_text,
         prefix=f"{args.model_name}-{args.nick_name}",
-        epochs=args.epochs
+        epochs=args.epochs,
+        data_ns=data_ns,
     )

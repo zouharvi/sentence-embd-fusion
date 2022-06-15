@@ -5,10 +5,13 @@
 
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+15 jun|100k+500|whirl|ns correlation f0|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/ns_bert_cls-500-p.embd -nn whirl -mn bert_cls -f 0 --encoder /data/sef/s110k-v8192.enc_pkl --ns-file data/natural_stories.pkl --ns-file-out computed/ns_corr.json > runs/whirl_f0.log`|8|running
+15 jun|100k+500|whirl|ns correlation f1|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/ns_bert_cls-500-p.embd -nn whirl -mn bert_cls -f 1 --encoder /data/sef/s110k-v8192.enc_pkl --ns-file data/natural_stories.pkl --ns-file-out computed/ns_corr.json > runs/whirl_f1.log`|8|running
 
 ## Finished
 (re)start|size|nickname|description|command|machine|status
 -|-|-|-|-|-|-
+15 jun|500|bert_cls natural stories|embd|`./src/misc/embd.py -n 500 -m bert -p --dataset ns --bpe-encoder /data/sef/s110k-v8192.enc_pkl`|8|ok, ok
 14 jun|100k+2|fountain|vocab shift|`./src/run_model_artefact.py -d /data/sef/bert_cls-110k.embd -d2 /data/sef/moctezuma_bert_cls-2.embd -nn fountain -mn bert_cls --encoder /data/sef/s110k-v8192.enc_pkl --prob-file computed/moctezuma_full_probs.json`|8|ok (stopped)
 14 jun|100k+2|fountain|vocab shift|`./src/run_model_artefact.py -d /data/sef/bert_cls-110k-p.embd -d2 /data/sef/moctezuma_bert_cls-2-p.embd -nn fountain -mn bert_cls --encoder /data/sef/s110k-v8192.enc_pkl --prob-file computed/moctezuma_prefix_probs.json`|8|ok (stopped)
 31 may - 5 jun|110k|truecuum|baseline check convergence|`./src/run_model_basic.py -d /data/sef/bert_cls-110k-p.embd -f 3 -nn truecuum -mn bert_cls -e 400 > runs/basic_truecuum.log`|16|killed, running, ok

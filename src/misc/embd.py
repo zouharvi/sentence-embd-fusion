@@ -27,7 +27,8 @@ def get_dataset_data(dataset, n, args=None):
     elif dataset in {"ns", "natural_stories"}:
         dataset = read_pickle("data/natural_stories.pkl")
         dataset = [" ".join(sent_w) for sent_w, sent_p in dataset]
-        print(dataset[0])
+        # overwrite sentence tokenizer to not tokenize
+        sent_tokenize = lambda s: [s]
 
 
     print(len(dataset), "total paragraphs")

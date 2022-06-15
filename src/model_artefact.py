@@ -8,7 +8,7 @@ DEVICE = get_device()
 
 
 class ArtefactModel(torch.nn.Module):
-    def __init__(self, vocab_size, model_arch=0, hidden_size=768, embd_size=512, encoder=None):
+    def __init__(self, vocab_size, model_arch=0, encoder=None):
         super().__init__()
 
         self.fusion = model_arch
@@ -31,6 +31,7 @@ class ArtefactModel(torch.nn.Module):
             pass
 
         if encoder is not None:
+            self.encoder = encoder
             vocab = [
                 list(encoder.inverse_transform([[i]]))[0]
                 for i in range(vocab_size)
@@ -57,6 +58,8 @@ class ArtefactModel(torch.nn.Module):
                 sent_embd = sent_embd.to(DEVICE)
 
                 out = self.forward(sent_embd)
+
+                # special info for an experiment
                 if prob_file is not None:
                     sent_probs = []
                     for out_w in out:
