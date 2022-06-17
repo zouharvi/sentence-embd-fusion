@@ -6,12 +6,13 @@ from argparse import ArgumentParser
 args = ArgumentParser()
 args.add_argument("logfile", nargs="+")
 args.add_argument("--corr", action="store_true")
+args.add_argument("--cap", type=int, default=None)
 args = args.parse_args()
 
 
 for f in args.logfile:
     print(f)
-    data = read_json(f)
+    data = read_json(f)[:args.cap]
 
     best_i = None
     if args.corr:
