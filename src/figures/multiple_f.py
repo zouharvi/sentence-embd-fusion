@@ -12,7 +12,7 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 
 
-def aggregate_epochs(data):
+def aggregate_epochs(data, args):
     # average values across epochs
 
     data_dict = defaultdict(list)
@@ -21,8 +21,8 @@ def aggregate_epochs(data):
 
     data_dict = {
         k: {
-            "train_loss": np.average([x["train_loss"] for x in v]),
-            "dev_pp": np.average([x["dev_pp"] for x in v]),
+            args.key_1: np.average([x[args.key_1] for x in v]),
+            args.key_2: np.average([x[args.key_2] for x in v]),
             "epoch": k
         }
         for k, v in data_dict.items()
@@ -41,6 +41,8 @@ for i in range(6 + 1):
 args.add_argument("--filename", default=None)
 args.add_argument("--start-i", type=int, default=1)
 args.add_argument("--end-i", type=int, default=None)
+args.add_argument("--key-1", default="dev_pp")
+args.add_argument("--key-2", default="train_loss")
 args = args.parse_args()
 
 ARGS_LABELS = [args.l0, args.l1, args.l2, args.l3, args.l4, args.l5, args.l6]
@@ -51,9 +53,9 @@ for f in ARGS_FILES:
         data_all.append(read_json(f))
 
 data_all = [
-    aggregate_epochs(data_fx[args.start_i:args.end_i])
-            for data_fx in data_all
-            ]
+    aggregate_epochs(data_fx[args.start_i:args.end_i], args)
+    for data_fx in data_all
+]
 print(*[len(data_fx) for data_fx in data_all])
 
 fig = plt.figure(figsize=(9, 4.5))
@@ -69,38 +71,26 @@ XTICKS = [
 
 print(*[len(data_fx) for data_fx in data_all])
 
-# fake call for the legend
-ax1.plot(
-    XTICKS[0],
-    data_all[0][0]["train_loss"],
-    label=f"Train Loss",
-    linestyle=":",
-    alpha=1,
-    color="tab:grey"
-)
-
-
 legend_handles = []
 legend_handle_loss = None
 for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
     # train loss
     ax1.plot(
         XTICKS[:len(data_fx)],
-        [x["train_loss"] for x in data_fx],
-        # label=f"Train Loss{label}",
+        [x[args.key_2] for x in data_fx],
         linestyle=":",
         alpha=0.6,
     )
     ax2.plot(
         XTICKS[:len(data_fx)],
-        [x["dev_pp"] for x in data_fx],
+        [x[args.key_1] for x in data_fx],
         linestyle="-",
         alpha=0.7,
     )
     # only every 10th marker to clean up the graph
     ax2.scatter(
         XTICKS[:len(data_fx):10],
-        [x["dev_pp"] for x in data_fx][::10],
+        [x[args.key_1] for x in data_fx][::10],
         marker=fig_utils.MARKERS[i], s=50,
         alpha=1,
     )
@@ -111,11 +101,14 @@ for i, (data_fx, label) in enumerate(zip(data_all, ARGS_LABELS)):
         label=label,
         markersize=8
     ))
-    legend_handle_loss = Line2D(
-        [0], [0],
-        color=fig_utils.COLORS[i],
-        label="Train loss", linestyle=":",
-    )
+
+# fake call for the legend
+legend_handle_loss = Line2D(
+    [0], [0],
+    label="Train loss",
+    linestyle=":",
+    color="tab:grey"
+)
 
 ax1.set_ylabel("Train loss")
 ax1.set_xlabel("Step | Epoch")
@@ -123,7 +116,7 @@ ax2.set_ylabel("Dev Perplexity")
 
 
 fig.legend(
-    handles=legend_handles+[legend_handle_loss],
+    handles=legend_handles + [legend_handle_loss],
     loc="upper center",
     bbox_to_anchor=(1.2, 1),
     bbox_transform=ax1.transAxes,
