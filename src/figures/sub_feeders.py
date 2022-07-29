@@ -31,7 +31,7 @@ for f in args.subr:
 pp_f0 = data_subl[-1]
 pp_f1 = data_subl[0]
 
-_fig, ax = plt.subplots(1, 2, figsize=(9, 4), gridspec_kw={'width_ratios': [2.5, 1]})
+_fig, ax = plt.subplots(1, 2, figsize=(8.7, 4), gridspec_kw={'width_ratios': [2.5, 1]})
 ax1 = ax[0]
 ax2 = ax[1]
 ax2.yaxis.set_label_position("right")
@@ -103,7 +103,7 @@ h1, l1 = ax1.get_legend_handles_labels()
 h2, l2 = ax2.get_legend_handles_labels()
 LEGEND_PERM = [2, 3, 0, 4, 5, 1]
 
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.01, hspace=None)
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=-0.2, hspace=None)
 
 ax1.legend(
     h1, l1,
@@ -117,6 +117,6 @@ ax2.legend(
     bbox_to_anchor=(0.016, 1.26),
     ncol=1,
 )
-plt.tight_layout(rect=(0, 0, 1, 1.01), pad=0)
+plt.tight_layout(rect=(0, 0, 1, 1.01), pad=0.1)
 plt.savefig("figures/sub_feeders.pdf")
 plt.show()

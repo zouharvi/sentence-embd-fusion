@@ -31,7 +31,7 @@ data_f6 = []
 for f in args.f6:
     data_f6.append(min([x["dev_pp"] for x in read_json(f)]))
 
-fig = plt.figure(figsize=(9, 4.5))
+fig = plt.figure(figsize=(8.7, 4.5))
 ax1 = fig.gca()
 
 XTICKS_Y = [5000, 8000, 13000, 20000, 31000, 46000, 68000, 100000]

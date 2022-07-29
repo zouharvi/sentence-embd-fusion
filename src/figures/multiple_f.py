@@ -58,7 +58,7 @@ data_all = [
 ]
 print(*[len(data_fx) for data_fx in data_all])
 
-fig = plt.figure(figsize=(9, 4.5))
+fig = plt.figure(figsize=(8.7, 4.5))
 
 
 ax2 = fig.gca()
@@ -111,19 +111,19 @@ legend_handle_loss = Line2D(
 )
 
 ax1.set_ylabel("Train loss")
-ax1.set_xlabel("Step | Epoch")
+ax2.set_xlabel("Epoch")
 ax2.set_ylabel("Dev Perplexity")
 
 
 fig.legend(
     handles=legend_handles + [legend_handle_loss],
     loc="upper center",
-    bbox_to_anchor=(1.2, 1),
+    bbox_to_anchor=(1.23, 1),
     bbox_transform=ax1.transAxes,
     ncol=1,
 )
 
-plt.tight_layout(rect=(0, 0, 0.8, 1), pad=0)
+plt.tight_layout(rect=(0, 0, 0.79, 1), pad=0.1)
 
 if args.filename:
     plt.savefig(args.filename)
