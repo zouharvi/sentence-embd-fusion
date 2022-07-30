@@ -50,25 +50,25 @@ def plot_to_axis(ax, sl):
     )
     ax.plot(
         XTICKS_Y[sl], data_f1[sl],
-        label="Concatenate final",
+        label="Concatenate (late)",
         marker=MARKERS[1],
         **PLOTARGS,
     )
     ax.plot(
         XTICKS_Y[sl], data_f2[sl],
-        label="Add final",
+        label="Add (late)",
         marker=MARKERS[2],
         **PLOTARGS,
     )
     ax.plot(
         XTICKS_Y[sl], data_f3[sl],
-        label="Multiply final",
+        label="Multiply (late)",
         marker=MARKERS[3],
         **PLOTARGS,
     )
     ax.plot(
         XTICKS_Y[sl], data_f6[sl],
-        label="Hidden state",
+        label="Hidden state (early)",
         marker=MARKERS[4],
         **PLOTARGS,
     )
