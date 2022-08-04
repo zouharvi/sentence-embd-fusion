@@ -5,6 +5,8 @@ Read [our paper](todo) and/or watch a  short [YouTube presentation](todo) on thi
 
 ![LSTM with fusion model architecture](meta/model_moctezuma.png)
 
+![LSTM with fusion model architecture (early & late)](meta/model_moctezuma_detailed.png)
+
 
 # Paper
 
