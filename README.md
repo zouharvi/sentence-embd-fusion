@@ -1,7 +1,10 @@
 # Sentence Embedding Fusion
 
+[![Paper](https://img.shields.io/badge/📜%20paper-481.svg)](https://arxiv.org/abs/2208.02402)
+&nbsp;
+[![YouTube video](https://img.shields.io/badge/🎥%20YouTube%20video-F00.svg)](https://youtu.be/U8-h7pZFHc0)
+
 Pretrained LM sentence embeddings as artefacts fused to language models.
-Read [our paper](https://arxiv.org/abs/2208.02402) and/or watch a  short [YouTube presentation](https://youtu.be/U8-h7pZFHc0) on this research. 
 
 ![LSTM with fusion model architecture](meta/model_moctezuma.png)
 
@@ -29,5 +32,3 @@ Read [our paper](https://arxiv.org/abs/2208.02402) and/or watch a  short [YouTub
   url = {https://arxiv.org/abs/2208.02402},
 }
 ```
-
-[![Paper video presentation](https://img.youtube.com/vi/U8-h7pZFHc0/0.jpg)](https://www.youtube.com/watch?v=U8-h7pZFHc0)
